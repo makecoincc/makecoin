@@ -10,5 +10,8 @@ declare global {
       signMessage?: (message: Uint8Array) => Promise<Uint8Array>;
       // 你可以根据需要添加更多属性
     };
+    turnstile?: {
+      render: (element: string, params: any) => void;
+    };
   }
 }

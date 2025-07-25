@@ -4,8 +4,11 @@ import Link from "next/link";
 import Logo from "./logo";
 import Dropdown from "../dropdown";
 import MobileMenu from "./mobile-menu";
+import { useUserStore } from "@/store/userStore";
 
 export default function Header() {
+  const { user } = useUserStore();
+
   return (
     <header className="z-30 mt-2 w-full md:mt-5">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -59,7 +62,7 @@ export default function Header() {
                     href="/newsletter"
                     className="flex rounded-lg px-2 py-1.5 text-sm text-white hover:text-indigo-500"
                   >
-                    Newsletter
+                    {user?.id}
                   </Link>
                 </li>
                 <li>
