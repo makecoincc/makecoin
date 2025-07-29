@@ -1,11 +1,104 @@
-export const metadata = {
-  title: "Sign In - Open PRO",
-  description: "Page description",
-};
-
+// export const metadata = {
+//   title: "Sign In - Open PRO",
+//   description: "Page description",
+// };
+'use client'
 import Link from "next/link";
+import { useState, useEffect } from 'react';
+import { supabase } from "@/utils/supabase";
+import { useUserStore } from "@/store/userStore";
+import { useRouter } from 'next/navigation';
+import { addToast, Button } from "@heroui/react";
 
 export default function SignIn() {
+  const router = useRouter();
+  const { setUserInfo } = useUserStore();
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [token, setToken] = useState<string>('');
+
+  useEffect(() => {
+    const scriptId = "turnstile-script";
+    if (!document.getElementById(scriptId)) {
+      const script = document.createElement("script");
+      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      script.async = true;
+      script.defer = true;
+      script.id = scriptId;
+      script.onload = () => {
+        console.log('turnstile loaded')
+        if ((window as any).turnstile) {
+          (window as any).turnstile.render("#my-turnstile", {
+            sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!,
+            size: "flexible",
+            theme: 'dark',
+            callback: (token: string) => {
+              setToken(token);
+            },
+          });
+        }
+      };
+      document.body.appendChild(script);
+    }
+  }, []);
+
+  const signInWithPassword = async () => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+      options: {
+        captchaToken: token
+      }
+    });
+    if (error) {
+      addToast({
+        title: "Sign in failed",
+        description: error.message,
+        color: "danger"
+      });
+      return;
+    }
+    setUserInfo(data.user, data.session);
+    router.push('/');
+  };
+
+  const signInWithSolana = async () => {
+    const { data, error } = await supabase.auth.signInWithWeb3({
+      chain: 'solana',
+      statement: 'I accept the Terms of Service at https://makecoin.cc/tos',
+      wallet: (window as any)?.solana || (window as any)?.braveSolana,
+      options: {
+        captchaToken: token
+      }
+    });
+    if (error) {
+      addToast({
+        title: "Sign in failed",
+        description: error.message,
+        color: "danger"
+      });
+      return;
+    }
+    setUserInfo(data.user, data.session);
+    router.push('/');
+  }
+
+  const submit = async (type: string) => {
+    if (!token) {
+      addToast({
+        title: "Please verify you are a human",
+        description: "",
+        color: "danger"
+      });
+      return;
+    }
+    if (type === 'email') {
+      await signInWithPassword();
+
+    } else if (type === 'solana') {
+      await signInWithSolana();
+    }
+  }
   return (
     <section>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -19,6 +112,7 @@ export default function SignIn() {
           {/* Contact form */}
           <form className="mx-auto max-w-[400px]">
             <div className="space-y-5">
+              <div id="my-turnstile" className="w-full"></div>
               <div>
                 <label
                   className="mb-1 block text-sm font-medium text-indigo-200/65"
@@ -31,6 +125,8 @@ export default function SignIn() {
                   type="email"
                   className="form-input w-full"
                   placeholder="Your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div>
@@ -53,19 +149,19 @@ export default function SignIn() {
                   type="password"
                   className="form-input w-full"
                   placeholder="Your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
             </div>
             <div className="mt-6 space-y-5">
-              <button className="btn w-full bg-linear-to-t from-indigo-600 to-indigo-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]">
-                Sign in
-              </button>
+              <Button radius="sm" onPress={() => submit('email')} className="btn w-full bg-linear-to-t from-indigo-600 to-indigo-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]">Sign in</Button>
               <div className="flex items-center gap-3 text-center text-sm italic text-gray-600 before:h-px before:flex-1 before:bg-linear-to-r before:from-transparent before:via-gray-400/25 after:h-px after:flex-1 after:bg-linear-to-r after:from-transparent after:via-gray-400/25">
                 or
               </div>
-              <button className="btn relative w-full bg-linear-to-b from-gray-800 to-gray-800/60 bg-[length:100%_100%] bg-[bottom] text-gray-300 before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_right,var(--color-gray-800),var(--color-gray-700),var(--color-gray-800))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-[length:100%_150%]">
-                Sign In with Google
-              </button>
+              <Button radius="sm" onPress={() => submit('solana')} className="btn relative w-full bg-linear-to-b from-gray-800 to-gray-800/60 bg-[length:100%_100%] bg-[bottom] text-gray-300 before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_right,var(--color-gray-800),var(--color-gray-700),var(--color-gray-800))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-[length:100%_150%]">
+                Sign In with Solana
+              </Button>
             </div>
           </form>
           {/* Bottom link */}
