@@ -3,16 +3,22 @@ import { Session, User } from "@supabase/supabase-js";
 
 type UserStore = {
   session: Session | null;
-  user: User | null;
   isLogin: boolean;
-  setUserInfo: (user: User | null, session: Session | null) => void;
-  clearUser: () => void;
+  setSession: (session: Session | null) => void;
+  clearSession: () => void;
+  getUser: () => User | null;
 };
 
-export const useUserStore = create<UserStore>((set) => ({
+export const useUserStore = create<UserStore>((set, get) => ({
   session: null,
-  user: null,
   isLogin: false,
-  setUserInfo: (user: User | null, session: Session | null) => set({ user, session, isLogin: true }),
-  clearUser: () => set({ session: null, user: null, isLogin: false }),
+  setSession: (session: Session | null) => set({ session, isLogin: true }),
+  clearSession: () => set({ session: null, isLogin: false }),
+  getUser: () => {
+    const { session } = get();
+    if (!session) {
+      return null;
+    }
+    return session.user;
+  },
 }));

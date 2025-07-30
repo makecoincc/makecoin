@@ -3,7 +3,6 @@ import {
     NavbarBrand,
     NavbarContent,
     NavbarItem,
-    Link,
     NavbarMenuToggle,
     NavbarMenu,
     NavbarMenuItem,
@@ -15,6 +14,7 @@ import {
     AvatarIcon,
     User
 } from "@heroui/react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useUserStore } from "@/store/userStore";
 
@@ -40,7 +40,8 @@ export default function Header() {
         "Log Out",
     ];
 
-    const { user, isLogin } = useUserStore();
+    const { getUser, isLogin } = useUserStore();
+    const user = getUser();
     const [userName, setUserName] = useState("");
     useEffect(() => {
         if (isLogin) {
@@ -73,13 +74,13 @@ export default function Header() {
                     </Link>
                 </NavbarItem>
                 <NavbarItem isActive>
-                    <Link color="secondary" href="#">
-                        Customers
+                    <Link color="secondary" href="/tokens">
+                        Tokens
                     </Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Link color="foreground" href="#">
-                        Integrations
+                    <Link color="foreground" href="/market">
+                        Market
                     </Link>
                 </NavbarItem>
             </NavbarContent>

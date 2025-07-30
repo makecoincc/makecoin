@@ -12,7 +12,7 @@ import { addToast, Button } from "@heroui/react";
 
 export default function SignIn() {
   const router = useRouter();
-  const { setUserInfo } = useUserStore();
+  const { setSession } = useUserStore();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [token, setToken] = useState<string>('');
@@ -62,7 +62,7 @@ export default function SignIn() {
       });
       return;
     }
-    setUserInfo(data.user, data.session);
+    setSession(data.session);
     router.push('/');
   };
 
@@ -86,7 +86,7 @@ export default function SignIn() {
       return;
     }
     console.log(data)
-    setUserInfo(data.user, data.session);
+    setSession(data.session);
     router.push('/');
   }
 

@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
+import { supabase } from '@/utils/supabase';
+import { useUserStore } from '@/store/userStore';
 
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -12,6 +14,8 @@ export default function DefaultLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const { setSession, isLogin } = useUserStore()
+
   useEffect(() => {
     AOS.init({
       once: true,
@@ -19,7 +23,20 @@ export default function DefaultLayout({
       duration: 600,
       easing: "ease-out-sine",
     });
-  });
+  }, []);
+  useEffect(() => {
+    if (isLogin) {
+      return;
+    }
+    const restoreSession = async () => {
+      const { data } = await supabase.auth.getSession()
+      console.log(data)
+      if (data) {
+        setSession(data.session)
+      }
+    }
+    restoreSession()
+  }, [isLogin])
 
   return (
     <>
