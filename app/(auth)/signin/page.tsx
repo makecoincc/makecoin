@@ -5,13 +5,14 @@
 'use client'
 import Link from "next/link";
 import { useState, useEffect } from 'react';
-import { supabase } from "@/utils/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { useUserStore } from "@/store/userStore";
 import { useRouter } from 'next/navigation';
 import { addToast, Button } from "@heroui/react";
 
 export default function SignIn() {
   const router = useRouter();
+  const supabase = createClient();
   const { setSession } = useUserStore();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
