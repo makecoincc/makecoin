@@ -54,7 +54,7 @@ export default function Header() {
                 setUserName('no name');
             }
         }
-    }, [user, isLogin]);
+    }, [isLogin]);
 
     return (
         <Navbar>

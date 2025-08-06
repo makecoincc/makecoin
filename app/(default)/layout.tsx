@@ -32,7 +32,7 @@ export default function DefaultLayout({
     const restoreSession = async () => {
       const { data } = await supabase.auth.getSession()
       console.log(data)
-      if (data) {
+      if (data && data.session) {
         setSession(data.session)
       }
     }
