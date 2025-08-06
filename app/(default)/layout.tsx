@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { supabase } from '@/utils/supabase';
+import { createClient } from '@/lib/supabase/client';
 import { useUserStore } from '@/store/userStore';
 
 import AOS from "aos";
@@ -28,6 +28,7 @@ export default function DefaultLayout({
     if (isLogin) {
       return;
     }
+    const supabase = createClient();
     const restoreSession = async () => {
       const { data } = await supabase.auth.getSession()
       console.log(data)
