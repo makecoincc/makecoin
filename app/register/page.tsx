@@ -1,7 +1,7 @@
 'use client'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Input, Card, CardBody, Link, Divider } from '@heroui/react';
-import { EyeIcon, EyeSlashIcon, UserIcon, LockClosedIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
+import { EyeIcon, EyeSlashIcon, UserIcon, LockClosedIcon, EnvelopeIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
 
 export default function RegisterPage() {
@@ -14,10 +14,27 @@ export default function RegisterPage() {
   const [isVisible, setIsVisible] = useState(false);
   const [isConfirmVisible, setIsConfirmVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDark, setIsDark] = useState(false);
   const [errors, setErrors] = useState<{[key: string]: string}>({});
 
   const toggleVisibility = () => setIsVisible(!isVisible);
   const toggleConfirmVisibility = () => setIsConfirmVisible(!isConfirmVisible);
+  
+  // 初始化主题
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const shouldBeDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+    setIsDark(shouldBeDark);
+    document.documentElement.classList.toggle('dark', shouldBeDark);
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = !isDark;
+    setIsDark(newTheme);
+    document.documentElement.classList.toggle('dark', newTheme);
+    localStorage.setItem('theme', newTheme ? 'dark' : 'light');
+  };
 
   const validateForm = () => {
     const newErrors: {[key: string]: string} = {};
@@ -72,11 +89,26 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 px-4 transition-colors duration-300">
+      {/* 主题切换按钮 */}
+      <motion.button
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3, delay: 0.5 }}
+        onClick={toggleTheme}
+        className="fixed top-6 right-6 z-50 p-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+      >
+        {isDark ? (
+          <SunIcon className="w-5 h-5 text-yellow-500" />
+        ) : (
+          <MoonIcon className="w-5 h-5 text-gray-700" />
+        )}
+      </motion.button>
+
       {/* 简洁的背景装饰 */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
-          className="absolute -top-40 -right-40 w-80 h-80 bg-gray-200 rounded-full opacity-60"
+          className="absolute -top-40 -right-40 w-80 h-80 bg-gray-200 dark:bg-gray-700/20 rounded-full opacity-60"
           animate={{
             scale: [1, 1.1, 1],
             rotate: [0, 180, 360],
@@ -88,7 +120,7 @@ export default function RegisterPage() {
           }}
         />
         <motion.div
-          className="absolute -bottom-40 -left-40 w-80 h-80 bg-gray-300 rounded-full opacity-40"
+          className="absolute -bottom-40 -left-40 w-80 h-80 bg-gray-300 dark:bg-gray-600/20 rounded-full opacity-40"
           animate={{
             scale: [1.1, 1, 1.1],
             rotate: [360, 180, 0],
@@ -107,7 +139,7 @@ export default function RegisterPage() {
         transition={{ duration: 0.6 }}
         className="relative z-10 w-full max-w-md"
       >
-        <Card className="bg-white shadow-xl border-0">
+        <Card className="bg-white dark:bg-gray-800 shadow-xl border-0 transition-colors duration-300">
           <CardBody className="p-8">
             {/* 标题区域 */}
             <motion.div
@@ -120,14 +152,14 @@ export default function RegisterPage() {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="w-16 h-16 bg-gray-900 rounded-2xl mx-auto mb-6 flex items-center justify-center"
+                className="w-16 h-16 bg-gray-900 dark:bg-gray-100 rounded-2xl mx-auto mb-6 flex items-center justify-center transition-colors duration-300"
               >
-                <UserIcon className="w-8 h-8 text-white" />
+                <UserIcon className="w-8 h-8 text-white dark:text-gray-900" />
               </motion.div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-300">
                 创建账户
               </h1>
-              <p className="text-gray-600">请填写以下信息完成注册</p>
+              <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300">请填写以下信息完成注册</p>
             </motion.div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -144,13 +176,13 @@ export default function RegisterPage() {
                   onChange={(e) => handleInputChange('name', e.target.value)}
                   isRequired
                   variant="bordered"
-                  startContent={<UserIcon className="w-4 h-4 text-gray-500" />}
+                  startContent={<UserIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />}
                   isInvalid={!!errors.name}
                   errorMessage={errors.name}
                   classNames={{
-                    input: "text-gray-900",
-                    inputWrapper: "border-gray-300 hover:border-gray-900 focus-within:border-gray-900 transition-colors",
-                    label: "text-gray-700"
+                    input: "text-gray-900 dark:text-white",
+                    inputWrapper: "border-gray-300 dark:border-gray-600 hover:border-gray-900 dark:hover:border-gray-300 focus-within:border-gray-900 dark:focus-within:border-gray-300 bg-white dark:bg-gray-700 transition-colors",
+                    label: "text-gray-700 dark:text-gray-300"
                   }}
                 />
               </motion.div>
@@ -168,13 +200,13 @@ export default function RegisterPage() {
                   onChange={(e) => handleInputChange('email', e.target.value)}
                   isRequired
                   variant="bordered"
-                  startContent={<EnvelopeIcon className="w-4 h-4 text-gray-500" />}
+                  startContent={<EnvelopeIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />}
                   isInvalid={!!errors.email}
                   errorMessage={errors.email}
                   classNames={{
-                    input: "text-gray-900",
-                    inputWrapper: "border-gray-300 hover:border-gray-900 focus-within:border-gray-900 transition-colors",
-                    label: "text-gray-700"
+                    input: "text-gray-900 dark:text-white",
+                    inputWrapper: "border-gray-300 dark:border-gray-600 hover:border-gray-900 dark:hover:border-gray-300 focus-within:border-gray-900 dark:focus-within:border-gray-300 bg-white dark:bg-gray-700 transition-colors",
+                    label: "text-gray-700 dark:text-gray-300"
                   }}
                 />
               </motion.div>
@@ -191,7 +223,7 @@ export default function RegisterPage() {
                   onChange={(e) => handleInputChange('password', e.target.value)}
                   isRequired
                   variant="bordered"
-                  startContent={<LockClosedIcon className="w-4 h-4 text-gray-500" />}
+                  startContent={<LockClosedIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />}
                   endContent={
                     <button
                       className="focus:outline-none"
@@ -199,9 +231,9 @@ export default function RegisterPage() {
                       onClick={toggleVisibility}
                     >
                       {isVisible ? (
-                        <EyeSlashIcon className="w-4 h-4 text-gray-500 hover:text-gray-700 transition-colors" />
+                        <EyeSlashIcon className="w-4 h-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors" />
                       ) : (
-                        <EyeIcon className="w-4 h-4 text-gray-500 hover:text-gray-700 transition-colors" />
+                        <EyeIcon className="w-4 h-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors" />
                       )}
                     </button>
                   }
@@ -209,9 +241,9 @@ export default function RegisterPage() {
                   isInvalid={!!errors.password}
                   errorMessage={errors.password}
                   classNames={{
-                    input: "text-gray-900",
-                    inputWrapper: "border-gray-300 hover:border-gray-900 focus-within:border-gray-900 transition-colors",
-                    label: "text-gray-700"
+                    input: "text-gray-900 dark:text-white",
+                    inputWrapper: "border-gray-300 dark:border-gray-600 hover:border-gray-900 dark:hover:border-gray-300 focus-within:border-gray-900 dark:focus-within:border-gray-300 bg-white dark:bg-gray-700 transition-colors",
+                    label: "text-gray-700 dark:text-gray-300"
                   }}
                 />
               </motion.div>
@@ -228,7 +260,7 @@ export default function RegisterPage() {
                   onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                   isRequired
                   variant="bordered"
-                  startContent={<LockClosedIcon className="w-4 h-4 text-gray-500" />}
+                  startContent={<LockClosedIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />}
                   endContent={
                     <button
                       className="focus:outline-none"
@@ -236,9 +268,9 @@ export default function RegisterPage() {
                       onClick={toggleConfirmVisibility}
                     >
                       {isConfirmVisible ? (
-                        <EyeSlashIcon className="w-4 h-4 text-gray-500 hover:text-gray-700 transition-colors" />
+                        <EyeSlashIcon className="w-4 h-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors" />
                       ) : (
-                        <EyeIcon className="w-4 h-4 text-gray-500 hover:text-gray-700 transition-colors" />
+                        <EyeIcon className="w-4 h-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors" />
                       )}
                     </button>
                   }
@@ -246,9 +278,9 @@ export default function RegisterPage() {
                   isInvalid={!!errors.confirmPassword}
                   errorMessage={errors.confirmPassword}
                   classNames={{
-                    input: "text-gray-900",
-                    inputWrapper: "border-gray-300 hover:border-gray-900 focus-within:border-gray-900 transition-colors",
-                    label: "text-gray-700"
+                    input: "text-gray-900 dark:text-white",
+                    inputWrapper: "border-gray-300 dark:border-gray-600 hover:border-gray-900 dark:hover:border-gray-300 focus-within:border-gray-900 dark:focus-within:border-gray-300 bg-white dark:bg-gray-700 transition-colors",
+                    label: "text-gray-700 dark:text-gray-300"
                   }}
                 />
               </motion.div>
@@ -262,7 +294,7 @@ export default function RegisterPage() {
                   type="submit"
                   size="lg"
                   isLoading={isLoading}
-                  className="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="w-full bg-gray-900 dark:bg-gray-100 hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-gray-900 font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   {isLoading ? '注册中...' : '创建账户'}
                 </Button>
@@ -276,8 +308,8 @@ export default function RegisterPage() {
                 <Divider className="my-6" />
                 
                 <div className="text-center">
-                  <span className="text-gray-600 text-sm">已有账户？</span>
-                  <Link href="/login" className="text-gray-900 hover:text-gray-700 font-semibold ml-1 transition-colors">
+                  <span className="text-gray-600 dark:text-gray-300 text-sm transition-colors duration-300">已有账户？</span>
+                  <Link href="/login" className="text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300 font-semibold ml-1 transition-colors">
                     立即登录
                   </Link>
                 </div>
