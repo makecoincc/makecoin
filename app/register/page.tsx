@@ -1,8 +1,9 @@
 'use client'
 import { useState, useEffect } from 'react';
 import { Button, Input, Card, CardBody, Link, Divider } from '@heroui/react';
-import { EyeIcon, EyeSlashIcon, UserIcon, LockClosedIcon, EnvelopeIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline';
+import { EyeIcon, EyeSlashIcon, UserIcon, LockClosedIcon, EnvelopeIcon, SunIcon, MoonIcon, LanguageIcon } from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
+import { useI18n, Language } from '@/lib/i18n';
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -15,18 +16,25 @@ export default function RegisterPage() {
   const [isConfirmVisible, setIsConfirmVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDark, setIsDark] = useState(false);
+  const [language, setLanguage] = useState<Language>('zh');
   const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const { t } = useI18n(language);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
   const toggleConfirmVisibility = () => setIsConfirmVisible(!isConfirmVisible);
   
-  // 初始化主题
+  // 初始化主题和语言
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const shouldBeDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
     setIsDark(shouldBeDark);
     document.documentElement.classList.toggle('dark', shouldBeDark);
+
+    const savedLanguage = localStorage.getItem('language') as Language;
+    if (savedLanguage && (savedLanguage === 'zh' || savedLanguage === 'en')) {
+      setLanguage(savedLanguage);
+    }
   }, []);
 
   const toggleTheme = () => {
@@ -36,27 +44,33 @@ export default function RegisterPage() {
     localStorage.setItem('theme', newTheme ? 'dark' : 'light');
   };
 
+  const toggleLanguage = () => {
+    const newLanguage: Language = language === 'zh' ? 'en' : 'zh';
+    setLanguage(newLanguage);
+    localStorage.setItem('language', newLanguage);
+  };
+
   const validateForm = () => {
     const newErrors: {[key: string]: string} = {};
     
     if (!formData.name.trim()) {
-      newErrors.name = '请输入姓名';
+      newErrors.name = t('nameRequired');
     }
     
     if (!formData.email.trim()) {
-      newErrors.email = '请输入邮箱';
+      newErrors.email = t('emailRequired');
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = '请输入有效的邮箱地址';
+      newErrors.email = t('invalidEmail');
     }
     
     if (!formData.password) {
-      newErrors.password = '请输入密码';
+      newErrors.password = t('passwordRequired');
     } else if (formData.password.length < 6) {
-      newErrors.password = '密码至少需要6个字符';
+      newErrors.password = t('passwordTooShort');
     }
     
     if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = '两次输入的密码不一致';
+      newErrors.confirmPassword = t('passwordMismatch');
     }
     
     setErrors(newErrors);
@@ -90,20 +104,39 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 px-4 transition-colors duration-300">
-      {/* 主题切换按钮 */}
-      <motion.button
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.3, delay: 0.5 }}
-        onClick={toggleTheme}
-        className="fixed top-6 right-6 z-50 p-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
-      >
-        {isDark ? (
-          <SunIcon className="w-5 h-5 text-yellow-500" />
-        ) : (
-          <MoonIcon className="w-5 h-5 text-gray-700" />
-        )}
-      </motion.button>
+      {/* 控制按钮组 */}
+      <div className="fixed top-6 right-6 z-50 flex gap-3">
+        {/* 语言切换按钮 */}
+        <motion.button
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3, delay: 0.4 }}
+          onClick={toggleLanguage}
+          className="p-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+        >
+          <div className="flex items-center gap-1">
+            <LanguageIcon className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+            <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+              {language.toUpperCase()}
+            </span>
+          </div>
+        </motion.button>
+
+        {/* 主题切换按钮 */}
+        <motion.button
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3, delay: 0.5 }}
+          onClick={toggleTheme}
+          className="p-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+        >
+          {isDark ? (
+            <SunIcon className="w-5 h-5 text-yellow-500" />
+          ) : (
+            <MoonIcon className="w-5 h-5 text-gray-700" />
+          )}
+        </motion.button>
+      </div>
 
       {/* 简洁的背景装饰 */}
       <div className="absolute inset-0 overflow-hidden">
@@ -157,9 +190,9 @@ export default function RegisterPage() {
                 <UserIcon className="w-8 h-8 text-white dark:text-gray-900" />
               </motion.div>
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-300">
-                创建账户
+                {t('createAccount')}
               </h1>
-              <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300">请填写以下信息完成注册</p>
+              <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300">{t('fillInfo')}</p>
             </motion.div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -170,8 +203,8 @@ export default function RegisterPage() {
               >
                 <Input
                   type="text"
-                  label="姓名"
-                  placeholder="请输入您的姓名"
+                  label={t('name')}
+                  placeholder={t('enterName')}
                   value={formData.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
                   isRequired
@@ -194,8 +227,8 @@ export default function RegisterPage() {
               >
                 <Input
                   type="email"
-                  label="邮箱地址"
-                  placeholder="请输入您的邮箱"
+                  label={t('emailAddress')}
+                  placeholder={t('enterEmail')}
                   value={formData.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
                   isRequired
@@ -217,8 +250,8 @@ export default function RegisterPage() {
                 transition={{ duration: 0.4, delay: 0.5 }}
               >
                 <Input
-                  label="密码"
-                  placeholder="请输入密码（至少6个字符）"
+                  label={t('password')}
+                  placeholder={t('enterPasswordHint')}
                   value={formData.password}
                   onChange={(e) => handleInputChange('password', e.target.value)}
                   isRequired
@@ -254,8 +287,8 @@ export default function RegisterPage() {
                 transition={{ duration: 0.4, delay: 0.6 }}
               >
                 <Input
-                  label="确认密码"
-                  placeholder="请再次输入密码"
+                  label={t('confirmPassword')}
+                  placeholder={t('reEnterPassword')}
                   value={formData.confirmPassword}
                   onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                   isRequired
@@ -296,7 +329,7 @@ export default function RegisterPage() {
                   isLoading={isLoading}
                   className="w-full bg-gray-900 dark:bg-gray-100 hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-gray-900 font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  {isLoading ? '注册中...' : '创建账户'}
+                  {isLoading ? t('creating') : t('createAccountBtn')}
                 </Button>
               </motion.div>
 
@@ -308,9 +341,9 @@ export default function RegisterPage() {
                 <Divider className="my-6" />
                 
                 <div className="text-center">
-                  <span className="text-gray-600 dark:text-gray-300 text-sm transition-colors duration-300">已有账户？</span>
+                  <span className="text-gray-600 dark:text-gray-300 text-sm transition-colors duration-300">{t('haveAccount')}</span>
                   <Link href="/login" className="text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300 font-semibold ml-1 transition-colors">
-                    立即登录
+                    {t('loginNow')}
                   </Link>
                 </div>
               </motion.div>

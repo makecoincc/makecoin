@@ -1,9 +1,10 @@
 'use client'
 import { useState, useEffect } from 'react';
 import { Button, Input, Card, CardBody, Link, Divider } from '@heroui/react';
-import { EyeIcon, EyeSlashIcon, UserIcon, LockClosedIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline';
+import { EyeIcon, EyeSlashIcon, UserIcon, LockClosedIcon, SunIcon, MoonIcon, LanguageIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { useI18n, Language } from '@/lib/i18n';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -11,17 +12,24 @@ export default function LoginPage() {
     const [isVisible, setIsVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isDark, setIsDark] = useState(false);
+    const [language, setLanguage] = useState<Language>('zh');
     const router = useRouter();
+    const { t } = useI18n(language);
 
     const toggleVisibility = () => setIsVisible(!isVisible);
-    
-    // 初始化主题
+
+    // 初始化主题和语言
     useEffect(() => {
         const savedTheme = localStorage.getItem('theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         const shouldBeDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
         setIsDark(shouldBeDark);
         document.documentElement.classList.toggle('dark', shouldBeDark);
+
+        const savedLanguage = localStorage.getItem('language') as Language;
+        if (savedLanguage && (savedLanguage === 'zh' || savedLanguage === 'en')) {
+            setLanguage(savedLanguage);
+        }
     }, []);
 
     const toggleTheme = () => {
@@ -29,6 +37,12 @@ export default function LoginPage() {
         setIsDark(newTheme);
         document.documentElement.classList.toggle('dark', newTheme);
         localStorage.setItem('theme', newTheme ? 'dark' : 'light');
+    };
+
+    const toggleLanguage = () => {
+        const newLanguage: Language = language === 'zh' ? 'en' : 'zh';
+        setLanguage(newLanguage);
+        localStorage.setItem('language', newLanguage);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -46,20 +60,39 @@ export default function LoginPage() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 px-4 transition-colors duration-300">
-            {/* 主题切换按钮 */}
-            <motion.button
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3, delay: 0.5 }}
-                onClick={toggleTheme}
-                className="fixed top-6 right-6 z-50 p-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
-            >
-                {isDark ? (
-                    <SunIcon className="w-5 h-5 text-yellow-500" />
-                ) : (
-                    <MoonIcon className="w-5 h-5 text-gray-700" />
-                )}
-            </motion.button>
+            {/* 控制按钮组 */}
+            <div className="fixed top-6 right-6 z-50 flex gap-3">
+                {/* 语言切换按钮 */}
+                <motion.button
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, delay: 0.4 }}
+                    onClick={toggleLanguage}
+                    className="p-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                >
+                    <div className="flex items-center gap-1">
+                        <LanguageIcon className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+                        <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                            {language.toUpperCase()}
+                        </span>
+                    </div>
+                </motion.button>
+
+                {/* 主题切换按钮 */}
+                <motion.button
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, delay: 0.5 }}
+                    onClick={toggleTheme}
+                    className="p-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                >
+                    {isDark ? (
+                        <SunIcon className="w-5 h-5 text-yellow-500" />
+                    ) : (
+                        <MoonIcon className="w-5 h-5 text-gray-700" />
+                    )}
+                </motion.button>
+            </div>
 
             {/* 简洁的背景装饰 */}
             <div className="absolute inset-0 overflow-hidden">
@@ -113,9 +146,9 @@ export default function LoginPage() {
                                 <UserIcon className="w-8 h-8 text-white dark:text-gray-900" />
                             </motion.div>
                             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-300">
-                                欢迎回来
+                                {t('welcomeBack')}
                             </h1>
-                            <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300">请登录您的账户</p>
+                            <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300">{t('pleaseLogin')}</p>
                         </motion.div>
 
                         <form onSubmit={handleSubmit} className="space-y-6">
@@ -126,8 +159,8 @@ export default function LoginPage() {
                             >
                                 <Input
                                     type="email"
-                                    label="邮箱地址"
-                                    placeholder="请输入您的邮箱"
+                                    label={t('emailAddress')}
+                                    placeholder={t('enterEmail')}
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     isRequired
@@ -147,8 +180,8 @@ export default function LoginPage() {
                                 transition={{ duration: 0.4, delay: 0.4 }}
                             >
                                 <Input
-                                    label="密码"
-                                    placeholder="请输入您的密码"
+                                    label={t('password')}
+                                    placeholder={t('enterPassword')}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     isRequired
@@ -184,10 +217,10 @@ export default function LoginPage() {
                             >
                                 <label className="flex items-center gap-2 cursor-pointer">
                                     <input type="checkbox" className="w-4 h-4 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded focus:ring-gray-900 dark:focus:ring-gray-300 focus:ring-2" />
-                                    <span className="text-sm text-gray-600 dark:text-gray-300 transition-colors duration-300">记住我</span>
+                                    <span className="text-sm text-gray-600 dark:text-gray-300 transition-colors duration-300">{t('rememberMe')}</span>
                                 </label>
                                 <Link href="#" size="sm" className="text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300 font-medium transition-colors">
-                                    忘记密码？
+                                    {t('forgotPassword')}
                                 </Link>
                             </motion.div>
 
@@ -202,7 +235,7 @@ export default function LoginPage() {
                                     isLoading={isLoading}
                                     className="w-full bg-gray-900 dark:bg-gray-100 hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-gray-900 font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                                 >
-                                    {isLoading ? '登录中...' : '登录'}
+                                    {isLoading ? t('loggingIn') : t('login')}
                                 </Button>
                             </motion.div>
 
@@ -214,9 +247,9 @@ export default function LoginPage() {
                                 <Divider className="my-6" />
 
                                 <div className="text-center">
-                                    <span className="text-gray-600 dark:text-gray-300 text-sm transition-colors duration-300">还没有账户？</span>
+                                    <span className="text-gray-600 dark:text-gray-300 text-sm transition-colors duration-300">{t('noAccount')}</span>
                                     <Link href="/register" className="text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300 font-semibold ml-1 transition-colors">
-                                        立即注册
+                                        {t('signUpNow')}
                                     </Link>
                                 </div>
                             </motion.div>
