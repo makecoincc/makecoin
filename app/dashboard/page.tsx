@@ -1,6 +1,7 @@
 'use client'
 import { Button, Card, CardBody, CardHeader } from '@heroui/react';
 import Link from 'next/link';
+import AppNavbar from '@/components/Navbar';
 
 export default function DashboardPage() {
   const handleLogout = () => {
@@ -9,16 +10,20 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       {/* 导航栏 */}
-      <nav className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+      <AppNavbar />
+
+      {/* 主要内容 */}
+      <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        {/* 用户信息栏 */}
+        <div className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 rounded-lg mb-6 p-4 transition-colors duration-300">
+          <div className="flex justify-between items-center">
             <div className="flex items-center">
-              <h1 className="text-xl font-semibold text-gray-800">仪表板</h1>
+              <h1 className="text-xl font-semibold text-gray-800 dark:text-white">仪表板</h1>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-gray-600">欢迎，用户</span>
+              <span className="text-gray-600 dark:text-gray-300">欢迎，用户</span>
               <Button
                 color="danger"
                 variant="light"
@@ -30,10 +35,6 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
-      </nav>
-
-      {/* 主要内容 */}
-      <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">欢迎来到您的仪表板</h2>
           <p className="text-gray-600">这里是您的个人工作空间</p>

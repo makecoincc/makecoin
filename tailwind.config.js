@@ -6,6 +6,8 @@ export default {
 		"./index.html",
 		"./src/**/*.{js,ts,jsx,tsx}",
 		"./app/**/*.{js,ts,jsx,tsx}",
+		"./components/**/*.{js,ts,jsx,tsx}",
+		"./contexts/**/*.{js,ts,jsx,tsx}",
 		"./lib/**/*.{js,ts,jsx,tsx}",
 		"./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
 	],

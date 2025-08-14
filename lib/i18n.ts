@@ -1,7 +1,42 @@
 export type Language = 'zh' | 'en';
 
+// 语言配置
+export const languages = {
+  zh: {
+    code: 'zh',
+    name: '中文',
+    nativeName: '中文',
+    flag: '🇨🇳'
+  },
+  en: {
+    code: 'en',
+    name: 'English',
+    nativeName: 'English',
+    flag: '🇺🇸'
+  }
+  // 未来可以添加更多语言：
+  // ja: {
+  //   code: 'ja',
+  //   name: 'Japanese',
+  //   nativeName: '日本語',
+  //   flag: '🇯🇵'
+  // },
+  // ko: {
+  //   code: 'ko',
+  //   name: 'Korean',
+  //   nativeName: '한국어',
+  //   flag: '🇰🇷'
+  // }
+};
+
 export const translations = {
   zh: {
+    // 通用
+    home: '首页',
+    about: '关于',
+    services: '服务',
+    contact: '联系',
+    
     // 登录页面
     welcomeBack: '欢迎回来',
     pleaseLogin: '请登录您的账户',
@@ -38,6 +73,12 @@ export const translations = {
     passwordMismatch: '两次输入的密码不一致',
   },
   en: {
+    // Common
+    home: 'Home',
+    about: 'About',
+    services: 'Services',
+    contact: 'Contact',
+    
     // Login page
     welcomeBack: 'Welcome Back',
     pleaseLogin: 'Please sign in to your account',
