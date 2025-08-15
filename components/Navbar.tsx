@@ -44,6 +44,7 @@ export default function AppNavbar() {
     { name: t('home'), href: '/' },
     { name: t('about'), href: '/about' },
     { name: t('services'), href: '/services' },
+    { name: t('submit'), href: '/submit' },
     { name: t('contact'), href: '/contact' },
   ];
 
