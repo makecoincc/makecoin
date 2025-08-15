@@ -27,6 +27,8 @@ import {
     TokenMetadata,
 } from "@solana/spl-token-metadata";
 
+import type { Mint, MetadataPointer } from '@solana/spl-token' 
+
 // 类型定义
 export interface TokenMetadataConfig {
     name: string;
@@ -42,9 +44,9 @@ export interface CreateTokenResult {
 }
 
 export interface TokenInfo {
-    mintInfo: any;
-    metadataPointer: any;
-    metadata: any;
+    mintInfo: Mint;
+    metadataPointer: Partial<MetadataPointer> | null;
+    metadata: TokenMetadata | null;
 }
 
 // 创建连接

@@ -1,10 +1,10 @@
 'use client'
 import { useState, useEffect, useRef } from 'react';
 import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem } from '@heroui/react';
-import { SunIcon, MoonIcon, LanguageIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
+import { SunIcon, MoonIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { Language, languages } from '@/lib/i18n';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -13,7 +13,7 @@ export default function AppNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
   const languageMenuRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
+  // const router = useRouter();
   const { language, setLanguage, t } = useLanguage();
   const { isDark, toggleTheme } = useTheme();
 
