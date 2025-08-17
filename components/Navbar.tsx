@@ -12,16 +12,21 @@ import { useTheme } from '@/contexts/ThemeContext';
 export default function AppNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
+  const [isBlockchainMenuOpen, setIsBlockchainMenuOpen] = useState(false);
   const languageMenuRef = useRef<HTMLDivElement>(null);
+  const blockchainMenuRef = useRef<HTMLDivElement>(null);
   // const router = useRouter();
   const { language, setLanguage, t } = useLanguage();
   const { isDark, toggleTheme } = useTheme();
 
-  // 点击外部关闭语言菜单
+  // 点击外部关闭菜单
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (languageMenuRef.current && !languageMenuRef.current.contains(event.target as Node)) {
         setIsLanguageMenuOpen(false);
+      }
+      if (blockchainMenuRef.current && !blockchainMenuRef.current.contains(event.target as Node)) {
+        setIsBlockchainMenuOpen(false);
       }
     };
 
@@ -38,16 +43,28 @@ export default function AppNavbar() {
 
   const toggleLanguageMenu = () => {
     setIsLanguageMenuOpen(!isLanguageMenuOpen);
+    setIsBlockchainMenuOpen(false);
+  };
+
+  const toggleBlockchainMenu = () => {
+    setIsBlockchainMenuOpen(!isBlockchainMenuOpen);
+    setIsLanguageMenuOpen(false);
   };
 
   const menuItems = [
-    { name: t('home'), href: '/' },
-    { name: t('about'), href: '/about' },
-    { name: t('services'), href: '/services' },
-    { name: t('solana'), href: '/solana' },
-    { name: t('ethereum'), href: '/ethereum' },
-    { name: t('submit'), href: '/submit' },
-    { name: t('contact'), href: '/contact' },
+    { name: t('home'), href: '/', icon: '🏠' },
+    { name: t('about'), href: '/about', icon: '📖' },
+    { name: t('services'), href: '/services', icon: '⚙️' },
+    { name: t('submit'), href: '/submit', icon: '📝' },
+    { name: t('contact'), href: '/contact', icon: '📞' },
+  ];
+
+  const blockchainItems = [
+    { name: t('solana'), href: '/solana', icon: '◎', color: 'text-purple-500' },
+    { name: t('ethereum'), href: '/ethereum', icon: '◆', color: 'text-blue-500' },
+    { name: t('polygon'), href: '/polygon', icon: '⬟', color: 'text-indigo-500' },
+    { name: t('cardano'), href: '/cardano', icon: '₳', color: 'text-cyan-500' },
+    { name: t('avalanche'), href: '/avalanche', icon: '🔺', color: 'text-red-500' },
   ];
 
   return (
@@ -90,13 +107,69 @@ export default function AppNavbar() {
             >
               <Link
                 href={item.href}
-                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200"
+                className="flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200"
               >
+                <span className="text-lg">{item.icon}</span>
                 {item.name}
               </Link>
             </motion.div>
           </NavbarItem>
         ))}
+        
+        {/* 区块链下拉菜单 */}
+        <NavbarItem>
+          <div className="relative" ref={blockchainMenuRef}>
+            <motion.button
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: menuItems.length * 0.1 }}
+              onClick={toggleBlockchainMenu}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium"
+            >
+              <span className="text-lg">⛓️</span>
+              <span>{t('blockchains')}</span>
+              <ChevronDownIcon
+                className={`w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform duration-200 ${
+                  isBlockchainMenuOpen ? 'rotate-180' : ''
+                }`}
+              />
+            </motion.button>
+
+            {/* 区块链下拉菜单 */}
+            <AnimatePresence>
+              {isBlockchainMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50"
+                >
+                  {blockchainItems.map((blockchain) => (
+                    <Link
+                      key={blockchain.href}
+                      href={blockchain.href}
+                      onClick={() => setIsBlockchainMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+                    >
+                      <span className={`text-xl ${blockchain.color}`}>{blockchain.icon}</span>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium">{blockchain.name}</span>
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                          {blockchain.name === 'Solana' && 'High Performance'}
+                          {blockchain.name === 'Ethereum' && 'Smart Contracts'}
+                          {blockchain.name === 'Polygon' && 'Layer 2 Solution'}
+                          {blockchain.name === 'Cardano' && 'Research Based'}
+                          {blockchain.name === 'Avalanche' && 'Instant Finality'}
+                        </span>
+                      </div>
+                    </Link>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </NavbarItem>
       </NavbarContent>
 
       <NavbarContent justify="end">
@@ -204,20 +277,46 @@ export default function AppNavbar() {
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item.href}-${index}`}>
             <Link
-              className="w-full text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 py-2 transition-colors"
+              className="w-full flex items-center gap-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 py-2 transition-colors"
               href={item.href}
               onClick={() => setIsMenuOpen(false)}
             >
+              <span className="text-lg">{item.icon}</span>
               {item.name}
             </Link>
           </NavbarMenuItem>
         ))}
+        
+        {/* 移动端区块链菜单 */}
+        <NavbarMenuItem>
+          <div className="py-2">
+            <div className="text-xs text-gray-500 dark:text-gray-400 mb-2 px-2 flex items-center gap-2">
+              <span>⛓️</span>
+              {t('blockchains')}
+            </div>
+            <div className="space-y-1">
+              {blockchainItems.map((blockchain) => (
+                <Link
+                  key={blockchain.href}
+                  href={blockchain.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center gap-3 px-2 py-2 rounded-lg text-left transition-colors duration-200 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400"
+                >
+                  <span className={`text-lg ${blockchain.color}`}>{blockchain.icon}</span>
+                  <span className="text-sm font-medium">{blockchain.name}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </NavbarMenuItem>
+        
         <NavbarMenuItem>
           <Link
-            className="w-full text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 py-2 transition-colors"
+            className="w-full flex items-center gap-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 py-2 transition-colors"
             href="/login"
             onClick={() => setIsMenuOpen(false)}
           >
+            <span className="text-lg">🔐</span>
             {t('login')}
           </Link>
         </NavbarMenuItem>

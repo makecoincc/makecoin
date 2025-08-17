@@ -178,6 +178,73 @@ export const translations = {
     discover: '发现',
     buildNow: '立即构建',
     joinCommunity: '加入社区',
+    
+    // Polygon 页面
+    polygon: 'Polygon',
+    polygonTitle: 'Polygon 生态系统',
+    polygonDescription: 'Polygon 是以太坊的扩容解决方案，提供更快的交易速度和更低的费用，同时保持与以太坊的完全兼容性。',
+    polygonFeatures: '探索 Polygon 特性',
+    
+    // Polygon 卡片
+    layerTwo: '二层扩容',
+    layerTwoDesc: '基于以太坊的二层解决方案，提供闪电般的交易速度',
+    lowCost: '超低费用',
+    lowCostDesc: '交易费用低至几分钱，让 DeFi 和 NFT 更加普及',
+    ethCompatible: '以太坊兼容',
+    ethCompatibleDesc: '完全兼容以太坊虚拟机，无缝迁移现有应用',
+    carbonNeutral: '碳中和',
+    carbonNeutralDesc: '环保的权益证明机制，致力于可持续发展',
+    multichain: '多链架构',
+    multichainDesc: '支持多种区块链解决方案，满足不同需求',
+    developer: '开发者友好',
+    developerDesc: '丰富的工具和资源，助力开发者快速构建应用',
+    
+    // 按钮文本
+    tryNow: '立即体验',
+    startBuilding: '开始构建',
+    
+    // Cardano 页面
+    cardano: 'Cardano',
+    cardanoTitle: 'Cardano 生态系统',
+    cardanoDescription: 'Cardano 是第三代区块链平台，基于同行评议的研究和循证方法构建，致力于创建更加可持续和包容的全球经济系统。',
+    cardanoJourney: 'Cardano 发展历程',
+    
+    // Cardano 特性
+    research: '学术研究',
+    researchDesc: '基于同行评议的学术研究，确保每个功能都经过严格验证',
+    sustainability: '可持续发展',
+    sustainabilityDesc: '环保的权益证明共识机制，能耗比比特币低99.95%',
+    governance: '去中心化治理',
+    governanceDesc: '社区驱动的治理系统，让每个持币者都能参与决策',
+    smartContract: '智能合约',
+    smartContractDesc: '基于 Plutus 平台的功能性智能合约，更安全可靠',
+    interop: '互操作性',
+    interopDesc: '跨链桥接技术，实现与其他区块链的无缝连接',
+    scalable: '可扩展性',
+    scalableDesc: 'Hydra 协议提供理论上无限的扩展能力',
+    
+    // 导航菜单
+    blockchains: '区块链',
+    
+    // Avalanche 页面
+    avalanche: 'Avalanche',
+    avalancheTitle: 'Avalanche 生态系统',
+    avalancheDescription: 'Avalanche 是一个开放、可编程的智能合约平台，为去中心化应用提供近乎即时的交易确认和更高的吞吐量。',
+    avalancheFeatures: 'Avalanche 核心优势',
+    
+    // Avalanche 特性
+    consensus: '雪崩共识',
+    consensusDesc: '革命性的雪崩共识协议，实现亚秒级交易确认和高吞吐量',
+    subnets: '子网架构',
+    subnetsDesc: '灵活的子网系统，允许创建定制化的区块链网络',
+    compatibility: 'EVM 兼容',
+    compatibilityDesc: '完全兼容以太坊虚拟机，轻松迁移现有 DApp',
+    finality: '即时确认',
+    finalityDesc: '交易在1-2秒内获得最终确认，用户体验极佳',
+    validators: '验证者网络',
+    validatorsDesc: '去中心化的验证者网络，确保网络安全和去中心化',
+    crosschain: '跨链互操作',
+    crosschainDesc: '原生跨链功能，实现不同区块链间的无缝资产转移',
   },
   en: {
     // Common
@@ -327,6 +394,73 @@ export const translations = {
     discover: 'Discover',
     buildNow: 'Build Now',
     joinCommunity: 'Join Community',
+    
+    // Polygon page
+    polygon: 'Polygon',
+    polygonTitle: 'Polygon Ecosystem',
+    polygonDescription: 'Polygon is Ethereum\'s scaling solution, providing faster transaction speeds and lower fees while maintaining full compatibility with Ethereum.',
+    polygonFeatures: 'Explore Polygon Features',
+    
+    // Polygon cards
+    layerTwo: 'Layer 2 Scaling',
+    layerTwoDesc: 'Ethereum Layer 2 solution providing lightning-fast transaction speeds',
+    lowCost: 'Ultra Low Fees',
+    lowCostDesc: 'Transaction fees as low as a few cents, making DeFi and NFTs more accessible',
+    ethCompatible: 'Ethereum Compatible',
+    ethCompatibleDesc: 'Fully compatible with Ethereum Virtual Machine, seamless migration of existing apps',
+    carbonNeutral: 'Carbon Neutral',
+    carbonNeutralDesc: 'Eco-friendly Proof of Stake mechanism, committed to sustainable development',
+    multichain: 'Multi-chain Architecture',
+    multichainDesc: 'Supports multiple blockchain solutions to meet different needs',
+    developer: 'Developer Friendly',
+    developerDesc: 'Rich tools and resources to help developers build applications quickly',
+    
+    // Button text
+    tryNow: 'Try Now',
+    startBuilding: 'Start Building',
+    
+    // Cardano page
+    cardano: 'Cardano',
+    cardanoTitle: 'Cardano Ecosystem',
+    cardanoDescription: 'Cardano is a third-generation blockchain platform built on peer-reviewed research and evidence-based methods, committed to creating a more sustainable and inclusive global economic system.',
+    cardanoJourney: 'Cardano Journey',
+    
+    // Cardano features
+    research: 'Academic Research',
+    researchDesc: 'Based on peer-reviewed academic research, ensuring every feature is rigorously validated',
+    sustainability: 'Sustainability',
+    sustainabilityDesc: 'Eco-friendly Proof of Stake consensus mechanism, 99.95% less energy than Bitcoin',
+    governance: 'Decentralized Governance',
+    governanceDesc: 'Community-driven governance system allowing every token holder to participate in decisions',
+    smartContract: 'Smart Contracts',
+    smartContractDesc: 'Functional smart contracts based on Plutus platform, more secure and reliable',
+    interop: 'Interoperability',
+    interopDesc: 'Cross-chain bridging technology for seamless connection with other blockchains',
+    scalable: 'Scalability',
+    scalableDesc: 'Hydra protocol provides theoretically unlimited scaling capabilities',
+    
+    // Navigation menu
+    blockchains: 'Blockchains',
+    
+    // Avalanche page
+    avalanche: 'Avalanche',
+    avalancheTitle: 'Avalanche Ecosystem',
+    avalancheDescription: 'Avalanche is an open, programmable smart contracts platform providing near-instant transaction finality and higher throughput for decentralized applications.',
+    avalancheFeatures: 'Avalanche Core Advantages',
+    
+    // Avalanche features
+    consensus: 'Avalanche Consensus',
+    consensusDesc: 'Revolutionary Avalanche consensus protocol achieving sub-second transaction finality and high throughput',
+    subnets: 'Subnet Architecture',
+    subnetsDesc: 'Flexible subnet system allowing creation of customized blockchain networks',
+    compatibility: 'EVM Compatible',
+    compatibilityDesc: 'Fully compatible with Ethereum Virtual Machine, easy migration of existing DApps',
+    finality: 'Instant Finality',
+    finalityDesc: 'Transactions receive final confirmation in 1-2 seconds, excellent user experience',
+    validators: 'Validator Network',
+    validatorsDesc: 'Decentralized validator network ensuring network security and decentralization',
+    crosschain: 'Cross-chain Interoperability',
+    crosschainDesc: 'Native cross-chain functionality enabling seamless asset transfer between different blockchains',
   }
 };
 
