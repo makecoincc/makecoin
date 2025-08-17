@@ -37,7 +37,7 @@ export const translations = {
     services: '服务',
     submit: '提交',
     contact: '联系',
-    
+
     // 登录页面
     welcomeBack: '欢迎回来',
     pleaseLogin: '请登录您的账户',
@@ -51,7 +51,7 @@ export const translations = {
     loggingIn: '登录中...',
     noAccount: '还没有账户？',
     signUpNow: '立即注册',
-    
+
     // 注册页面
     createAccount: '创建账户',
     fillInfo: '请填写以下信息完成注册',
@@ -64,7 +64,7 @@ export const translations = {
     createAccountBtn: '创建账户',
     haveAccount: '已有账户？',
     loginNow: '立即登录',
-    
+
     // 验证错误
     nameRequired: '请输入姓名',
     emailRequired: '请输入邮箱',
@@ -72,7 +72,7 @@ export const translations = {
     passwordRequired: '请输入密码',
     passwordTooShort: '密码至少需要6个字符',
     passwordMismatch: '两次输入的密码不一致',
-    
+
     // 提交页面
     submitInformation: '提交信息',
     fillSubmitInfo: '请填写以下信息完成提交',
@@ -109,7 +109,7 @@ export const translations = {
     clickToReplace: '点击图标更换图片',
     submitting: '提交中...',
     submitInfo: '提交信息',
-    
+
     // 分类选项
     technology: '技术',
     design: '设计',
@@ -117,7 +117,7 @@ export const translations = {
     education: '教育',
     entertainment: '娱乐',
     other: '其他',
-    
+
     // 提交页面验证错误
     titleRequired: '请输入标题',
     categoryRequired: '请选择分类',
@@ -127,13 +127,13 @@ export const translations = {
     imageUrlRequired: '请输入图片地址',
     invalidImageFile: '请选择有效的图片文件',
     submitSuccess: '提交成功！',
-    
+
     // Solana 页面
     solana: 'Solana',
     solanaTitle: 'Solana 生态系统',
     solanaDescription: 'Solana 是一个高性能的区块链平台，专为去中心化应用和加密货币而设计。它以其快速的交易速度、低费用和强大的开发者生态系统而闻名。',
     solanaFeatures: 'Solana 特性',
-    
+
     // Solana 卡片
     fastTransactions: '快速交易',
     fastTransactionsDesc: '每秒处理超过 65,000 笔交易，为用户提供近乎即时的体验',
@@ -147,12 +147,37 @@ export const translations = {
     ecosystemDesc: '蓬勃发展的 DeFi、NFT 和 Web3 应用生态系统',
     scalability: '可扩展性',
     scalabilityDesc: '无需分片即可实现高吞吐量和低延迟',
-    
+
     // 按钮文本
     learnMore: '了解更多',
     getStarted: '开始使用',
     explore: '探索',
     viewDocs: '查看文档',
+
+    // Ethereum 页面
+    ethereum: 'Ethereum',
+    ethereumTitle: 'Ethereum 生态系统',
+    ethereumDescription: 'Ethereum 是世界领先的可编程区块链平台，为去中心化应用、智能合约和数字资产提供强大的基础设施。',
+    ethereumFeatures: 'Ethereum 核心特性',
+
+    // Ethereum 卡片
+    smartContracts: '智能合约',
+    smartContractsDesc: '自动执行的合约，代码即法律，无需第三方信任',
+    decentralized: '去中心化',
+    decentralizedDesc: '全球分布式网络，没有单点故障，真正的去中心化',
+    programmable: '可编程性',
+    programmableDesc: '灵活的编程环境，支持复杂的去中心化应用开发',
+    security: '安全性',
+    securityDesc: '经过时间验证的安全机制，保护数十亿美元的数字资产',
+    community: '社区驱动',
+    communityDesc: '全球最大的区块链开发者社区，持续创新和改进',
+    interoperability: '互操作性',
+    interoperabilityDesc: '与其他区块链和传统系统的无缝集成能力',
+
+    // 按钮文本
+    discover: '发现',
+    buildNow: '立即构建',
+    joinCommunity: '加入社区',
   },
   en: {
     // Common
@@ -161,7 +186,7 @@ export const translations = {
     services: 'Services',
     submit: 'Submit',
     contact: 'Contact',
-    
+
     // Login page
     welcomeBack: 'Welcome Back',
     pleaseLogin: 'Please sign in to your account',
@@ -175,7 +200,7 @@ export const translations = {
     loggingIn: 'Logging in...',
     noAccount: "Don't have an account?",
     signUpNow: 'Sign up now',
-    
+
     // Register page
     createAccount: 'Create Account',
     fillInfo: 'Please fill in the information below to register',
@@ -188,7 +213,7 @@ export const translations = {
     createAccountBtn: 'Create Account',
     haveAccount: 'Already have an account?',
     loginNow: 'Login now',
-    
+
     // Validation errors
     nameRequired: 'Please enter your name',
     emailRequired: 'Please enter your email',
@@ -196,7 +221,7 @@ export const translations = {
     passwordRequired: 'Please enter your password',
     passwordTooShort: 'Password must be at least 6 characters',
     passwordMismatch: 'Passwords do not match',
-    
+
     // Submit page
     submitInformation: 'Submit Information',
     fillSubmitInfo: 'Please fill in the following information to submit',
@@ -233,7 +258,7 @@ export const translations = {
     clickToReplace: 'Click icon to replace image',
     submitting: 'Submitting...',
     submitInfo: 'Submit Information',
-    
+
     // Category options
     technology: 'Technology',
     design: 'Design',
@@ -241,7 +266,7 @@ export const translations = {
     education: 'Education',
     entertainment: 'Entertainment',
     other: 'Other',
-    
+
     // Submit page validation errors
     titleRequired: 'Please enter a title',
     categoryRequired: 'Please select a category',
@@ -251,13 +276,13 @@ export const translations = {
     imageUrlRequired: 'Please enter image URL',
     invalidImageFile: 'Please select a valid image file',
     submitSuccess: 'Submitted successfully!',
-    
+
     // Solana page
     solana: 'Solana',
     solanaTitle: 'Solana Ecosystem',
     solanaDescription: 'Solana is a high-performance blockchain platform designed for decentralized applications and cryptocurrencies. It\'s known for its fast transaction speeds, low fees, and robust developer ecosystem.',
     solanaFeatures: 'Solana Features',
-    
+
     // Solana cards
     fastTransactions: 'Fast Transactions',
     fastTransactionsDesc: 'Process over 65,000 transactions per second, providing near-instant experience for users',
@@ -271,12 +296,37 @@ export const translations = {
     ecosystemDesc: 'Thriving ecosystem of DeFi, NFT, and Web3 applications',
     scalability: 'Scalability',
     scalabilityDesc: 'High throughput and low latency without sharding',
-    
+
     // Button text
     learnMore: 'Learn More',
     getStarted: 'Get Started',
     explore: 'Explore',
     viewDocs: 'View Docs',
+
+    // Ethereum page
+    ethereum: 'Ethereum',
+    ethereumTitle: 'Ethereum Ecosystem',
+    ethereumDescription: 'Ethereum is the world\'s leading programmable blockchain platform, providing powerful infrastructure for decentralized applications, smart contracts, and digital assets.',
+    ethereumFeatures: 'Ethereum Core Features',
+
+    // Ethereum cards
+    smartContracts: 'Smart Contracts',
+    smartContractsDesc: 'Self-executing contracts where code is law, no third-party trust required',
+    decentralized: 'Decentralized',
+    decentralizedDesc: 'Global distributed network with no single point of failure, truly decentralized',
+    programmable: 'Programmable',
+    programmableDesc: 'Flexible programming environment supporting complex decentralized application development',
+    security: 'Security',
+    securityDesc: 'Time-tested security mechanisms protecting billions of dollars in digital assets',
+    community: 'Community Driven',
+    communityDesc: 'World\'s largest blockchain developer community, continuously innovating and improving',
+    interoperability: 'Interoperability',
+    interoperabilityDesc: 'Seamless integration capabilities with other blockchains and traditional systems',
+
+    // Button text
+    discover: 'Discover',
+    buildNow: 'Build Now',
+    joinCommunity: 'Join Community',
   }
 };
 

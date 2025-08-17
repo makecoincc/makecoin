@@ -45,6 +45,7 @@ export default function AppNavbar() {
     { name: t('about'), href: '/about' },
     { name: t('services'), href: '/services' },
     { name: t('solana'), href: '/solana' },
+    { name: t('ethereum'), href: '/ethereum' },
     { name: t('submit'), href: '/submit' },
     { name: t('contact'), href: '/contact' },
   ];
