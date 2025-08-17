@@ -28,3 +28,53 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* 3D 透视效果 */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+/* 卡片悬浮效果 */
+.card-hover-effect {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+.card-hover-effect:hover {
+  transform: rotateY(5deg) rotateX(5deg) translateY(-10px);
+}
+
+/* 渐变动画 */
+@keyframes gradient-shift {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.gradient-animate {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* 脉冲光效 */
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(139, 92, 246, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.6), 0 0 30px rgba(139, 92, 246, 0.4);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}

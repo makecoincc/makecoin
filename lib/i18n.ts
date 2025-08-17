@@ -127,6 +127,32 @@ export const translations = {
     imageUrlRequired: '请输入图片地址',
     invalidImageFile: '请选择有效的图片文件',
     submitSuccess: '提交成功！',
+    
+    // Solana 页面
+    solana: 'Solana',
+    solanaTitle: 'Solana 生态系统',
+    solanaDescription: 'Solana 是一个高性能的区块链平台，专为去中心化应用和加密货币而设计。它以其快速的交易速度、低费用和强大的开发者生态系统而闻名。',
+    solanaFeatures: 'Solana 特性',
+    
+    // Solana 卡片
+    fastTransactions: '快速交易',
+    fastTransactionsDesc: '每秒处理超过 65,000 笔交易，为用户提供近乎即时的体验',
+    lowFees: '低手续费',
+    lowFeesDesc: '平均交易费用不到 $0.01，让微交易成为可能',
+    developerFriendly: '开发者友好',
+    developerFriendlyDesc: '丰富的工具和文档，支持多种编程语言构建 dApps',
+    proofOfHistory: '历史证明',
+    proofOfHistoryDesc: '创新的共识机制，提供可验证的时间排序',
+    ecosystem: '生态系统',
+    ecosystemDesc: '蓬勃发展的 DeFi、NFT 和 Web3 应用生态系统',
+    scalability: '可扩展性',
+    scalabilityDesc: '无需分片即可实现高吞吐量和低延迟',
+    
+    // 按钮文本
+    learnMore: '了解更多',
+    getStarted: '开始使用',
+    explore: '探索',
+    viewDocs: '查看文档',
   },
   en: {
     // Common
@@ -225,6 +251,32 @@ export const translations = {
     imageUrlRequired: 'Please enter image URL',
     invalidImageFile: 'Please select a valid image file',
     submitSuccess: 'Submitted successfully!',
+    
+    // Solana page
+    solana: 'Solana',
+    solanaTitle: 'Solana Ecosystem',
+    solanaDescription: 'Solana is a high-performance blockchain platform designed for decentralized applications and cryptocurrencies. It\'s known for its fast transaction speeds, low fees, and robust developer ecosystem.',
+    solanaFeatures: 'Solana Features',
+    
+    // Solana cards
+    fastTransactions: 'Fast Transactions',
+    fastTransactionsDesc: 'Process over 65,000 transactions per second, providing near-instant experience for users',
+    lowFees: 'Low Fees',
+    lowFeesDesc: 'Average transaction cost under $0.01, making micro-transactions possible',
+    developerFriendly: 'Developer Friendly',
+    developerFriendlyDesc: 'Rich tools and documentation, supporting multiple programming languages for dApp development',
+    proofOfHistory: 'Proof of History',
+    proofOfHistoryDesc: 'Innovative consensus mechanism providing verifiable time ordering',
+    ecosystem: 'Ecosystem',
+    ecosystemDesc: 'Thriving ecosystem of DeFi, NFT, and Web3 applications',
+    scalability: 'Scalability',
+    scalabilityDesc: 'High throughput and low latency without sharding',
+    
+    // Button text
+    learnMore: 'Learn More',
+    getStarted: 'Get Started',
+    explore: 'Explore',
+    viewDocs: 'View Docs',
   }
 };
 
