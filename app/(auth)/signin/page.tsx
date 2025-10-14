@@ -90,16 +90,22 @@ export default function SignIn() {
         </div>
         <div className="flex flex-col gap-2">
           <Button
-            startContent={<Icon icon="flat-color-icons:google" width={24} />}
-            variant="bordered"
+              startContent={<Icon className="text-default-500" icon="pajamas:twitter" width={20} />}
+              variant="bordered"
           >
-            Continue with Google
+              Sign in with X
           </Button>
           <Button
-            startContent={<Icon className="text-default-500" icon="fe:github" width={24} />}
-            variant="bordered"
+              startContent={<Icon className="text-default-500" icon="token-branded:ethereum" width={26} />}
+              variant="bordered"
           >
-            Continue with Github
+              Sign in with Ethereum
+          </Button>
+          <Button
+              startContent={<Icon className="text-default-500" icon="token-branded:solana" width={24} />}
+              variant="bordered"
+          >
+              Sign in with Ethereum
           </Button>
         </div>
         <p className="text-small text-center">
