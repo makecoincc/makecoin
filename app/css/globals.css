@@ -4,9 +4,21 @@
 /* Note: You may need to change the path to fit your project structure */
 @source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
 @custom-variant dark (&:is(.dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --heroui-content1: 0 0% 100%;
+  --heroui-content1-foreground: 201.82 24.44% 8.82%;
+  --heroui-content2: 240 4.76% 95.88%;
+  --heroui-content2-foreground: 240 3.7% 15.88%;
+}
+
+.dark {
+    color-scheme: dark;
+    --heroui-content1-foreground: 0 0% 98.04%;
+    --heroui-content2: 240 3.7% 15.88%;
+    --heroui-content2-foreground: 240 4.76% 95.88%;
 }
 
 @theme inline {
@@ -27,4 +39,17 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.bg-content1 {
+  background-color: hsl(var(--heroui-content1)/1)
+}
+
+.bg-content2,
+.bg-content2\/50 {
+  background-color: hsl(var(--heroui-content2)/1)
+}
+
+.bg-hero-section-title {
+    background-image: linear-gradient(91deg, #fff 32.88%, #fff6 99.12%);
 }
