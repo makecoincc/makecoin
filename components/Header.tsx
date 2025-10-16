@@ -19,6 +19,7 @@ import {Icon} from "@iconify/react";
 import {cn} from "@heroui/react";
 
 import { Logo } from "@/components/Logo";
+import LangSwitch from "@/components/LangSwitch";
 
 const menuItems = [
   "About",
@@ -82,6 +83,9 @@ export default function Header(props: NavbarProps) {
           <Link className="text-default-500" href="#" size="sm">
             Integrations
           </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <LangSwitch />
         </NavbarItem>
       </NavbarContent>
 
