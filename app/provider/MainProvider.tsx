@@ -3,16 +3,19 @@ import { FC, ReactNode } from "react";
 
 import {HeroUIProvider} from "@heroui/react";
 import {ToastProvider} from "@heroui/toast";
+import { ThemeProvider } from 'next-themes'
 
-interface HeroProviderProps {
+interface MainProviderProps {
   children: ReactNode;
 }
 
-export const HeroProvider: FC<HeroProviderProps> = ({ children }) => {
+export const MainProvider: FC<MainProviderProps> = ({ children }) => {
   return (
     <HeroUIProvider>
       <ToastProvider />
-      {children}
+      <ThemeProvider attribute="class">
+        {children}
+      </ThemeProvider>
     </HeroUIProvider>
   );
 }

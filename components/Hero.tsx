@@ -7,7 +7,7 @@ import {Icon} from "@iconify/react";
 
 export default function Hero() {
   return (
-    <div className="bg-background relative flex h-dvh w-full flex-col overflow-hidden">
+    <div className="bg-background relative flex w-full flex-col overflow-hidden pt-[10%]">
       {/* <BasicNavbar /> */}
       <main className="container mx-auto flex flex-1 flex-col items-center justify-center overflow-hidden px-8">
         <section className="z-20 flex flex-col items-center justify-center gap-[18px] sm:gap-6">
@@ -36,12 +36,11 @@ export default function Hero() {
               ```
             */}
             <div className="bg-hero-section-title bg-clip-text text-transparent">
-              Easiest way to <br /> power global teams.
+              Easiest way to <br /> make Crypto Coin.
             </div>
           </div>
           <p className="text-default-500 text-center leading-7 font-normal sm:w-[466px] sm:text-[18px]">
-            MAKE COIN makes running global teams simple. HR, Payroll, International Employment,
-            contractor management and more.
+            MAKE COIN makes launching your own digital currency radically simple. Zero fees. Fully open-source. No gatekeepers. Just pure crypto freedom—accessible to anyone, anywhere.
           </p>
           <div className="flex flex-col items-center justify-center gap-6 sm:flex-row">
             <Button

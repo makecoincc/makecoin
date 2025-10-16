@@ -1,6 +1,6 @@
 "use client";
 import Header from "@/components/Header";
-import Footer from "@/components/BasicFooter";
+import Footer from "@/components/Footer";
 
 export default function DefaultLayout({
   children,
@@ -9,10 +9,10 @@ export default function DefaultLayout({
 }) {
 
   return (
-    <>
+    <div className="flex h-dvh w-full flex-col">
       <Header />
       <main className="relative flex grow flex-col">{children}</main>
       <Footer />
-    </>
+    </div>
   );
 }
