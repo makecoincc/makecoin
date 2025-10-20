@@ -7,7 +7,7 @@ import {Icon} from "@iconify/react";
 
 export default function Hero() {
   return (
-    <div className="bg-background relative flex w-full flex-col overflow-hidden pt-[10%]">
+    <div className="bg-background h-dvh relative flex w-full flex-col overflow-hidden">
       {/* <BasicNavbar /> */}
       <main className="container mx-auto flex flex-1 flex-col items-center justify-center overflow-hidden px-8">
         <section className="z-20 flex flex-col items-center justify-center gap-[18px] sm:gap-6">
