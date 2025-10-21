@@ -69,7 +69,7 @@ const ThemeSwitch = React.forwardRef<HTMLDivElement, Omit<RadioGroupProps, "chil
             >
                 <ThemeRadioItem icon="solar:moon-linear" value="dark" onClick={() => setTheme('dark')} />
                 <ThemeRadioItem icon="solar:sun-2-linear" value="light" onClick={() => setTheme('light')} />
-                {/* <ThemeRadioItem icon="solar:monitor-linear" value="system" /> */}
+                <ThemeRadioItem icon="solar:monitor-linear" value="system" onClick={() => setTheme('system')} />
             </RadioGroup>
         )
     }

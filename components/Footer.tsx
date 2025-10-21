@@ -1,12 +1,12 @@
 "use client";
 
 import React from "react";
-import {Chip, Divider, Link} from "@heroui/react";
+import {Divider, Link} from "@heroui/react";
 import type {IconProps} from "@iconify/react";
 import {Icon} from "@iconify/react";
 
-import { Logo } from "./Logo";
-import ThemeSwitch from "./ThemeSwitch";
+import { Logo } from "./logo";
+import ThemeSwitch from "./theme-switch";
 
 type SocialIconProps = Omit<IconProps, "icon">;
 

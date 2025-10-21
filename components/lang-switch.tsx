@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
+// import { usePathname, useRouter } from 'next/navigation'
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@heroui/react";
 
 const languages = [
@@ -16,8 +16,8 @@ const languages = [
 ]
 
 export default function LangSwitch() {
-  const pathname = usePathname()
-  const router = useRouter()
+  // const pathname = usePathname()
+  // const router = useRouter()
   const [currentLang, setCurrentLang] = useState('en')
 //   const currentLang = languages.find((lang) => pathname.startsWith(`/${lang.code}`))?.code || 'en'
 

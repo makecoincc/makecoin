@@ -15,11 +15,11 @@ import {
   Button,
   Divider,
 } from "@heroui/react";
-import {Icon} from "@iconify/react";
+// import {Icon} from "@iconify/react";
 import {cn} from "@heroui/react";
 
-import { Logo } from "@/components/Logo";
-import LangSwitch from "@/components/LangSwitch";
+import { Logo } from "@/components/logo";
+import LangSwitch from "@/components/lang-switch";
 
 const menuItems = [
   "About",
@@ -95,7 +95,7 @@ export default function Header(props: NavbarProps) {
           <Button as={Link} href="/signin" className="text-default-500" radius="full" variant="light">
             Login
           </Button>
-          <Button
+          {/* <Button
             className="bg-foreground text-background font-medium"
             color="secondary"
             endContent={<Icon icon="solar:alt-arrow-right-linear" />}
@@ -103,7 +103,7 @@ export default function Header(props: NavbarProps) {
             variant="flat"
           >
             Get Started
-          </Button>
+          </Button> */}
         </NavbarItem>
       </NavbarContent>
 

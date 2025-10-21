@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button, Link } from "@heroui/react";
+import { Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
 export default function Banner() {
@@ -9,7 +9,7 @@ export default function Banner() {
         <div className="border-divider bg-background/15 flex w-full items-center gap-x-3 border-b-1 px-6 py-2 backdrop-blur-xl sm:px-3.5 sm:before:flex-1">
             <p className="text-small text-foreground">
                 {/* <Link className="text-inherit" href="#"> */}
-                We're still building. Reach us at 
+                We&apos;re still building. Reach us at 
                 <a href="mailto:contact@makecoin.cc" className="ml-1 text-indigo-600 hover:underline">contact@makecoin.cc</a>.
                 {/* </Link> */}
             </p>
