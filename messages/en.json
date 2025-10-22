@@ -1,0 +1,15 @@
+{
+    "nav": {
+        "home": "Home",
+        "features": "Features",
+        "customers": "Customers",
+        "aboutUs": "About Us",
+        "integrations": "Integrations"
+    },
+    "signin": {
+        "signin": "Sign In"
+    },
+    "home": {
+        "home": "Home"
+    }
+}

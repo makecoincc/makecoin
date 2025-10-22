@@ -1,6 +1,7 @@
 "use client";
 
 import type {NavbarProps} from "@heroui/react";
+import {useTranslations} from 'next-intl';
 
 import React from "react";
 import {
@@ -33,6 +34,7 @@ const menuItems = [
 ];
 
 export default function Header(props: NavbarProps) {
+  const t = useTranslations('nav');
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (
@@ -61,27 +63,27 @@ export default function Header(props: NavbarProps) {
       <NavbarContent justify="center">
         <NavbarItem>
           <Link className="text-default-500" href="#" size="sm">
-            Home
+            {t('home')}
           </Link>
         </NavbarItem>
         <NavbarItem>
           <Link className="text-default-500" href="#" size="sm">
-            Features
+            {t('features')}
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
           <Link aria-current="page" color="foreground" href="#" size="sm">
-            Customers
+            {t('customers')}
           </Link>
         </NavbarItem>
         <NavbarItem>
           <Link className="text-default-500" href="#" size="sm">
-            About Us
+            {t('aboutUs')}
           </Link>
         </NavbarItem>
         <NavbarItem>
           <Link className="text-default-500" href="#" size="sm">
-            Integrations
+            {t('integrations')}
           </Link>
         </NavbarItem>
         <NavbarItem>

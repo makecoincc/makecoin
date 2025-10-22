@@ -4,10 +4,13 @@ import React from "react";
 import { Button, Input, Checkbox, Link, Divider, Form } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
+import {useTranslations} from 'next-intl';
 
 import { Logo } from "@/components/Logo";
 
 export default function SignIn() {
+  const t = useTranslations('signin');
+
   const [isVisible, setIsVisible] = React.useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
@@ -80,7 +83,7 @@ export default function SignIn() {
             </Link>
           </div>
           <Button className="w-full" color="primary" type="submit">
-            Log In
+            {t('signin')}
           </Button>
         </Form>
         <div className="flex items-center gap-4">

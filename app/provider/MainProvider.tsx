@@ -4,7 +4,6 @@ import { FC, ReactNode } from "react";
 import {HeroUIProvider} from "@heroui/react";
 import {ToastProvider} from "@heroui/toast";
 import { ThemeProvider } from 'next-themes'
-
 interface MainProviderProps {
   children: ReactNode;
 }

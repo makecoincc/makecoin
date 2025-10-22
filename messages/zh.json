@@ -1,0 +1,15 @@
+{
+    "nav": {
+        "home": "首页",
+        "features": "功能",
+        "customers": "客户",
+        "aboutUs": "关于我们",
+        "integrations": "集成"
+    },
+    "signin": {
+        "signin": "登录"
+    },
+    "home": {
+        "home": "首页"
+    }
+}
