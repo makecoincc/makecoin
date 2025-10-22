@@ -1,7 +1,7 @@
 "use client";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
-import Banner from "@/components/banner";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import Banner from "@/components/Banner";
 export default function DefaultLayout({
   children,
 }: {

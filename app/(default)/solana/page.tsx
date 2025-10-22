@@ -1,7 +1,7 @@
 'use client';
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import ActionCard from "@/components/action-card";
+import ActionCard from "@/components/ActionCard";
 import { useEffect, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useConnection } from "@solana/wallet-adapter-react";

@@ -6,7 +6,7 @@ import type {IconProps} from "@iconify/react";
 import {Icon} from "@iconify/react";
 
 import { Logo } from "./Logo";
-import ThemeSwitch from "./theme-switch";
+import ThemeSwitch from "./ThemeSwitch";
 
 type SocialIconProps = Omit<IconProps, "icon">;
 

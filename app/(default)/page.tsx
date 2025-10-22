@@ -1,8 +1,8 @@
 'use client'
 // import Hero from '@/components/Hero';
 // import CoinTools from '@/components/CoinTools';
-import ChainTools from '@/components/chain-tools';
-import Faqs from '@/components/faqs';
+import ChainTools from '@/components/ChainTools';
+import Faqs from '@/components/Faqs';
 
 export default function Home() {
   return (  
