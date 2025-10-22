@@ -5,13 +5,22 @@ import { MainProvider } from "@/app/provider/MainProvider";
 import {NextIntlClientProvider} from 'next-intl';
 import {getMessages} from 'next-intl/server';
 
-export default async function DefaultLayout({
-  children,
-  params: {locale}
-}: {
-  children: React.ReactNode;
-  params: {locale: string};
-}) {
+export default async function DefaultLayout(
+  props: {
+    children: React.ReactNode;
+    params: Promise<{locale: string}>;
+  }
+) {
+  const params = await props.params;
+
+  const {
+    locale
+  } = params;
+
+  const {
+    children
+  } = props;
+
   // Providing all messages to the client
   // side is the easiest way to get started
   const messages = await getMessages({locale});
