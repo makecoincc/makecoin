@@ -1,16 +1,28 @@
-'use client'
 import AnimatedLayout from "@/app/provider/AnimatedLayout";
+import { MainProvider } from "@/app/provider/MainProvider";
+import {NextIntlClientProvider} from 'next-intl';
+import {getMessages} from 'next-intl/server';
 
-export default function AuthLayout({
+export default async function AuthLayout({
   children,
+  params: {locale}
 }: {
   children: React.ReactNode;
+  params: {locale: string};
 }) {
+  // Providing all messages to the client
+  // side is the easiest way to get started
+  const messages = await getMessages({locale});
+
   return (
-    <main className="h-screen relative">
-      <AnimatedLayout>
-        {children}
-      </AnimatedLayout>
-    </main>
+    <NextIntlClientProvider messages={messages} locale={locale}>
+      <MainProvider>
+        <main className="h-screen relative">
+          <AnimatedLayout>
+            {children}
+          </AnimatedLayout>
+        </main>
+      </MainProvider>
+    </NextIntlClientProvider>
   );
 }

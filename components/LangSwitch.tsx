@@ -1,7 +1,7 @@
 'use client'
 
 // import { useState } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname, useRouter } from '@/i18n/routing'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/react";
 import { useLocale } from 'next-intl';
 
@@ -16,14 +16,8 @@ export default function LangSwitch() {
   const router = useRouter();
 
   const handleLanguageChange = (newLocale: string) => {
-    console.log('newLocale', newLocale);
-    console.log('locale', locale);
-    // Remove current locale from pathname and add new locale
-    const pathWithoutLocale = pathname.replace(`/${locale}`, '');
-    console.log('pathWithoutLocale', pathWithoutLocale);
-    const newPath = `/${newLocale}${pathWithoutLocale}`;
-    console.log('newPath', newPath);
-    router.push(newPath);
+    // Use next-intl's router which handles locale switching properly
+    router.replace(pathname, {locale: newLocale});
   };
 
   return (
