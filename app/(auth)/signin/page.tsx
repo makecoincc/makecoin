@@ -5,7 +5,7 @@ import { Button, Input, Checkbox, Link, Divider, Form } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
 
-import { Logo } from "@/components/logo";
+import { Logo } from "@/components/Logo";
 
 export default function SignIn() {
   const [isVisible, setIsVisible] = React.useState(false);
@@ -35,8 +35,8 @@ export default function SignIn() {
       </Button>
       <div className="flex flex-col items-center pb-6">
         <Logo size={48} className="pb-2" />
-        <p className="text-xl font-medium">Welcome Back</p>
-        <p className="text-small text-default-500">Log in to your account to continue</p>
+        <p className="text-xl font-medium">MAKE COIN</p>
+        <p className="text-small text-default-500 w-[500px] text-center">Logging in is optional—unless you want to keep record of actions like token creation, transfers, and other activities.</p>
       </div>
       <div className="rounded-large bg-content1 shadow-small mt-2 flex w-full max-w-sm flex-col gap-4 px-8 py-6">
         <Form className="flex flex-col gap-3" validationBehavior="native" onSubmit={handleSubmit}>

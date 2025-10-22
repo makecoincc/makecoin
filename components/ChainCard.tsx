@@ -1,7 +1,7 @@
 "use client";
 
 import type { CardProps } from "@heroui/react";
-
+import { useRouter } from "next/navigation";
 import React from "react";
 import { Card, CardBody, Image, CardHeader, CardFooter, Button } from "@heroui/react";
 import { m, useMotionValue, domAnimation, LazyMotion, useMotionTemplate } from "framer-motion";
@@ -15,6 +15,7 @@ interface CustomCardProps extends CardProps {
   chain: ChainType;
 }
 export default function ChainCard(props: CustomCardProps) {
+  const router = useRouter();
   const { chain } = props;
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -22,7 +23,6 @@ export default function ChainCard(props: CustomCardProps) {
   const cardRef = React.useRef<HTMLDivElement>(null);
 
   function onMouseMove({ clientX, clientY }: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    console.log('onMouseMove', clientX, clientY)
     if (!cardRef?.current) return;
 
     const { left, top } = cardRef.current?.getBoundingClientRect();
@@ -32,7 +32,7 @@ export default function ChainCard(props: CustomCardProps) {
   }
 
   const onPress = () => {
-    console.log('onPress')
+    router.push(`/${chain.name.toLowerCase()}`);
   }
 
   return (

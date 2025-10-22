@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 // import { usePathname, useRouter } from 'next/navigation'
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@heroui/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Select, SelectItem } from "@heroui/react";
 
 const languages = [
   {
@@ -19,7 +19,7 @@ export default function LangSwitch() {
   // const pathname = usePathname()
   // const router = useRouter()
   const [currentLang, setCurrentLang] = useState('en')
-//   const currentLang = languages.find((lang) => pathname.startsWith(`/${lang.code}`))?.code || 'en'
+  //   const currentLang = languages.find((lang) => pathname.startsWith(`/${lang.code}`))?.code || 'en'
 
   const handleChange = (lang: string) => {
     setCurrentLang(lang)
@@ -28,6 +28,27 @@ export default function LangSwitch() {
 
   return (
     <div className="flex items-center gap-2">
+      {/* <Select
+        aria-label="Time Range"
+        classNames={{
+          trigger: "min-w-[100px] min-h-7 h-7",
+          value: "text-tiny text-default-500!",
+          selectorIcon: "text-default-500",
+          popoverContent: "min-w-[120px]",
+        }}
+        defaultSelectedKeys={["per-day"]}
+        listboxProps={{
+          itemClasses: {
+            title: "text-tiny",
+          },
+        }}
+        placeholder="Per Day"
+        size="sm"
+      >
+        <SelectItem key="per-day">Per Day</SelectItem>
+        <SelectItem key="per-week">Per Week</SelectItem>
+        <SelectItem key="per-month">Per Month</SelectItem>
+      </Select> */}
       <Dropdown>
         <DropdownTrigger>
             <p className='flex items-center cursor-pointer text-sm'>{currentLang === 'en' ? '🇬🇧 En' : '🇨🇳 中文'}
