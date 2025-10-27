@@ -1,12 +1,10 @@
 'use client';
-import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import ActionCard from "@/components/ActionCard";
-import { useEffect, useState } from "react";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { useConnection } from "@solana/wallet-adapter-react";
-import { PublicKey } from "@solana/web3.js";
+import SolanaWallet from "@/components/SolanaWallet";
 
+// import { PublicKey } from "@solana/web3.js";
+import { Breadcrumbs, BreadcrumbItem } from '@heroui/react';
 const solanaTools = [
     { title: "Create a Token Mint", description: "Create an SPL Token mint.", url: "/solana/create-token-mint" },
     { title: "Create a Token Account", description: "Create SPL Token Accounts.", url: "/solana/create-token-account" },
@@ -22,85 +20,37 @@ const solanaTools = [
     { title: "Thaw Account", description: "Thaw a frozen token account.", url: "/solana/thaw-account" },
 ]
 
-// Nextjs hydration error fix
-const WalletMultiButton = dynamic(
-    () =>
-        import("@solana/wallet-adapter-react-ui").then(
-            (mod) => mod.WalletMultiButton
-        ),
-    {
-        ssr: false,
-        loading: () => {
-            return (
-                <div
-                    className="bg-black border border-gray-800 rounded-md animate-pulse flex items-center"
-                    style={{
-                        width: "173.47px",
-                        height: "48px",
-                        padding: "0 12px",
-                        gap: "8px",
-                    }}
-                >
-                    <div
-                        className="rounded-full bg-purple-400/30"
-                        style={{ width: "24px", height: "24px" }}
-                    ></div>
-                    <div
-                        className="h-4 bg-white/10 rounded-sm"
-                        style={{ width: "100px" }}
-                    ></div>
-                </div>
-            );
-        },
-    }
-);
-
 export default function SolanaPage() {
     const router = useRouter();
-    const { publicKey } = useWallet();
-    const { connection } = useConnection();
-    const [balance, setBalance] = useState<number | null>(null);
 
-    useEffect(() => {
-        const fetchBalance = async () => {
-            if (publicKey) {
-                const lamports = await connection.getBalance(publicKey);
-                setBalance(lamports / 1e9); // Convert lamports to SOL
-            }
-        };
-
-        fetchBalance();
-    }, [publicKey, connection]);
     return (
-        <div className="max-w-[1200px] mx-auto px-4 py-20 sm:py-32 md:px-6 lg:px-8">
-            <header className="mb-6 flex w-full items-center justify-between">
-                <div className="flex flex-col">
-                    <h1 className="text-default-900 text-xl font-bold lg:text-3xl">Solana Tools</h1>
-                    <div className="text-small text-default-400 lg:text-medium">{publicKey ? (
-                        balance !== null ? (
-                            <p>Balance: {balance.toFixed(4)} SOL</p>
-                        ) : (
-                            <p>Loading balance...</p>
-                        )
-                    ) : (
-                        <p>Connect your wallet to view your balance.</p>
-                    )}</div>
-                </div>
-                <WalletMultiButton />
-            </header>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {solanaTools.map((tool, index) => (
-                    <ActionCard
-                        key={index}
-                        title={tool.title}
-                        description={tool.description}
-                        icon="solar:document-medicine-linear"
-                        onPress={() => {
-                            router.push(tool.url);
-                        }}
-                    />
-                ))}
+        <section className="w-full mx-auto max-w-6xl py-10 md:px-6 lg:px-8 px-4 md:px-6 lg:px-8">
+            <div className="flex flex-col gap-1 mb-4">
+                <h1 className="text-2xl font-medium">Solana Tools</h1>
+                <Breadcrumbs>
+                    <BreadcrumbItem>Home</BreadcrumbItem>
+                    <BreadcrumbItem>Solana Tools</BreadcrumbItem>
+                </Breadcrumbs>
             </div>
-        </div>
+            <div className="flex flex-col lg:flex-row lg:gap-8">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 order-2 md:order-1">
+                    {solanaTools.map((tool, index) => (
+                        <ActionCard
+                            key={index}
+                            title={tool.title}
+                            description={tool.description}
+                            color="secondary"
+                            icon="solar:document-medicine-linear"
+                            onPress={() => {
+                                router.push(tool.url);
+                            }}
+                        />
+                    ))}
+                </div>
+                <div className="rounded-medium bg-content2 dark:bg-content1 w-full px-4 py-4 md:px-6 md:py-8 lg:w-[300px] lg:flex-none order-1 md:order-2 mb-4 md:mb-0">
+                    <SolanaWallet />
+                </div>
+            </div>
+        </section>
     )
 }
