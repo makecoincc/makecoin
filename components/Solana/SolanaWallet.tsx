@@ -142,7 +142,7 @@ export default function SolanaWallet() {
                             variant="bordered"
                             onPress={requestAirdrop}
                         >
-                            Airdrop SOL
+                            Airdrop 1 SOL
                         </Button>
                         <p className="text-default-500 font-medium mt-4">
                             Note: requires airdrop request on Devnet. if fails, use <a href="https://faucet.solana.com/" target="_blank" rel="noopener noreferrer" className="text-primary-500">Solana Faucet</a>
