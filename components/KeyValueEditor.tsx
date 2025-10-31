@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Card, CardBody, CardHeader, Button, Input, Divider } from '@heroui/react';
+import { Button, Input, Divider } from '@heroui/react';
 
 export interface KeyValuePair {
   key: string;
@@ -65,8 +65,8 @@ export const KeyValueEditor: React.FC<KeyValueEditorProps> = ({
 
   return (
     <div className={className}>
-      <Card>
-        <CardHeader className="flex justify-between items-center bg-transparent">
+      <div>
+        <div className="flex justify-between items-center bg-transparent pb-3">
           <div>
             <h3 className="text-lg font-semibold">{title}</h3>
             {/* <p className="text-sm text-default-500">
@@ -74,29 +74,40 @@ export const KeyValueEditor: React.FC<KeyValueEditorProps> = ({
             </p> */}
           </div>
           <Button
+            variant='flat'
             color="primary"
             size="sm"
+            isIconOnly
             onPress={handleAdd}
             isDisabled={data.length >= maxItems}
-            startContent={
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
-            }
-          >
-            Add Item
           </Button>
-        </CardHeader>
+        </div>
         
-        <Divider />
+        {/* <Divider /> */}
         
-        <CardBody>
+        <div>
           {data.length === 0 ? (
-            <div className="text-center py-8 text-default-400">
+            <div className="text-center flex justify-center items-center py-4 text-default-400">
               {/* <svg className="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
               </svg> */}
-              <p>No items yet</p>
+              <Button
+                variant='flat'
+                color="primary"
+                size="sm"
+                fullWidth
+                onPress={handleAdd}
+                isDisabled={data.length >= maxItems}
+                startContent={<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>}
+              >
+                Add attribute
+              </Button>
               {/* <p className="text-sm mt-1">Click the button above to add your first item</p> */}
             </div>
           ) : (
@@ -105,7 +116,7 @@ export const KeyValueEditor: React.FC<KeyValueEditorProps> = ({
                 const keyError = isDuplicateKey(item.key, index);
                 
                 return (
-                  <div key={index} className="group">
+                  <div key={index}>
                     <div className="flex items-center gap-3">
                       {/* Key-Value Inputs */}
                       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -127,11 +138,11 @@ export const KeyValueEditor: React.FC<KeyValueEditorProps> = ({
                       
                       {/* Delete Button */}
                       <Button
-                        variant="light"
+                        variant="flat"
                         color="danger"
                         isIconOnly
+                        size='sm'
                         onPress={() => handleDelete(index)}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -148,8 +159,8 @@ export const KeyValueEditor: React.FC<KeyValueEditorProps> = ({
               })}
             </div>
           )}
-        </CardBody>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 };
