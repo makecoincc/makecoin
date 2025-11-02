@@ -3,6 +3,7 @@
 import { Button, Divider, Chip, addToast } from '@heroui/react';
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { Icon } from "@iconify/react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useConnection } from "@solana/wallet-adapter-react";
 import {
@@ -77,13 +78,14 @@ export default function SolanaWallet() {
                         <Button
                             size="sm"
                             variant="bordered"
+                            isIconOnly
                             onPress={() => {
                                 window.open(
                                     `https://explorer.solana.com/tx/${signature}?cluster=devnet`
                                 );
                             }}
                         >
-                            View on Solana Explorer
+                            <Icon icon="solar:link-round-angle-linear" width={24} />
                         </Button>
                     ),
                 });

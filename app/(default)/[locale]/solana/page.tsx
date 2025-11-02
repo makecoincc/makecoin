@@ -9,6 +9,7 @@ import CreateToken from "@/components/Solana/CreateToken";
 import { Breadcrumbs, BreadcrumbItem } from '@heroui/react';
 const solanaTools = [
     { title: "Create Token", description: "Create an SPL Token", key: "create-token" },
+    { title: "Mint Tokens", description: "Mint tokens to a token account.", key: "mint-tokens" },
     { title: "Transfer Tokens", description: "Transfer tokens between token accounts.", key: "transfer-tokens" },
     { title: "Approve/Revoke Delegate", description: "Approve/Revoke delegates for a token account.", key: "approve-revoke-delegate" },
     { title: "Set Authority", description: "Set authority for mints or token accounts.", key: "set-authority" },

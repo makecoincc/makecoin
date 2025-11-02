@@ -148,7 +148,7 @@ const OriginalForm = React.forwardRef<HTMLDivElement, CreateFormProps>(
               onChange={(value) => setSupply(Number(value))}
               variant={variant}
             />
-            <SwitchCell onValueChange={(isSelected) => setAllowFurtherMinting(isSelected)} label="Allow Further Minting" description="Enable this option to allow additional tokens to be minted after creation. Disable to permanently lock the supply." />
+            <SwitchCell size="sm" defaultSelected={allowFurtherMinting} onValueChange={(isSelected) => setAllowFurtherMinting(isSelected)} label="Allow Further Minting" description="Enable this option to allow additional tokens to be minted after creation. Disable to permanently lock the supply." />
             <div className="flex">
               <Checkbox isSelected={agreeTerms} onValueChange={setAgreeTerms}>
                 I agree to the
@@ -269,7 +269,7 @@ const Token2022Form = React.forwardRef<HTMLDivElement, CreateFormProps>(
         />
         <div className="flex flex-wrap justify-between items-center gap-4 sm:flex-nowrap">
           <p>Upload MetaData Or Enter URI</p>
-          <Switch size="sm" onValueChange={setIsUsingMetadataUri} >Enter URI</Switch>
+          <Switch size="sm" defaultSelected={isUsingMetadataUri} onValueChange={setIsUsingMetadataUri} >Enter URI</Switch>
         </div>
         {isUsingMetadataUri ? (
           <Input
@@ -315,7 +315,7 @@ const Token2022Form = React.forwardRef<HTMLDivElement, CreateFormProps>(
             <KeyValueEditor title="Attributes" onChange={setAttributes} />
           </>
         )}
-        <SwitchCell onValueChange={(isSelected) => setAllowFurtherMinting(isSelected)} label="Allow Further Minting" description="Enable this option to allow additional tokens to be minted after creation. Disable to permanently lock the supply." />
+        <SwitchCell size="sm" defaultSelected={allowFurtherMinting} onValueChange={(isSelected) => setAllowFurtherMinting(isSelected)} label="Allow Further Minting" description="Enable this option to allow additional tokens to be minted after creation. Disable to permanently lock the supply." />
         <div className="flex">
           <Checkbox isSelected={agreeTerms} onValueChange={setAgreeTerms}>
             I agree to the
