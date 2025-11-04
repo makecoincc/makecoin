@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from 'framer-motion';
 import ActionCard from "@/components/action-card";
-import SolanaWallet from "@/components/Solana/solana-wallet";
-import CreateToken from "@/components/Solana/create-token";
+import SolanaWallet from "@/components/solana/solana-wallet";
+import CreateToken from "@/components/solana/create-token";
 // import { PublicKey } from "@solana/web3.js";
 import { Breadcrumbs, BreadcrumbItem } from '@heroui/react';
 const solanaTools = [

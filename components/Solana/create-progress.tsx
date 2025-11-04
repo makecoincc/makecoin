@@ -12,14 +12,14 @@ interface CreateProgressProps extends CardProps {
     associatedTokenAccount?: string;
     mintToFinish?: boolean;
     revokeMintFinish?: boolean;
-    allowFurtherMinting?: boolean;
+    revokeMintAuthority?: boolean;
     signature?: string;
     onDone?: () => void;
     createFail?: boolean;
 }
 
 export default function CreateProgress(props: CreateProgressProps) {
-    const { tokenMint, tokenAccount, associatedTokenAccount, mintToFinish, revokeMintFinish, allowFurtherMinting, signature, onDone, createFail, ...CardProps } = props;
+    const { tokenMint, tokenAccount, associatedTokenAccount, mintToFinish, revokeMintFinish, revokeMintAuthority, signature, onDone, createFail, ...CardProps } = props;
     const [percent, setPercent] = useState(0);
     useEffect(() => {
         const steps = [
@@ -27,14 +27,14 @@ export default function CreateProgress(props: CreateProgressProps) {
             !!tokenAccount,
             !!associatedTokenAccount,
             mintToFinish,
-            allowFurtherMinting ? revokeMintFinish : null,
+            revokeMintAuthority ? revokeMintFinish : null,
         ].filter(step => step !== null);
 
         const completed = steps.filter(Boolean).length;
         const percent = Math.round((completed / steps.length) * 100);
 
         setPercent(percent);
-    }, [tokenMint, tokenAccount, associatedTokenAccount, mintToFinish, revokeMintFinish, allowFurtherMinting]);
+    }, [tokenMint, tokenAccount, associatedTokenAccount, mintToFinish, revokeMintFinish, revokeMintAuthority]);
     return (
         <Card {...CardProps} className="py-1 md:py-4">
             <CardHeader className="flex items-center gap-3 px-5 pt-3 pb-0 md:px-10 md:pt-5">
@@ -180,7 +180,7 @@ export default function CreateProgress(props: CreateProgressProps) {
                         }
                         title="Mint Tokens"
                     />
-                    {!allowFurtherMinting ? (
+                    {!revokeMintAuthority ? (
                         <ListboxItem
                             key="revoke-mint"
                             classNames={{

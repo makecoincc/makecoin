@@ -11,7 +11,7 @@ interface MainProviderProps {
 export const MainProvider: FC<MainProviderProps> = ({ children }) => {
   return (
     <HeroUIProvider>
-      <ToastProvider />
+      <ToastProvider placement="top-center" toastOffset={60} />
       <ThemeProvider attribute="class">
         {children}
       </ThemeProvider>

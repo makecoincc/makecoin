@@ -28,7 +28,6 @@ import {
   createAssociatedTokenAccountIx,
   mintToInstruction,
   setMintAuthorityIx
-
 } from '@/lib/solana/basics';
 
 export type CreateFormProps = React.HTMLAttributes<HTMLDivElement> & {
@@ -41,7 +40,8 @@ const OriginalForm = React.forwardRef<HTMLDivElement, CreateFormProps>(
   ({ variant = "flat", className, hideTitle, onDone }, ref) => {
     const { publicKey, sendTransaction } = useWallet();
     const { connection } = useConnection();
-    const [allowFurtherMinting, setAllowFurtherMinting] = React.useState<boolean>(false);
+    const [revokeMintAuthority, setRevokeMintAuthority] = React.useState<boolean>(false);
+    const [revokeFreezeAuthority, setRevokeFreezeAuthority] = React.useState<boolean>(false);
     const [decimals, setDecimals] = React.useState<number>(9);
     const [supply, setSupply] = React.useState<number>(1000000000);
     const [loading, setLoading] = useState<boolean>(false);
@@ -56,6 +56,9 @@ const OriginalForm = React.forwardRef<HTMLDivElement, CreateFormProps>(
     const [createFail, setCreateFail] = useState<boolean>(false);
 
     const createToken = async () => {
+      if (!decimals || !supply) {
+        return;
+      }
       if (!agreeTerms) {
         addToast({
           title: "Terms and Conditions not agreed",
@@ -99,10 +102,15 @@ const OriginalForm = React.forwardRef<HTMLDivElement, CreateFormProps>(
         createAssociatedTokenAccount,
         mintToIx
       );
-      if (!allowFurtherMinting) {
+      if (revokeMintAuthority) {
         // 5 撤销铸币权限
         const revokeMintIx = await setMintAuthorityIx(mint, publicKey, 'mint', null);
         transaction.add(revokeMintIx);
+      }
+      if (revokeFreezeAuthority) {
+        // 6 撤销冻结权限
+        const revokeFreezeIx = await setMintAuthorityIx(mint, publicKey, 'freeze', null);
+        transaction.add(revokeFreezeIx);
       }
       try {
         const signature = await sendTransaction(transaction, connection, {
@@ -133,9 +141,17 @@ const OriginalForm = React.forwardRef<HTMLDivElement, CreateFormProps>(
               placeholder="9"
               description="The number of decimal places to use for the token."
               type="number"
+              min={1}
+              max={9}
               value={decimals.toString()}
-              onChange={(value) => setDecimals(Number(value))}
+              onValueChange={(value) => setDecimals(Number(value))}
               variant={variant}
+              validate={(value) => {
+                if (!value || isNaN(Number(value))) {
+                  return "Decimals must be a number";
+                }
+                return null;
+              }}
             />
             <Input
               isRequired
@@ -145,10 +161,18 @@ const OriginalForm = React.forwardRef<HTMLDivElement, CreateFormProps>(
               description="The total supply of the token."
               type="number"
               value={supply.toString()}
-              onChange={(value) => setSupply(Number(value))}
+              onValueChange={(value) => setSupply(Number(value))}
               variant={variant}
+              validate={(value) => {
+                if (!value || isNaN(Number(value))) {
+                  return "Supply must be a number";
+                }
+                return null;
+              }}
             />
-            <SwitchCell size="sm" defaultSelected={allowFurtherMinting} onValueChange={(isSelected) => setAllowFurtherMinting(isSelected)} label="Allow Further Minting" description="Enable this option to allow additional tokens to be minted after creation. Disable to permanently lock the supply." />
+            <SwitchCell size="sm" defaultSelected={revokeMintAuthority} onValueChange={(isSelected) => setRevokeMintAuthority(isSelected)} label="Revoke Mint Authority" description="Prevent additional token supply to increase investors trust." />
+            <SwitchCell size="sm" defaultSelected={revokeFreezeAuthority} onValueChange={(isSelected) => setRevokeFreezeAuthority(isSelected)} label="Revoke Freeze Authority" description="Prevent token freezing." />
+
             <div className="flex">
               <Checkbox isSelected={agreeTerms} onValueChange={setAgreeTerms}>
                 I agree to the
@@ -162,7 +186,7 @@ const OriginalForm = React.forwardRef<HTMLDivElement, CreateFormProps>(
             </div>
           </div>
         ) : (
-          <CreateProgress createFail={createFail} signature={signature} allowFurtherMinting={allowFurtherMinting} tokenMint={tokenMint} tokenAccount={tokenAccount} associatedTokenAccount={associatedTokenAccount} mintToFinish={mintToFinish} revokeMintFinish={revokeMintFinish} onDone={onDone} />
+          <CreateProgress createFail={createFail} signature={signature} revokeMintAuthority={revokeMintAuthority} tokenMint={tokenMint} tokenAccount={tokenAccount} associatedTokenAccount={associatedTokenAccount} mintToFinish={mintToFinish} revokeMintFinish={revokeMintFinish} onDone={onDone} />
         )}
       </>
     )
@@ -175,7 +199,7 @@ const Token2022Form = React.forwardRef<HTMLDivElement, CreateFormProps>(
   ({ variant = "flat", className, hideTitle }, ref) => {
     const { publicKey, sendTransaction } = useWallet();
     const { connection } = useConnection();
-    const [allowFurtherMinting, setAllowFurtherMinting] = React.useState<boolean>(false);
+    const [revokeMintAuthority, setRevokeMintAuthority] = React.useState<boolean>(false);
     const [decimals, setDecimals] = React.useState<number>(9);
     const [supply, setSupply] = React.useState<number>(1000000000);
     const [uri, setUri] = React.useState<string>('');
@@ -315,7 +339,7 @@ const Token2022Form = React.forwardRef<HTMLDivElement, CreateFormProps>(
             <KeyValueEditor title="Attributes" onChange={setAttributes} />
           </>
         )}
-        <SwitchCell size="sm" defaultSelected={allowFurtherMinting} onValueChange={(isSelected) => setAllowFurtherMinting(isSelected)} label="Allow Further Minting" description="Enable this option to allow additional tokens to be minted after creation. Disable to permanently lock the supply." />
+        <SwitchCell size="sm" defaultSelected={revokeMintAuthority} onValueChange={(isSelected) => setRevokeMintAuthority(isSelected)} label="Allow Further Minting" description="Enable this option to allow additional tokens to be minted after creation. Disable to permanently lock the supply." />
         <div className="flex">
           <Checkbox isSelected={agreeTerms} onValueChange={setAgreeTerms}>
             I agree to the
