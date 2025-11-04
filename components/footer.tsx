@@ -5,7 +5,7 @@ import {Divider, Link} from "@heroui/react";
 import type {IconProps} from "@iconify/react";
 import {Icon} from "@iconify/react";
 
-import { Logo } from "./logos";
+import { Logo } from "@/components/logo";
 import ThemeSwitch from "./theme-switch";
 
 type SocialIconProps = Omit<IconProps, "icon">;

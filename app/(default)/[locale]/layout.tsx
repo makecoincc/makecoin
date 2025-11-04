@@ -1,6 +1,6 @@
-import Header from "@/components/headers";
-import Footer from "@/components/footers";
-import Banner from "@/components/banners";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import Banner from "@/components/banner";
 import { MainProvider } from "@/app/provider/MainProvider";
 import {NextIntlClientProvider} from 'next-intl';
 import {getMessages} from 'next-intl/server';

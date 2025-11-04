@@ -6,7 +6,7 @@ import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
 import {useTranslations} from 'next-intl';
 
-import { Logo } from "@/components/logos";
+import { Logo } from "@/components/logo";
 
 export default function SignIn() {
   const t = useTranslations('signin');

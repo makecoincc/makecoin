@@ -19,7 +19,7 @@ import {
 // import {Icon} from "@iconify/react";
 import {cn} from "@heroui/react";
 
-import { Logo } from "@/components/logos";
+import { Logo } from "@/components/logo";
 import LangSwitch from "@/components/lang-switch";
 
 const menuItems = [
