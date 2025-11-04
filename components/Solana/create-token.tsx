@@ -11,10 +11,10 @@ import React, { useState } from "react";
 import { Switch, Spacer, Tabs, Tab, Input, Textarea, Button, addToast, Checkbox, Alert } from "@heroui/react";
 import { AnimatePresence } from "framer-motion";
 import { cn } from "@heroui/react";
-import ImageUpload from "../ImageUpload";
-import KeyValueEditor, { KeyValuePair } from "../KeyValueEditor";
-import SwitchCell from "../SwitchCell";
-import CreateProgress from "./CreateProgress";
+import ImageUpload from "../image-upload";
+import KeyValueEditor, { KeyValuePair } from "../key-value-editor";
+import SwitchCell from "../switch-cell";
+import CreateProgress from "./create-progress";
 // import VSplitStepper from "../VSplitStepper";
 
 import {

@@ -5,7 +5,7 @@ import type { CardProps } from "@heroui/react";
 import React, { useState, useEffect } from "react";
 import { Card, CardBody, CardHeader, Listbox, ListboxItem, Progress, Alert, Spinner, Button, CardFooter } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { CopyButton } from '../CopyButton';
+import { CopyButton } from '../copy-button';
 interface CreateProgressProps extends CardProps {
     tokenMint?: string;
     tokenAccount?: string;

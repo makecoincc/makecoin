@@ -19,8 +19,8 @@ import {
 // import {Icon} from "@iconify/react";
 import {cn} from "@heroui/react";
 
-import { Logo } from "@/components/Logo";
-import LangSwitch from "@/components/LangSwitch";
+import { Logo } from "@/components/logos";
+import LangSwitch from "@/components/lang-switch";
 
 const menuItems = [
   "About",

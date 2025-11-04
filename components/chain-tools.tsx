@@ -1,7 +1,7 @@
 // import {
 //     type CardProps,
 // } from "@heroui/react";
-import ChainCard from "@/components/ChainCard";
+import ChainCard from "@/components/chain-card";
 
 const chains = [{
     name: 'Ethereum',

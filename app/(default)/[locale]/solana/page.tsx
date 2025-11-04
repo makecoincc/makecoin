@@ -2,13 +2,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from 'framer-motion';
-import ActionCard from "@/components/ActionCard";
-import SolanaWallet from "@/components/Solana/SolanaWallet";
-import CreateToken from "@/components/Solana/CreateToken";
+import ActionCard from "@/components/action-card";
+import SolanaWallet from "@/components/Solana/solana-wallet";
+import CreateToken from "@/components/Solana/create-token";
 // import { PublicKey } from "@solana/web3.js";
 import { Breadcrumbs, BreadcrumbItem } from '@heroui/react';
 const solanaTools = [
     { title: "Create Token", description: "Create an SPL Token", key: "create-token" },
+    { title: "Add Metadata to a Token", description: "Add metadata to a token account.", key: "add-metadata" },
     { title: "Mint Tokens", description: "Mint tokens to a token account.", key: "mint-tokens" },
     { title: "Transfer Tokens", description: "Transfer tokens between token accounts.", key: "transfer-tokens" },
     { title: "Approve/Revoke Delegate", description: "Approve/Revoke delegates for a token account.", key: "approve-revoke-delegate" },

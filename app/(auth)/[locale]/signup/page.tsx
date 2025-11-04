@@ -5,7 +5,7 @@ import { Button, Input, Checkbox, Link, Divider, Form } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
 
-import { Logo } from "@/components/Logo";
+import { Logo } from "@/components/logos";
 
 export default function SignUp() {
   const [isVisible, setIsVisible] = React.useState(false);
