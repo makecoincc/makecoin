@@ -384,6 +384,15 @@ const getMintAccountRent = async (connection: Connection) => {
 const getTokenAccountRent = async (connection: Connection) => {
     return await getMinimumBalanceForRentExemptAccount(connection);
 }
+
+const isValidAddress = (address: string) => {
+    try {
+        new PublicKey(address);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
 export {
     getMintAccountRent,
     getTokenAccountRent,
@@ -403,5 +412,6 @@ export {
     syncNativeInstruction,
     closeAccountInstruction,
     freezeTokenAccount,
-    thawTokenAccount
+    thawTokenAccount,
+    isValidAddress
 };

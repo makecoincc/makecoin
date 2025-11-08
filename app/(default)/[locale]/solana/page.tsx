@@ -5,19 +5,26 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ActionCard from "@/components/action-card";
 import SolanaWallet from "@/components/solana/solana-wallet";
 import CreateToken from "@/components/solana/create-token";
+import AddMetadata from "@/components/solana/add-metadata";
+import ApproveRevokeDelegate from "@/components/solana/approve-revoke-delegate";
+import BurnTokens from "@/components/solana/butn-tokens";
+import CloseAccount from "@/components/solana/close-token-account";
+import FreezeThawAccount from "@/components/solana/freeze-thaw-account";
+import MintTokens from "@/components/solana/mint-tokens";
+import SetAuthority from "@/components/solana/set-authority";
+import TransferTokens from "@/components/solana/transfer-tokens";
 // import { PublicKey } from "@solana/web3.js";
 import { Breadcrumbs, BreadcrumbItem } from '@heroui/react';
 const solanaTools = [
-    { title: "Create Token", description: "Create an SPL Token", key: "create-token" },
-    { title: "Add Metadata to a Token", description: "Add metadata to a token account.", key: "add-metadata" },
-    { title: "Mint Tokens", description: "Mint tokens to a token account.", key: "mint-tokens" },
-    { title: "Transfer Tokens", description: "Transfer tokens between token accounts.", key: "transfer-tokens" },
-    { title: "Approve/Revoke Delegate", description: "Approve/Revoke delegates for a token account.", key: "approve-revoke-delegate" },
-    { title: "Set Authority", description: "Set authority for mints or token accounts.", key: "set-authority" },
-    { title: "Burn Tokens", description: "Burn tokens.", key: "burn-tokens" },
-    { title: "Sync Native", description: "Convert native SOL to wrapped SOL.", key: "sync-native" },
-    { title: "Close Token Account", description: "Close token accounts.", key: "close-token-account" },
-    { title: "Freeze/Thaw Account", description: "Freeze/Thaw token accounts.", key: "freeze-thaw-account" },
+    { title: "Create Token", description: "Create an SPL token", key: "create-token" },
+    { title: "Add Metadata to a Token", description: "Add metadata to a token", key: "add-metadata" },
+    { title: "Mint Tokens", description: "Mint tokens to a token account", key: "mint-tokens" },
+    { title: "Transfer Tokens", description: "Transfer tokens between token accounts", key: "transfer-tokens" },
+    { title: "Approve/Revoke Delegate", description: "Approve/Revoke delegates for a token account", key: "approve-revoke-delegate" },
+    { title: "Set Authority", description: "Set authority for mints or token accounts", key: "set-authority" },
+    { title: "Burn Tokens", description: "Burn tokens", key: "burn-tokens" },
+    { title: "Close Token Account", description: "Close token accounts", key: "close-token-account" },
+    { title: "Freeze/Thaw Account", description: "Freeze/Thaw token accounts", key: "freeze-thaw-account" },
 ]
 
 interface SolanaToolsProps {
@@ -46,11 +53,27 @@ const SolanaTools = ({ onToolSelect }: SolanaToolsProps) => (
 const components = {
     "solana-tools": SolanaTools,
     "create-token": CreateToken,
+    "add-metadata": AddMetadata,
+    "approve-revoke-delegate": ApproveRevokeDelegate,
+    "burn-tokens": BurnTokens,
+    "close-token-account": CloseAccount,
+    "freeze-thaw-account": FreezeThawAccount,
+    "mint-tokens": MintTokens,
+    "set-authority": SetAuthority,
+    "transfer-tokens": TransferTokens
 }
 
 const activeNames = {
     "solana-tools": "Solana Tools",
     "create-token": "Create Token",
+    "add-metadata": "Add Metadata",
+    "approve-revoke-delegate": "Approve/Revoke Delegate",
+    "burn-tokens": "Burn Tokens",
+    "close-token-account": "Close token Account",
+    "freeze-thaw-account": "Freeze/Thaw Account",
+    "mint-tokens": "Mint Tokens",
+    "set-authority": "Set Authority",
+    "transfer-tokens": "Transfer Tokens"
 }
 
 type ComponentKey = keyof typeof components;

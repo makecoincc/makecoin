@@ -7,14 +7,26 @@ import { Link } from "@heroui/react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useConnection } from "@solana/wallet-adapter-react";
 import type { InputProps } from "@heroui/react";
-import React, { useState } from "react";
-import { Switch, Spacer, Tabs, Tab, Input, Textarea, Button, addToast, Checkbox, Alert } from "@heroui/react";
+import React, { useState, useRef } from "react";
+import {
+  Switch,
+  Spacer,
+  Tabs,
+  Tab,
+  Input,
+  Textarea,
+  Button,
+  addToast,
+  Checkbox,
+  Alert
+} from "@heroui/react";
 import { AnimatePresence } from "framer-motion";
 import { cn } from "@heroui/react";
 import ImageUpload from "../image-upload";
 import KeyValueEditor, { KeyValuePair } from "../key-value-editor";
 import SwitchCell from "../switch-cell";
 import CreateProgress from "./create-progress";
+import Confirm, { ConfirmRef } from "./confirm";
 // import VSplitStepper from "../VSplitStepper";
 
 import {
@@ -40,6 +52,7 @@ const OriginalForm = React.forwardRef<HTMLDivElement, CreateFormProps>(
   ({ variant = "flat", className, hideTitle, onDone }, ref) => {
     const { publicKey, sendTransaction } = useWallet();
     const { connection } = useConnection();
+    const confirmRef = useRef<ConfirmRef>(null);
     const [revokeMintAuthority, setRevokeMintAuthority] = React.useState<boolean>(false);
     const [revokeFreezeAuthority, setRevokeFreezeAuthority] = React.useState<boolean>(false);
     const [decimals, setDecimals] = React.useState<number>(9);
@@ -131,6 +144,7 @@ const OriginalForm = React.forwardRef<HTMLDivElement, CreateFormProps>(
     return (
       <>
         <Alert hideIcon color="warning" description="Logging in is optional, but your created token details—such as token address and transaction signatures—won’t be saved." title="Login Recommended" variant="faded" />
+        <Confirm infos={null} ref={confirmRef} onConfirm={() => createToken()} />
         {!loading ? (
           <div ref={ref} className={cn("flex flex-col gap-4", className)}>
             {!hideTitle && <span className="text-foreground-500 relative">Token Information</span>}
@@ -180,7 +194,7 @@ const OriginalForm = React.forwardRef<HTMLDivElement, CreateFormProps>(
               <Link href="https://www.makecoin.cc/terms" target="_blank" rel="noopener noreferrer" className="ml-1 underline">terms and conditions</Link>
             </div>
             <div className="mt-4 space-y-4">
-              <Button fullWidth color="primary" radius="sm" size="lg" onPress={() => createToken()}>
+              <Button fullWidth color="primary" radius="sm" size="lg" onPress={() => confirmRef.current?.onOpen()}>
                 Create Token
               </Button>
             </div>
