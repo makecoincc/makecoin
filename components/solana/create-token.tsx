@@ -61,14 +61,15 @@ const OriginalForm = React.forwardRef<HTMLDivElement, CreateFormProps>(
     const [agreeTerms, setAgreeTerms] = useState<boolean>(false);
 
     const [tokenMint, setTokenMint] = useState<string>('');
-    const [tokenAccount, setTokenAccount] = useState<string>('');
+    // const [tokenAccount, setTokenAccount] = useState<string>('');
     const [associatedTokenAccount, setAssociatedTokenAccount] = useState<string>('');
     const [mintToFinish, setMintToFinish] = useState<boolean>(false);
     const [revokeMintFinish, setRevokeMintFinish] = useState<boolean>(false);
     const [signature, setSignature] = useState<string>('');
     const [createFail, setCreateFail] = useState<boolean>(false);
+    const [infos, setInfos] = useState<KeyValuePair[]>([]);
 
-    const createToken = async () => {
+    const submit = () => {
       if (!decimals || !supply) {
         return;
       }
@@ -88,30 +89,55 @@ const OriginalForm = React.forwardRef<HTMLDivElement, CreateFormProps>(
         });
         return;
       }
+      setInfos([
+        {
+          key: "Token Name",
+          value: '--',
+        },
+        {
+          key: "Token Symbol",
+          value: '--',
+        },
+        {
+          key: "Decimals",
+          value: decimals.toString(),
+        },
+        {
+          key: "Supply",
+          value: supply.toString(),
+        },
+      ]);
+      confirmRef.current?.onOpen();
+    }
+
+    const createToken = async () => {
+      if (!publicKey) {
+        return;
+      }
       setLoading(true);
       // 0 生成铸币账户和代币账户密钥对
       const mint = Keypair.generate();
-      const tokenAccount = Keypair.generate();
+      // const tokenAccount = Keypair.generate();
       const minRent = await getMintAccountRent(connection);
-      const accountRent = await getTokenAccountRent(connection);
+      // const accountRent = await getTokenAccountRent(connection);
       // 1 创建mint并初始化
       const createMintIx = await createMintAccount(mint, publicKey, minRent);
       const initializeMintIx = await initializeMintInstruction(mint, publicKey, decimals);
       // 2 创建token account并初始化
-      const createTokenAccountIx = await createTokenAccount(tokenAccount, publicKey, accountRent);
-      const initializeTokenAccountIx = await initializeTokenAccountInstruction(tokenAccount, mint, publicKey);
+      // const createTokenAccountIx = await createTokenAccount(tokenAccount, publicKey, accountRent);
+      // const initializeTokenAccountIx = await initializeTokenAccountInstruction(tokenAccount, mint, publicKey);
       // 3 创建关联token account
       const associatedTokenAccount = await getAssociatedTokenAccount(mint, publicKey, false);
       const createAssociatedTokenAccount = await createAssociatedTokenAccountIx(mint, publicKey, associatedTokenAccount);
 
       // 4 铸造代币到关联token account
-      const mintToIx = await mintToInstruction(mint, associatedTokenAccount, publicKey, supply * 10 ** decimals);
+      const mintToIx = await mintToInstruction(mint.publicKey, associatedTokenAccount, publicKey, supply * 10 ** decimals);
 
       const transaction = new Transaction().add(
         createMintIx,
         initializeMintIx,
-        createTokenAccountIx,
-        initializeTokenAccountIx,
+        // createTokenAccountIx,
+        // initializeTokenAccountIx,
         createAssociatedTokenAccount,
         mintToIx
       );
@@ -127,11 +153,11 @@ const OriginalForm = React.forwardRef<HTMLDivElement, CreateFormProps>(
       }
       try {
         const signature = await sendTransaction(transaction, connection, {
-          signers: [mint, tokenAccount],
+          signers: [mint],
         });
         console.log('Transaction confirmed:', signature);
         setTokenMint(mint.publicKey.toBase58());
-        setTokenAccount(tokenAccount.publicKey.toBase58());
+        // setTokenAccount(tokenAccount.publicKey.toBase58());
         setAssociatedTokenAccount(associatedTokenAccount.toBase58());
         setMintToFinish(true);
         setRevokeMintFinish(true);
@@ -144,7 +170,7 @@ const OriginalForm = React.forwardRef<HTMLDivElement, CreateFormProps>(
     return (
       <>
         <Alert hideIcon color="warning" description="Logging in is optional, but your created token details—such as token address and transaction signatures—won’t be saved." title="Login Recommended" variant="faded" />
-        <Confirm infos={null} ref={confirmRef} onConfirm={() => createToken()} />
+        <Confirm infos={infos} ref={confirmRef} confirmText="Let's Go" onConfirm={() => createToken()} />
         {!loading ? (
           <div ref={ref} className={cn("flex flex-col gap-4", className)}>
             {!hideTitle && <span className="text-foreground-500 relative">Token Information</span>}
@@ -191,16 +217,16 @@ const OriginalForm = React.forwardRef<HTMLDivElement, CreateFormProps>(
               <Checkbox isSelected={agreeTerms} onValueChange={setAgreeTerms}>
                 I agree to the
               </Checkbox>
-              <Link href="https://www.makecoin.cc/terms" target="_blank" rel="noopener noreferrer" className="ml-1 underline">terms and conditions</Link>
+              <Link href="https://docs.makecoin.cc/terms" target="_blank" rel="noopener noreferrer" className="ml-1 underline">terms and conditions</Link>
             </div>
             <div className="mt-4 space-y-4">
-              <Button fullWidth color="primary" radius="sm" size="lg" onPress={() => confirmRef.current?.onOpen()}>
+              <Button fullWidth color="primary" radius="sm" size="lg" onPress={() => submit()}>
                 Create Token
               </Button>
             </div>
           </div>
         ) : (
-          <CreateProgress createFail={createFail} signature={signature} revokeMintAuthority={revokeMintAuthority} tokenMint={tokenMint} tokenAccount={tokenAccount} associatedTokenAccount={associatedTokenAccount} mintToFinish={mintToFinish} revokeMintFinish={revokeMintFinish} onDone={onDone} />
+          <CreateProgress createFail={createFail} signature={signature} revokeMintAuthority={revokeMintAuthority} tokenMint={tokenMint} associatedTokenAccount={associatedTokenAccount} mintToFinish={mintToFinish} revokeMintFinish={revokeMintFinish} onDone={onDone} />
         )}
       </>
     )

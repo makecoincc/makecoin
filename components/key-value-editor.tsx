@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Button, Input, Divider } from '@heroui/react';
+import { Button, Input } from '@heroui/react';
 
 export interface KeyValuePair {
   key: string;

@@ -155,9 +155,9 @@ const createAssociatedTokenAccountIx = async (mint: Keypair, feePayer: PublicKey
  * @param mintAmount - 铸造的代币数量
  * @returns 铸造代币的交易指令
  */
-const mintToInstruction = async (mint: Keypair, associatedTokenAccount: PublicKey, feePayer: PublicKey, mintAmount: number) => {
+const mintToInstruction = async (mint: PublicKey, associatedTokenAccount: PublicKey, feePayer: PublicKey, mintAmount: number) => {
     return createMintToInstruction(
-        mint.publicKey,           // 铸币账户
+        mint,                     // 铸币账户
         associatedTokenAccount,   // 目标账户
         feePayer,       // 铸币权限持有者
         mintAmount,               // 铸造数量
@@ -323,10 +323,10 @@ const syncNativeInstruction = async (associatedTokenAccount: PublicKey) => {
  * @param feePayer - 代币账户所有者密钥对
  * @returns 关闭代币账户的交易指令
  */
-const closeAccountInstruction = async (associatedTokenAccount: PublicKey, destination: Keypair, feePayer: PublicKey) => {
+const closeAccountInstruction = async (associatedTokenAccount: PublicKey, destination: PublicKey, feePayer: PublicKey) => {
     return createCloseAccountInstruction(
         associatedTokenAccount,   // 要关闭的代币账户
-        destination.publicKey,    // 接收 SOL 的目标账户
+        destination,    // 接收 SOL 的目标账户
         feePayer,       // 代币账户所有者
         [],                       // 多重签名者（如果有）
         TOKEN_PROGRAM_ID          // Token 程序 ID

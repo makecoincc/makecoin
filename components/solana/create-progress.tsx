@@ -8,7 +8,7 @@ import { Icon } from "@iconify/react";
 import { CopyButton } from '../copy-button';
 interface CreateProgressProps extends CardProps {
     tokenMint?: string;
-    tokenAccount?: string;
+    // tokenAccount?: string;
     associatedTokenAccount?: string;
     mintToFinish?: boolean;
     revokeMintFinish?: boolean;
@@ -19,12 +19,12 @@ interface CreateProgressProps extends CardProps {
 }
 
 export default function CreateProgress(props: CreateProgressProps) {
-    const { tokenMint, tokenAccount, associatedTokenAccount, mintToFinish, revokeMintFinish, revokeMintAuthority, signature, onDone, createFail, ...CardProps } = props;
+    const { tokenMint, associatedTokenAccount, mintToFinish, revokeMintFinish, revokeMintAuthority, signature, onDone, createFail, ...CardProps } = props;
     const [percent, setPercent] = useState(0);
     useEffect(() => {
         const steps = [
             !!tokenMint,
-            !!tokenAccount,
+            // !!tokenAccount,
             !!associatedTokenAccount,
             mintToFinish,
             revokeMintAuthority ? revokeMintFinish : null,
@@ -34,7 +34,7 @@ export default function CreateProgress(props: CreateProgressProps) {
         const percent = Math.round((completed / steps.length) * 100);
 
         setPercent(percent);
-    }, [tokenMint, tokenAccount, associatedTokenAccount, mintToFinish, revokeMintFinish, revokeMintAuthority]);
+    }, [tokenMint, associatedTokenAccount, mintToFinish, revokeMintFinish, revokeMintAuthority]);
     return (
         <Card {...CardProps} className="py-1 md:py-4">
             <CardHeader className="flex items-center gap-3 px-5 pt-3 pb-0 md:px-10 md:pt-5">
@@ -105,7 +105,7 @@ export default function CreateProgress(props: CreateProgressProps) {
                         }
                         title="Create a Token Mint"
                     />
-                    <ListboxItem
+                    {/* <ListboxItem
                         key="token-account"
                         classNames={{
                             base: "w-full px-2 md:px-4 min-h-[70px] gap-3",
@@ -129,7 +129,7 @@ export default function CreateProgress(props: CreateProgressProps) {
                             </div>
                         }
                         title="Create a Token Account"
-                    />
+                    /> */}
                     <ListboxItem
                         key="ata"
                         classNames={{

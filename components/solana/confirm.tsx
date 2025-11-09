@@ -8,9 +8,11 @@ import {
     Button
 } from "@heroui/react";
 import { forwardRef, useImperativeHandle } from "react";
+import { KeyValuePair } from "../key-value-editor";
 
 interface ConfirmProps {
-    infos: any;
+    infos: KeyValuePair[];
+    confirmText?: string;
     onConfirm?: () => void;
 }
 
@@ -42,50 +44,27 @@ const Confirm = forwardRef<ConfirmRef, ConfirmProps>((props, ref) => {
                             className="flex w-full flex-col gap-2"
                             onSubmit={(e) => {
                                 e.preventDefault();
+                                props.onConfirm?.();
                                 onClose();
                             }}
                         >
-                            <div className="px-3 py-1 flex items-center justify-between gap-2">
-                                <div className="flex items-center gap-2">
-                                    <p className="text-small text-default-500">name</p>
+                            {props.infos.map((info) => (
+                                <div key={info.key}>
+                                    <div  className="px-3 py-1 flex items-center justify-between gap-2">
+                                        <div className="flex items-center gap-2">
+                                            <p className="text-small text-default-500">{info.key}</p>
+                                        </div>
+                                        <p className="text-small text-default-400">{info.value}</p>
+                                    </div>
+                                    <Divider className="my-2" />
                                 </div>
-                                <p className="text-small text-default-400">permission</p>
-                            </div>
-                            <Divider className="my-2" />
-                            <div className="px-3 py-1 flex items-center justify-between gap-2">
-                                <div className="flex items-center gap-2">
-                                    <p className="text-small text-default-500">name</p>
-                                </div>
-                                <p className="text-small text-default-400">permission</p>
-                            </div>
-                            <Divider className="my-2" />
-                            <div className="px-3 py-1 flex items-center justify-between gap-2">
-                                <div className="flex items-center gap-2">
-                                    <p className="text-small text-default-500">name</p>
-                                </div>
-                                <p className="text-small text-default-400">permission</p>
-                            </div>
-                            <Divider className="my-2" />
-                            <div className="px-3 py-1 flex items-center justify-between gap-2">
-                                <div className="flex items-center gap-2">
-                                    <p className="text-small text-default-500">name</p>
-                                </div>
-                                <p className="text-small text-default-400">permission</p>
-                            </div>
-                            <Divider className="my-2" />
-                            <div className="px-3 py-1 flex items-center justify-between gap-2">
-                                <div className="flex items-center gap-2">
-                                    <p className="text-small text-default-500">name</p>
-                                </div>
-                                <p className="text-small text-default-400">permission</p>
-                            </div>
-                            <Divider className="my-2" />
+                            ))}
                             <div className="flex w-full items-center justify-center gap-6 pb-4">
                                 <Button color="default" type="button" variant="flat" onPress={onClose}>
                                     Cancel
                                 </Button>
                                 <Button color="primary" type="submit">
-                                    Submit
+                                    {props.confirmText || "Confirm"}
                                 </Button>
                             </div>
                         </form>
