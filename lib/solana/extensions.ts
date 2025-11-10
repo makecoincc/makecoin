@@ -8,6 +8,7 @@
 import {
     Connection,
     Keypair,
+    PublicKey,
     SystemProgram,
 } from "@solana/web3.js";
 import {
@@ -35,7 +36,7 @@ import { pack, type TokenMetadata } from "@solana/spl-token-metadata";
  * @param connection - Solana网络连接实例
  * @returns 创建账户的指令
  */
-const createAccountIx = async (mint: Keypair, feePayer: Keypair, metadata: TokenMetadata, connection: Connection) => {
+const createAccountIx = async (mint: PublicKey, feePayer: PublicKey, metadata: TokenMetadata, connection: Connection) => {
     // 计算元数据大小
     const metadataLen = pack(metadata).length;
 
@@ -54,8 +55,8 @@ const createAccountIx = async (mint: Keypair, feePayer: Keypair, metadata: Token
     
     // 返回创建账户的指令
     return SystemProgram.createAccount({
-        fromPubkey: feePayer.publicKey,
-        newAccountPubkey: mint.publicKey,
+        fromPubkey: feePayer,
+        newAccountPubkey: mint,
         space: spaceWithoutMetadataExtension,
         lamports: lamportsForMint,
         programId: TOKEN_2022_PROGRAM_ID
@@ -71,11 +72,11 @@ const createAccountIx = async (mint: Keypair, feePayer: Keypair, metadata: Token
  * @param feePayer - 支付交易费用的密钥对
  * @returns 初始化元数据指针的指令
  */
-const initializeMetadataPointerIx = async (mint: Keypair, feePayer: Keypair) => {
+const initializeMetadataPointerIx = async (mint: PublicKey, feePayer: PublicKey) => {
     return createInitializeMetadataPointerInstruction(
-        mint.publicKey, // 铸造账户
-        feePayer.publicKey, // 授权账户
-        mint.publicKey, // 元数据地址
+        mint, // 铸造账户
+        feePayer, // 授权账户
+        mint, // 元数据地址
         TOKEN_2022_PROGRAM_ID
     );
 }
@@ -90,12 +91,12 @@ const initializeMetadataPointerIx = async (mint: Keypair, feePayer: Keypair) => 
  * @param authority - 铸造授权账户密钥对
  * @returns 初始化铸造账户的指令
  */
-const initializeMintIx = async (mint: Keypair, decimals: number, authority: Keypair) => {
+const initializeMintIx = async (mint: PublicKey, decimals: number, authority: PublicKey) => {
     return createInitializeMintInstruction(
-        mint.publicKey, // 铸造账户
+        mint, // 铸造账户
         decimals, // 小数位数
-        authority.publicKey, // 铸造授权
-        authority.publicKey, // 冻结授权
+        authority, // 铸造授权
+        authority, // 冻结授权
         TOKEN_2022_PROGRAM_ID
     );
 }
@@ -110,16 +111,16 @@ const initializeMintIx = async (mint: Keypair, decimals: number, authority: Keyp
  * @param metadata - 代币元数据信息
  * @returns 初始化元数据的指令
  */
-const initializeMetadataIx = async (mint: Keypair, authority: Keypair, metadata: TokenMetadata) => {
+const initializeMetadataIx = async (mint: PublicKey, authority: PublicKey, metadata: TokenMetadata) => {
     return createInitializeInstruction({
         programId: TOKEN_2022_PROGRAM_ID,
-        mint: mint.publicKey,
-        metadata: mint.publicKey,
-        mintAuthority: authority.publicKey,
+        mint: mint,
+        metadata: mint,
+        mintAuthority: authority,
         name: metadata.name,
         symbol: metadata.symbol,
         uri: metadata.uri,
-        updateAuthority: authority.publicKey
+        updateAuthority: authority
     });
 }
 

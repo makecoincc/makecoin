@@ -8,33 +8,28 @@ import { Icon } from "@iconify/react";
 import { CopyButton } from '../copy-button';
 interface CreateProgressProps extends CardProps {
     tokenMint?: string;
-    // tokenAccount?: string;
     associatedTokenAccount?: string;
-    mintToFinish?: boolean;
-    revokeMintFinish?: boolean;
     revokeMintAuthority?: boolean;
-    signature?: string;
+    revokeFreezeAuthority?: boolean;
+    transactionSignature?: string;
+    transactionError?: string;
     onDone?: () => void;
-    createFail?: boolean;
 }
 
 export default function CreateProgress(props: CreateProgressProps) {
-    const { tokenMint, associatedTokenAccount, mintToFinish, revokeMintFinish, revokeMintAuthority, signature, onDone, createFail, ...CardProps } = props;
+    const { tokenMint, associatedTokenAccount, revokeMintAuthority, revokeFreezeAuthority, transactionSignature, transactionError, onDone, ...CardProps } = props;
     const [percent, setPercent] = useState(0);
     useEffect(() => {
-        const steps = [
-            !!tokenMint,
-            // !!tokenAccount,
-            !!associatedTokenAccount,
-            mintToFinish,
-            revokeMintAuthority ? revokeMintFinish : null,
-        ].filter(step => step !== null);
-
-        const completed = steps.filter(Boolean).length;
-        const percent = Math.round((completed / steps.length) * 100);
-
+        let percent = 0;
+        if (transactionSignature) {
+            percent = 100;
+        } else if (transactionError) {
+            percent = 0;
+        } else if (tokenMint) {
+            percent = 30;
+        }
         setPercent(percent);
-    }, [tokenMint, associatedTokenAccount, mintToFinish, revokeMintFinish, revokeMintAuthority]);
+    }, [tokenMint, associatedTokenAccount, transactionSignature, transactionError]);
     return (
         <Card {...CardProps} className="py-1 md:py-4">
             <CardHeader className="flex items-center gap-3 px-5 pt-3 pb-0 md:px-10 md:pt-5">
@@ -42,29 +37,29 @@ export default function CreateProgress(props: CreateProgressProps) {
                     <Icon className="text-white" icon="token-branded:solana" width={30} />
                 </div>
                 <Progress
-                    isIndeterminate={!createFail && percent === 0}
+                    isIndeterminate={!transactionError && percent === 0}
                     showValueLabel
                     classNames={{
                         label: "font-medium",
                         indicator: "bg-linear-to-r from-primary-400 to-secondary-500",
                         value: "text-foreground/60",
                     }}
-                    label={createFail ? "Token creation failed" : (percent === 100 ? "Token creation completed" : "Your token is creating")}
+                    label={transactionError ? "Token creation failed" : (percent === 100 ? "Token creation completed" : "Your token is creating")}
                     value={percent}
                 />
             </CardHeader>
             <CardBody className="px-2 pt-3 sm:px-3 md:px-6">
                 <div className="p-4">
-                    {createFail && (
+                    {transactionError && (
                         <Alert
                             hideIconWrapper
                             color="danger"
-                            description="Token creation failed. Please try again."
+                            description={transactionError}
                             title="Creation Failed"
                             variant="bordered"
                         />
                     )}
-                    {(percent < 60 && !createFail) && (
+                    {(percent < 60 && !transactionError) && (
                         <Alert
                             hideIconWrapper
                             color="warning"
@@ -90,7 +85,7 @@ export default function CreateProgress(props: CreateProgressProps) {
                         description={<p className="text-default-500">{tokenMint || 'A mint account uniquely represents a token on Solana and stores its global metadata.'}</p>}
                         endContent={
                             <div className="flex flex-none">
-                                {createFail ? <Icon className="text-danger" icon="solar:close-circle-linear" width={24} /> : (
+                                {transactionError ? <Icon className="text-danger" icon="solar:close-circle-linear" width={24} /> : (
                                     tokenMint ? (
                                         <CopyButton fullText={tokenMint} />
                                     ) : (
@@ -140,7 +135,7 @@ export default function CreateProgress(props: CreateProgressProps) {
                         description={<p className="text-default-500">{associatedTokenAccount || 'Associated Token Account is the "default" token account for a specific mint and owner.'}</p>}
                         endContent={
                             <div className="flex flex-none">
-                                {createFail ? <Icon className="text-danger" icon="solar:close-circle-linear" width={24} /> : (
+                                {transactionError ? <Icon className="text-danger" icon="solar:close-circle-linear" width={24} /> : (
                                     associatedTokenAccount ? (
                                         <CopyButton fullText={associatedTokenAccount} />
                                     ) : (
@@ -165,8 +160,8 @@ export default function CreateProgress(props: CreateProgressProps) {
                         description={<p className="text-default-500">Minting creates new units of a token</p>}
                         endContent={
                             <div className="flex flex-none">
-                                {createFail ? <Icon className="text-danger" icon="solar:close-circle-linear" width={24} /> : (
-                                    mintToFinish ? (
+                                {transactionError ? <Icon className="text-danger" icon="solar:close-circle-linear" width={24} /> : (
+                                    transactionSignature ? (
                                         <Icon className="text-secondary" icon="solar:check-circle-bold" width={30} />
                                     ) : (
                                         <Spinner />
@@ -180,7 +175,7 @@ export default function CreateProgress(props: CreateProgressProps) {
                         }
                         title="Mint Tokens"
                     />
-                    {!revokeMintAuthority ? (
+                    {revokeMintAuthority ? (
                         <ListboxItem
                             key="revoke-mint"
                             classNames={{
@@ -191,8 +186,8 @@ export default function CreateProgress(props: CreateProgressProps) {
                             description={<p className="text-default-500">Revoked after initial supply is created to create a fixed supply token.</p>}
                             endContent={
                                 <div className="flex flex-none">
-                                    {createFail ? <Icon className="text-danger" icon="solar:close-circle-linear" width={24} /> : (
-                                        revokeMintFinish ? (
+                                    {transactionError ? <Icon className="text-danger" icon="solar:close-circle-linear" width={24} /> : (
+                                        transactionSignature ? (
                                             <Icon className="text-secondary" icon="solar:check-circle-bold" width={30} />
                                         ) : (
                                             <Spinner />
@@ -207,10 +202,37 @@ export default function CreateProgress(props: CreateProgressProps) {
                             title="Revoke Mint Authority"
                         />
                     ) : null}
+                    {revokeFreezeAuthority ? (
+                        <ListboxItem
+                            key="revoke-freeze"
+                            classNames={{
+                                base: "w-full px-2 md:px-4 min-h-[70px] gap-3",
+                                title: "text-medium font-medium",
+                                description: "text-small text-wrap",
+                            }}
+                            description={<p className="text-default-500">Revoked to guarantee users their tokens cannot be frozen.</p>}
+                            endContent={
+                                <div className="flex flex-none">
+                                    {transactionError ? <Icon className="text-danger" icon="solar:close-circle-linear" width={24} /> : (
+                                        transactionSignature ? (
+                                            <Icon className="text-secondary" icon="solar:check-circle-bold" width={30} />
+                                        ) : (
+                                            <Spinner />
+                                        ))}
+                                </div>
+                            }
+                            startContent={
+                                <div className="item-center rounded-medium border-divider flex border p-2">
+                                    <Icon className="text-secondary" icon="mdi:shield-key" width={24} />
+                                </div>
+                            }
+                            title="Revoke Freeze Authority"
+                        />
+                    ) : null}
 
                 </Listbox>
             </CardBody>
-            {createFail && (
+            {transactionError && (
                 <CardFooter className="justify-end gap-2">
                     <Button color="danger" fullWidth onPress={onDone}>
                         Try Again
@@ -219,7 +241,7 @@ export default function CreateProgress(props: CreateProgressProps) {
             )}
             {percent === 100 && (
                 <CardFooter className="justify-end gap-2">
-                    <Button color="secondary" fullWidth startContent={<Icon icon="solar:link-round-angle-linear" width={24} />} onPress={() => window.open(`https://explorer.solana.com/tx/${signature}?cluster=devnet`)}>
+                    <Button color="secondary" fullWidth startContent={<Icon icon="solar:link-round-angle-linear" width={24} />} onPress={() => window.open(`https://explorer.solana.com/tx/${transactionSignature}?cluster=devnet`)}>
                         View On Explorer
                     </Button>
                     <Button color="primary" fullWidth onPress={onDone}>Got it</Button>
