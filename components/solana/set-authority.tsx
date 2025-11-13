@@ -13,3 +13,5 @@ const SetAuthority = React.forwardRef<HTMLFormElement, SetAuthorityProps>(
     })
 
 export default SetAuthority;
+
+SetAuthority.displayName = 'SetAuthority';

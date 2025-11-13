@@ -146,3 +146,5 @@ const CloseTokenAccount = React.forwardRef<HTMLFormElement, CloseTokenAccountPro
         )
     })
 export default CloseTokenAccount;
+
+CloseTokenAccount.displayName = 'CloseTokenAccount';

@@ -13,3 +13,4 @@ const ApproveRevokeDelegate = React.forwardRef<HTMLFormElement, ApproveRevokeDel
     })
 
 export default ApproveRevokeDelegate
+ApproveRevokeDelegate.displayName = 'ApproveRevokeDelegate';

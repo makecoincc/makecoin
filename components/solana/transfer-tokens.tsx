@@ -13,3 +13,5 @@ const TransferTokens = React.forwardRef<HTMLFormElement, TransferTokensProps>(
     })
 
 export default TransferTokens;
+
+TransferTokens.displayName = 'TransferTokens';

@@ -14,3 +14,5 @@ const AddMetadata = React.forwardRef<HTMLFormElement, AddMetadataProps>(
     })
 
 export default AddMetadata
+
+AddMetadata.displayName = 'AddMetadata';

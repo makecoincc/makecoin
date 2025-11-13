@@ -9,6 +9,7 @@ import {
 } from "@heroui/react";
 import { forwardRef, useImperativeHandle } from "react";
 import { KeyValuePair } from "../key-value-editor";
+import CloseTokenAccount from "./close-token-account";
 
 interface ConfirmProps {
     infos: KeyValuePair[];
@@ -76,3 +77,5 @@ const Confirm = forwardRef<ConfirmRef, ConfirmProps>((props, ref) => {
 })
 
 export default Confirm;
+
+Confirm.displayName = 'Confirm';

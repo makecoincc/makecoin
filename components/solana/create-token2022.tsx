@@ -321,4 +321,4 @@ const Token2022Form = React.forwardRef<HTMLDivElement, CreateFormProps>(
 );
 
 export default Token2022Form;
-Token2022Form.displayName = 'CreateToken2022Form';
+Token2022Form.displayName = 'Token2022Form';

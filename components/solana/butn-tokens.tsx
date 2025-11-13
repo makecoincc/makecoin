@@ -13,3 +13,5 @@ const BurnTokens = React.forwardRef<HTMLFormElement, BurnTokensProps>(
     })
 
 export default BurnTokens;
+
+BurnTokens.displayName = 'BurnTokens';

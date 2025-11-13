@@ -13,3 +13,5 @@ const FreezeThawAccount = React.forwardRef<HTMLFormElement, FreezeThawAccountPro
     })
 
 export default FreezeThawAccount;
+
+FreezeThawAccount.displayName = 'FreezeThawAccount';

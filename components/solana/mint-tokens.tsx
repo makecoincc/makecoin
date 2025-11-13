@@ -138,3 +138,5 @@ const MintTokens = React.forwardRef<HTMLFormElement, MintTokensProps>(
     })
 
 export default MintTokens;
+
+MintTokens.displayName = 'MintTokens';
