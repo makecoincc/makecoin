@@ -22,6 +22,10 @@ import {
     createInitializeMetadataPointerInstruction,
     createInitializeInstruction,
     createInitializeAccountInstruction,
+    createMintToInstruction,
+    ASSOCIATED_TOKEN_PROGRAM_ID,
+    getAssociatedTokenAddressSync,
+    createAssociatedTokenAccountInstruction
 } from "@solana/spl-token";
 import { pack, type TokenMetadata } from "@solana/spl-token-metadata";
 
@@ -171,11 +175,71 @@ const initializeTokenAccountIx = async (tokenAccount: Keypair, mint: Keypair, au
     );
 }
 
+/**
+ * 获取关联代币账户地址
+ * @description 计算特定铸币和所有者的关联代币账户地址
+ * @param mint - 铸币账户密钥对
+ * @param feePayer - 所有者密钥对
+ * @param allowOwnerOffCurve - 是否允许所有者地址不在 ed25519 曲线上
+ * @returns 关联代币账户的公钥
+ */
+const getAssociatedTokenAccount = async (mint: Keypair, feePayer: PublicKey, allowOwnerOffCurve: boolean = false) => {
+    return getAssociatedTokenAddressSync(
+        mint.publicKey,           // 铸币账户公钥
+        feePayer,       // 所有者公钥
+        allowOwnerOffCurve,       // 是否允许所有者地址不在 ed25519 曲线上
+        TOKEN_2022_PROGRAM_ID,         // Token 程序 ID
+        ASSOCIATED_TOKEN_PROGRAM_ID // 关联代币程序 ID
+    );
+}
+
+/**
+ * 创建关联代币账户指令
+ * @description 创建一个与特定铸币和所有者关联的代币账户
+ * @param mint - 铸币账户密钥对
+ * @param feePayer - 支付交易费用的密钥对，同时作为代币账户所有者
+ * @param associatedTokenAccount - 关联代币账户的公钥
+ * @returns 创建关联代币账户的交易指令
+ */
+const createAssociatedTokenAccountIx = async (mint: Keypair, feePayer: PublicKey, associatedTokenAccount: PublicKey,) => {
+    return createAssociatedTokenAccountInstruction(
+        feePayer,       // 支付者
+        associatedTokenAccount,   // 关联代币账户地址
+        feePayer,       // 所有者
+        mint.publicKey,           // 铸币账户
+        TOKEN_2022_PROGRAM_ID,         // Token 程序 ID
+        ASSOCIATED_TOKEN_PROGRAM_ID // 关联代币程序 ID
+    );
+}
+
+/**
+ * 铸造代币指令
+ * @description 创建铸造代币到指定账户的交易指令
+ * @param mint - 铸币账户密钥对
+ * @param associatedTokenAccount - 接收代币的账户公钥
+ * @param feePayer - 铸币权限持有者密钥对
+ * @param mintAmount - 铸造的代币数量
+ * @returns 铸造代币的交易指令
+ */
+const mintToInstruction = async (mint: PublicKey, associatedTokenAccount: PublicKey, feePayer: PublicKey, mintAmount: number) => {
+    return createMintToInstruction(
+        mint,                     // 铸币账户
+        associatedTokenAccount,   // 目标账户
+        feePayer,       // 铸币权限持有者
+        mintAmount,               // 铸造数量
+        [],                       // 多重签名者（如果有）
+        TOKEN_2022_PROGRAM_ID          // Token 程序 ID
+    );
+}
+
 export {
     createAccountIx,
     initializeMetadataPointerIx,
     initializeMintIx,
+    getAssociatedTokenAccount,
+    createAssociatedTokenAccountIx,
     initializeMetadataIx,
+    mintToInstruction,
     createTokenAccountIx,
     initializeTokenAccountIx
 }

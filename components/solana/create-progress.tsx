@@ -100,31 +100,6 @@ export default function CreateProgress(props: CreateProgressProps) {
                         }
                         title="Create a Token Mint"
                     />
-                    {/* <ListboxItem
-                        key="token-account"
-                        classNames={{
-                            base: "w-full px-2 md:px-4 min-h-[70px] gap-3",
-                            title: "text-medium font-medium",
-                            description: "text-small text-wrap",
-                        }}
-                        description={<p className="text-default-500">{tokenAccount || 'A token account stores your balance of a specific token.'}</p>}
-                        endContent={
-                            <div className="flex flex-none">
-                                {createFail ? <Icon className="text-danger" icon="solar:close-circle-linear" width={24} /> : (
-                                    tokenAccount ? (
-                                        <CopyButton fullText={tokenAccount} />
-                                    ) : (
-                                        <Spinner />
-                                    ))}
-                            </div>
-                        }
-                        startContent={
-                            <div className="item-center rounded-medium border-divider flex border p-2">
-                                <Icon className="text-secondary" icon="mdi:wallet" width={24} />
-                            </div>
-                        }
-                        title="Create a Token Account"
-                    /> */}
                     <ListboxItem
                         key="ata"
                         classNames={{

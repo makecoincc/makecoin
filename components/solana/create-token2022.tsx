@@ -1,28 +1,12 @@
 import {
-    Connection,
     Keypair,
-    SystemProgram,
     Transaction,
-    sendAndConfirmTransaction,
-    LAMPORTS_PER_SOL
 } from "@solana/web3.js";
-import {
-    TOKEN_2022_PROGRAM_ID,
-    createInitializeMintInstruction,
-    createInitializeAccountInstruction,
-    createInitializeMetadataPointerInstruction,
-    getMintLen,
-    getAccountLen,
-    TYPE_SIZE,
-    ExtensionType,
-    createInitializeInstruction,
-    LENGTH_SIZE
-} from "@solana/spl-token";
-import { pack, type TokenMetadata } from "@solana/spl-token-metadata";
+import { type TokenMetadata } from "@solana/spl-token-metadata";
 import { Link } from "@heroui/react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useConnection } from "@solana/wallet-adapter-react";
-import type { InputProps } from "@heroui/react";
+// import type { InputProps } from "@heroui/react";
 import React, { useState, useRef } from "react";
 import {
     Switch,
@@ -42,20 +26,18 @@ import CreateProgress from "./create-progress";
 import Confirm, { ConfirmRef } from "./confirm";
 import type { CreateFormProps } from './create-token';
 import {
-    getMintAccountRent,
-    createMintAccount,
-    initializeMintInstruction,
-    getAssociatedTokenAccount,
-    createAssociatedTokenAccountIx,
-    mintToInstruction,
-    setMintAuthorityIx
+    setMintAuthorityIx,
 } from '@/lib/solana/basics';
 import {
     createAccountIx,
     initializeMetadataPointerIx,
     initializeMintIx,
-    initializeMetadataIx
+    getAssociatedTokenAccount,
+    createAssociatedTokenAccountIx,
+    initializeMetadataIx,
+    mintToInstruction
 } from '@/lib/solana/extensions';
+import { formatWithSpaces, removeSpaces } from "@/utils";
 
 const Token2022Form = React.forwardRef<HTMLDivElement, CreateFormProps>(
     ({ variant = "flat", className, hideTitle, onDone }, ref) => {
@@ -70,8 +52,8 @@ const Token2022Form = React.forwardRef<HTMLDivElement, CreateFormProps>(
         const [transactionError, setTransactionError] = useState<string>('');
         const [infos, setInfos] = useState<KeyValuePair[]>([]);
 
-        const [decimals, setDecimals] = React.useState<number>(9);
-        const [supply, setSupply] = React.useState<number>(1000000000);
+        const [decimals, setDecimals] = React.useState<string>('9');
+        const [supply, setSupply] = React.useState<string>('1 000 000 000');
         const [uri, setUri] = React.useState<string>('');
         const [name, setName] = React.useState<string>('');
         const [symbol, setSymbol] = React.useState<string>('');
@@ -83,6 +65,9 @@ const Token2022Form = React.forwardRef<HTMLDivElement, CreateFormProps>(
         const [loading, setLoading] = useState<boolean>(false);
         const [agreeTerms, setAgreeTerms] = useState<boolean>(false);
 
+        const onSupplyChange = (value: string) => {
+            setSupply(formatWithSpaces(removeSpaces(value)));
+        }
         const submit = () => {
             if (!decimals || !supply || !name || !symbol) {
                 return;
@@ -110,11 +95,11 @@ const Token2022Form = React.forwardRef<HTMLDivElement, CreateFormProps>(
                 },
                 {
                     key: "Token Name",
-                    value: 'Not set',
+                    value: name,
                 },
                 {
                     key: "Token Symbol",
-                    value: 'Not set',
+                    value: symbol,
                 },
                 {
                     key: "Decimals",
@@ -131,6 +116,8 @@ const Token2022Form = React.forwardRef<HTMLDivElement, CreateFormProps>(
             if (!publicKey) {
                 return;
             }
+            const decimalsNumber = Number(decimals)
+            const supplyNumber = Number(removeSpaces(supply));
             setLoading(true);
 
             const mint = Keypair.generate();
@@ -148,7 +135,7 @@ const Token2022Form = React.forwardRef<HTMLDivElement, CreateFormProps>(
             // 3 初始化pointer
             const initializePointerIx = await initializeMetadataPointerIx(mint.publicKey, publicKey)
             // 4 初始化mint
-            const initializeMint = await initializeMintIx(mint.publicKey, decimals, publicKey)
+            const initializeMint = await initializeMintIx(mint.publicKey, decimalsNumber, publicKey)
             // 5 初始化metadata
             const initializeMetadata = await initializeMetadataIx(mint.publicKey, publicKey, metadata)
             // 6 创建关联token account
@@ -157,14 +144,14 @@ const Token2022Form = React.forwardRef<HTMLDivElement, CreateFormProps>(
             setAssociatedTokenAccount(associatedTokenAccount.toBase58());
 
             // 7 铸造代币到关联token account
-            const mintToIx = await mintToInstruction(mint.publicKey, associatedTokenAccount, publicKey, supply * 10 ** decimals);
+            const mintToIx = await mintToInstruction(mint.publicKey, associatedTokenAccount, publicKey, supplyNumber * 10 ** decimalsNumber);
             const transaction = new Transaction().add(
                 createMintIx,
                 initializePointerIx,
                 initializeMint,
                 initializeMetadata,
-                createAssociatedTokenAccount,
-                mintToIx
+                // createAssociatedTokenAccount,
+                // mintToIx
             );
             if (revokeMintAuthority) {
                 // 8 撤销铸币权限
@@ -239,35 +226,27 @@ const Token2022Form = React.forwardRef<HTMLDivElement, CreateFormProps>(
                             isRequired
                             label="Decimals"
                             labelPlacement="outside"
+                            errorMessage="Decimals must be a integer between one to nine"
                             placeholder="9"
-                            type="number"
-                            value={decimals.toString()}
-                            onChange={(value) => setDecimals(Number(value))}
                             description="The number of decimal places to use for the token."
+                            maxLength={1}
+                            value={decimals}
+                            pattern="^[1-9]"
+                            onValueChange={(value) => setDecimals(value)}
                             variant={variant}
-                            validate={(value) => {
-                                if (!value || isNaN(Number(value))) {
-                                    return "Decimals must be a number";
-                                }
-                                return null;
-                            }}
                         />
                         <Input
                             isRequired
                             label="Supply"
                             labelPlacement="outside"
+                            errorMessage="Supply must be a integer"
                             placeholder="1000000000"
-                            type="number"
-                            value={supply.toString()}
-                            onChange={(value) => setSupply(Number(value))}
+                            maxLength={23 - Number(decimals)}
                             description="The total supply of the token."
+                            value={supply}
+                            onValueChange={(value) => onSupplyChange(value)}
                             variant={variant}
-                            validate={(value) => {
-                                if (!value || isNaN(Number(value))) {
-                                    return "Supply must be a number";
-                                }
-                                return null;
-                            }}
+                            pattern="^[\d\s]+$"
                         />
                         <div className="flex flex-wrap justify-between items-center gap-4 sm:flex-nowrap">
                             <p>Upload MetaData Or Enter URI</p>
@@ -280,7 +259,7 @@ const Token2022Form = React.forwardRef<HTMLDivElement, CreateFormProps>(
                                 labelPlacement="outside"
                                 placeholder="https://example.com/token.json"
                                 value={uri}
-                                onChange={(value) => setUri(String(value))}
+                                onValueChange={(value) => setUri(value)}
                                 description="The URI of the token metadata."
                                 variant={variant}
                             />
