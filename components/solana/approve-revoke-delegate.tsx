@@ -8,7 +8,7 @@ type ApproveRevokeDelegateProps = React.HTMLAttributes<HTMLFormElement> & {
 const ApproveRevokeDelegate = React.forwardRef<HTMLFormElement, ApproveRevokeDelegateProps>(
     ({ className, onToolSelect, ...props }, ref) => {
         return (
-            <div>ddd</div>
+            <div>ApproveRevokeDelegate</div>
         )
     })
 

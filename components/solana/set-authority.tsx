@@ -8,7 +8,7 @@ type SetAuthorityProps = React.HTMLAttributes<HTMLFormElement> & {
 const SetAuthority = React.forwardRef<HTMLFormElement, SetAuthorityProps>(
     ({ className, onToolSelect, ...props }, ref) => {
         return (
-            <div>ddd</div>
+            <div>SetAuthority</div>
         )
     })
 

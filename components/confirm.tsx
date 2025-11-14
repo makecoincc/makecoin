@@ -8,8 +8,7 @@ import {
     Button
 } from "@heroui/react";
 import { forwardRef, useImperativeHandle } from "react";
-import { KeyValuePair } from "../key-value-editor";
-import CloseTokenAccount from "./close-token-account";
+import { KeyValuePair } from "./key-value-editor";
 
 interface ConfirmProps {
     infos: KeyValuePair[];
@@ -20,7 +19,6 @@ interface ConfirmProps {
 export type ConfirmRef = {
     onOpen: () => void;
 };
-
 
 const Confirm = forwardRef<ConfirmRef, ConfirmProps>((props, ref) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();

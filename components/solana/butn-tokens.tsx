@@ -8,7 +8,7 @@ type BurnTokensProps = React.HTMLAttributes<HTMLFormElement> & {
 const BurnTokens = React.forwardRef<HTMLFormElement, BurnTokensProps>(
     ({ className, onToolSelect, ...props }, ref) => {
         return (
-            <div>ddd</div>
+            <div>BurnTokens</div>
         )
     })
 

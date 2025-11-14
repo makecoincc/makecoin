@@ -9,7 +9,7 @@ type AddMetadataProps = React.HTMLAttributes<HTMLFormElement> & {
 const AddMetadata = React.forwardRef<HTMLFormElement, AddMetadataProps>(
     ({ className, onToolSelect, ...props }, ref) => {
         return (
-            <div>ddd</div>
+            <div>AddMetadata</div>
         )
     })
 

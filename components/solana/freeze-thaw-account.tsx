@@ -8,7 +8,7 @@ type FreezeThawAccountProps = React.HTMLAttributes<HTMLFormElement> & {
 const FreezeThawAccount = React.forwardRef<HTMLFormElement, FreezeThawAccountProps>(
     ({ className, onToolSelect, ...props }, ref) => {
         return (
-            <div>ddd</div>
+            <div>FreezeThawAccount</div>
         )
     })
 

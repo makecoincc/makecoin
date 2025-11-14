@@ -103,7 +103,7 @@ export default function SolanaPage() {
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.3 }}
                         >
-                            <ActiveComponent onToolSelect={(key) => setActiveKey(key as ComponentKey)} />
+                            <ActiveComponent onToolSelect={(key: string) => setActiveKey(key as ComponentKey)} />
                         </motion.div>
                     </AnimatePresence>
                 </div>

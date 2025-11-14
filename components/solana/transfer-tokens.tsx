@@ -8,7 +8,7 @@ type TransferTokensProps = React.HTMLAttributes<HTMLFormElement> & {
 const TransferTokens = React.forwardRef<HTMLFormElement, TransferTokensProps>(
     ({ className, onToolSelect, ...props }, ref) => {
         return (
-            <div>ddd</div>
+            <div>TransferTokens</div>
         )
     })
 
