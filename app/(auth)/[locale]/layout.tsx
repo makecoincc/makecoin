@@ -1,5 +1,5 @@
-import AnimatedLayout from "@/app/provider/AnimatedLayout";
-import { MainProvider } from "@/app/provider/MainProvider";
+import AnimatedLayout from "@/app/provider/animated-layout";
+import { MainProvider } from "@/app/provider/main-provider";
 import {NextIntlClientProvider} from 'next-intl';
 import {getMessages} from 'next-intl/server';
 

@@ -1,7 +1,7 @@
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Banner from "@/components/banner";
-import { MainProvider } from "@/app/provider/MainProvider";
+import { MainProvider } from "@/app/provider/main-provider";
 import {NextIntlClientProvider} from 'next-intl';
 import {getMessages} from 'next-intl/server';
 
