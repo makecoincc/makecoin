@@ -6,11 +6,11 @@ import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useConnection } from "@solana/wallet-adapter-react";
-import {
-  Connection,
-  LAMPORTS_PER_SOL,
-  clusterApiUrl
-} from "@solana/web3.js";
+// import {
+//   Connection,
+//   LAMPORTS_PER_SOL,
+//   clusterApiUrl
+// } from "@solana/web3.js";
 // Nextjs hydration error fix
 const WalletMultiButton = dynamic(
     () =>
@@ -61,53 +61,53 @@ export default function SolanaWallet() {
         fetchBalance();
     }, [publicKey, connection]);
 
-    const requestAirdrop = async () => {
-        setIsLoading(true);
-        try {
-            if (publicKey) {
-                const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
-                const airdropAmt = 1 * LAMPORTS_PER_SOL;
-                const signature = await connection.requestAirdrop(publicKey, airdropAmt);
-                console.log("Airdrop signature:", signature);
-                setIsLoading(false);
-                addToast({
-                    title: "Airdrop successful",
-                    description: "You have successfully requested an airdrop.",
-                    color: "success",
-                    endContent: (
-                        <Button
-                            size="sm"
-                            variant="bordered"
-                            isIconOnly
-                            onPress={() => {
-                                window.open(
-                                    `https://explorer.solana.com/tx/${signature}?cluster=devnet`
-                                );
-                            }}
-                        >
-                            <Icon icon="solar:link-round-angle-linear" width={24} />
-                        </Button>
-                    ),
-                });
-            } else {
-                setIsLoading(false);
-                addToast({
-                    title: "Wallet not connected",
-                    description: "Please connect your wallet to request an airdrop.",
-                    color: "danger",
-                });
-            }
-        } catch (error) {
-            setIsLoading(false);
-            console.error("Error requesting airdrop:", error);
-            addToast({
-                title: "Error requesting airdrop",
-                description: "Please try again.",
-                color: "danger",
-            });
-        }
+    // const requestAirdrop = async () => {
+    //     setIsLoading(true);
+    //     try {
+    //         if (publicKey) {
+    //             const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+    //             const airdropAmt = 1 * LAMPORTS_PER_SOL;
+    //             const signature = await connection.requestAirdrop(publicKey, airdropAmt);
+    //             console.log("Airdrop signature:", signature);
+    //             setIsLoading(false);
+    //             addToast({
+    //                 title: "Airdrop successful",
+    //                 description: "You have successfully requested an airdrop.",
+    //                 color: "success",
+    //                 endContent: (
+    //                     <Button
+    //                         size="sm"
+    //                         variant="bordered"
+    //                         isIconOnly
+    //                         onPress={() => {
+    //                             window.open(
+    //                                 `https://explorer.solana.com/tx/${signature}?cluster=devnet`
+    //                             );
+    //                         }}
+    //                     >
+    //                         <Icon icon="solar:link-round-angle-linear" width={24} />
+    //                     </Button>
+    //                 ),
+    //             });
+    //         } else {
+    //             setIsLoading(false);
+    //             addToast({
+    //                 title: "Wallet not connected",
+    //                 description: "Please connect your wallet to request an airdrop.",
+    //                 color: "danger",
+    //             });
+    //         }
+    //     } catch (error) {
+    //         setIsLoading(false);
+    //         console.error("Error requesting airdrop:", error);
+    //         addToast({
+    //             title: "Error requesting airdrop",
+    //             description: "Please try again.",
+    //             color: "danger",
+    //         });
+    //     }
         
-    };
+    // };
     return (
         <div>
             <h2 className="text-default-500 font-medium">Your Wallet</h2>
@@ -142,7 +142,6 @@ export default function SolanaWallet() {
                             disabled={!publicKey}
                             size="lg"
                             variant="bordered"
-                            onPress={requestAirdrop}
                         >
                             Airdrop 1 SOL
                         </Button>
