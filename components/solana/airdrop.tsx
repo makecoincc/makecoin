@@ -24,7 +24,7 @@ export default function Airdrop() {
             return;
         }
         setIsLoading(true);
-        const devnetClient = `${process.env.NEXT_PUBLIC_DEV_RPC_URL}?api-key=${process.env.HELIUS_KEY}` || "devnet";
+        const devnetClient = `${process.env.NEXT_PUBLIC_DEV_RPC_URL}?api-key=${process.env.NEXT_PUBLIC_HELIUS_KEY}` || "devnet";
 
         try {
             const { rpc, rpcSubscriptions } = createSolanaClient({

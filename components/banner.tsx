@@ -12,6 +12,7 @@ export default function Banner() {
                 We&apos;re still building. Reach us at 
                 <a href="mailto:contact@makecoin.cc" className="mx-2 text-indigo-600 hover:underline">contact@makecoin.cc</a>
                 {/* </Link> */}
+                <span className="text-yellow-600">Only devnet is supported.</span>
             </p>
             {/* <Button
         as={Link}

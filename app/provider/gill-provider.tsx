@@ -13,7 +13,7 @@ const queryClient = new QueryClient({
 });
  
 const solanaClient = createSolanaClient({
-  urlOrMoniker: `${process.env.NEXT_PUBLIC_DEV_RPC_URL}?api-key=${process.env.HELIUS_KEY}` || "devnet",
+  urlOrMoniker: `${process.env.NEXT_PUBLIC_DEV_RPC_URL}?api-key=${process.env.NEXT_PUBLIC_HELIUS_KEY}` || "devnet",
 });
  
 export function GillProvider({ children }: { children: React.ReactNode }) {
