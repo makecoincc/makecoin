@@ -29,8 +29,8 @@ export const ChevronDownIcon = () => {
 export function NetworkSwitcher({ setNetwork }: { setNetwork: (network: SolanaClusterMoniker) => void }) {
   const updateClient = useUpdateSolanaClient();
 
-  const devnetClient = `${process.env.NEXT_PUBLIC_DEV_RPC_URL}?api-key=${process.env.NEXT_PUBLIC_HELIUS_KEY}` || "devnet";
-  const mainnetClient = `${process.env.NEXT_PUBLIC_MAINNET_RPC_URL}?api-key=${process.env.NEXT_PUBLIC_HELIUS_KEY}` || "mainnet";
+  const devnetClient = `${process.env.NEXT_PUBLIC_DEV_RPC_URL}?api-key=${process.env.HELIUS_KEY}` || "devnet";
+  const mainnetClient = `${process.env.NEXT_PUBLIC_MAINNET_RPC_URL}?api-key=${process.env.HELIUS_KEY}` || "mainnet";
 
   const networks = ["devnet", "mainnet"];
   const switchNetwork = (network: SolanaClusterMoniker) => {
