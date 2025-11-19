@@ -41,9 +41,14 @@ const WalletMultiButton = dynamic(
     }
 );
 
-export default function SolanaWallet() {
+export default function SolanaWallet({ updateNetwork }: { updateNetwork: (network: string) => void }) {
     const { publicKey } = useWallet();
     const [network, setNetwork] = useState<string>("devnet");
+
+    const handleNetworkChange = (network: string) => {
+        setNetwork(network);
+        updateNetwork(network);
+    }
 
     return (
         <div>
@@ -55,7 +60,7 @@ export default function SolanaWallet() {
             <WalletBalance address={publicKey?.toString() as string} />
             <h2 className="text-default-500 font-medium mt-12">Current Network</h2>
             <Divider className="my-4" />
-            <NetworkSwitcher setNetwork={setNetwork} />
+            <NetworkSwitcher setNetwork={handleNetworkChange} />
             {network === 'devnet' && (
                 <>
                     <h2 className="text-default-500 font-medium mt-12">Airdrop</h2>

@@ -17,7 +17,7 @@ import TransferTokens from "@/components/solana/transfer-tokens";
 import { Breadcrumbs, BreadcrumbItem } from '@heroui/react';
 const solanaTools = [
     { title: "Create Token", description: "Create an SPL token", key: "create-token" },
-    { title: "Add Metadata to a Token", description: "Add metadata to a token", key: "add-metadata" },
+    // { title: "Add Metadata to a Token", description: "Add metadata to a token", key: "add-metadata" },
     { title: "Mint Tokens", description: "Mint tokens to a token account", key: "mint-tokens" },
     { title: "Transfer Tokens", description: "Transfer tokens between token accounts", key: "transfer-tokens" },
     { title: "Approve/Revoke Delegate", description: "Approve/Revoke delegates for a token account", key: "approve-revoke-delegate" },
@@ -29,9 +29,10 @@ const solanaTools = [
 
 interface SolanaToolsProps {
     onToolSelect?: (key: string) => void;
+    network: string;
 }
 
-const SolanaTools = ({ onToolSelect }: SolanaToolsProps) => (
+const SolanaTools = ({ onToolSelect, network }: SolanaToolsProps) => (  
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {solanaTools.map((tool, index) => (
             <ActionCard
@@ -53,7 +54,7 @@ const SolanaTools = ({ onToolSelect }: SolanaToolsProps) => (
 const components = {
     "solana-tools": SolanaTools,
     "create-token": CreateToken,
-    "add-metadata": AddMetadata,
+    // "add-metadata": AddMetadata,
     "approve-revoke-delegate": ApproveRevokeDelegate,
     "burn-tokens": BurnTokens,
     "close-token-account": CloseAccount,
@@ -66,7 +67,7 @@ const components = {
 const activeNames = {
     "solana-tools": "Solana Tools",
     "create-token": "Create Token",
-    "add-metadata": "Add Metadata",
+    // "add-metadata": "Add Metadata",
     "approve-revoke-delegate": "Approve/Revoke Delegate",
     "burn-tokens": "Burn Tokens",
     "close-token-account": "Close token Account",
@@ -82,6 +83,7 @@ export default function SolanaPage() {
     const router = useRouter();
     const [activeKey, setActiveKey] = useState<ComponentKey>('solana-tools');
     const ActiveComponent = components[activeKey];
+    const [network, setNetwork] = useState<string>("devnet");
 
     return (
         <section className="w-full mx-auto max-w-6xl py-10 md:px-6 lg:px-8 px-4 md:px-6 lg:px-8">
@@ -103,12 +105,12 @@ export default function SolanaPage() {
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.3 }}
                         >
-                            <ActiveComponent onToolSelect={(key: string) => setActiveKey(key as ComponentKey)} />
+                            <ActiveComponent network={network} onToolSelect={(key: string) => setActiveKey(key as ComponentKey)} />
                         </motion.div>
                     </AnimatePresence>
                 </div>
                 <div className="rounded-medium bg-content2 dark:bg-content1 w-full px-4 py-4 md:px-6 md:py-8 lg:w-[300px] lg:flex-none order-1 md:order-2 mb-4 md:mb-0">
-                    <SolanaWallet />
+                    <SolanaWallet updateNetwork={setNetwork} />
                 </div>
             </div>
         </section>
