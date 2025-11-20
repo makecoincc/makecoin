@@ -28,10 +28,10 @@ export default async function DefaultLayout(
   return (
     <NextIntlClientProvider messages={messages} locale={locale}>
       <MainProvider>
-        <div className="flex w-full flex-col">
+        <div className="flex w-full flex-col min-h-screen">
           <Banner />
           <Header />
-          <main className="relative flex grow flex-col">{children}</main>
+          <main className="relative flex grow flex-col flex-1">{children}</main>
           <Footer />
         </div>
       </MainProvider>

@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 import type { InputProps } from "@heroui/react";
 import {
     Link,
@@ -16,19 +17,25 @@ import {
     useDisclosure,
 } from "@heroui/react";
 import { cn } from "@heroui/react";
-// import { formatWithSpaces, removeSpaces } from "@/utils";
+import { formatWithSpaces, removeSpaces } from "@/utils";
 import {
-    address,
-    SolanaClusterMoniker,
-    generateKeyPairSigner,
-    getExplorerLink,
-    getSignatureFromTransaction,
-    signTransactionMessageWithSigners,
-} from "gill";
-import { buildCreateTokenTransaction, TOKEN_2022_PROGRAM_ADDRESS } from "gill/programs";
-import { useSolanaClient } from "@gillsdk/react";
+    createFungible,
+    mplTokenMetadata,
+} from '@metaplex-foundation/mpl-token-metadata'
+import {
+    createTokenIfMissing,
+    findAssociatedTokenPda,
+    getSplAssociatedTokenProgramId,
+    mintTokensTo,
+} from '@metaplex-foundation/mpl-toolbox'
+import {
+    generateSigner,
+    percentAmount,
+} from '@metaplex-foundation/umi'
+import { createUmi } from '@metaplex-foundation/umi-bundle-defaults'
+import { base58 } from '@metaplex-foundation/umi/serializers'
 import { useWallet } from "@solana/wallet-adapter-react";
-
+import { walletAdapterIdentity } from "@metaplex-foundation/umi-signer-wallet-adapters";
 type CreateTokenProps = React.HTMLAttributes<HTMLFormElement> & {
     variant?: InputProps["variant"];
     onDone?: (tokenAddress: string) => void;
@@ -37,19 +44,81 @@ type CreateTokenProps = React.HTMLAttributes<HTMLFormElement> & {
 
 const CreateToken = React.forwardRef<HTMLFormElement, CreateTokenProps>(
     ({ variant = "flat", className, network }, ref) => {
-        const { rpc } = useSolanaClient();
-        const { publicKey, signTransaction } = useWallet();
+        const router = useRouter();
+        const { publicKey, wallet } = useWallet();
         const [decimals, setDecimals] = React.useState<string>('9');
-        // const [supply, setSupply] = React.useState<string>('1 000 000 000');
+        const [supply, setSupply] = React.useState<string>('1 000 000 000');
         const [uri, setUri] = React.useState<string>('');
         const [name, setName] = React.useState<string>('');
         const [symbol, setSymbol] = React.useState<string>('');
         const [agreeTerms, setAgreeTerms] = useState<boolean>(false);
         const { isOpen, onOpen, onOpenChange } = useDisclosure();
         const [loading, setLoading] = useState<boolean>(false);
-        // const onSupplyChange = (value: string) => {
-        //     setSupply(formatWithSpaces(removeSpaces(value)));
-        // }
+        const onSupplyChange = (value: string) => {
+            setSupply(formatWithSpaces(removeSpaces(value)));
+        }
+        const createAndMintTokens = async () => {
+            if (!wallet) return;
+            const umi = createUmi(`${process.env.NEXT_PUBLIC_DEV_RPC_URL}?api-key=${process.env.NEXT_PUBLIC_HELIUS_KEY}`)
+                .use(mplTokenMetadata())
+
+            umi.use(walletAdapterIdentity(wallet.adapter));
+
+            // Creating the mintIx
+
+            const mintSigner = generateSigner(umi);
+
+            const createFungibleIx = createFungible(umi, {
+                mint: mintSigner,
+                name,
+                symbol,
+                uri: uri, // we use the `metadataUri` variable we created earlier that is storing our uri.
+                sellerFeeBasisPoints: percentAmount(0),
+                decimals: Number(decimals), // set the amount of decimals you want your token to have.
+            });
+
+            // This instruction will create a new Token Account if required, if one is found then it skips.
+
+            const createTokenIx = createTokenIfMissing(umi, {
+                mint: mintSigner.publicKey,
+                owner: umi.identity.publicKey,
+                ataProgram: getSplAssociatedTokenProgramId(umi),
+            });
+
+            // The final instruction (if required) is to mint the tokens to the token account in the previous ix.
+
+            const mintTokensIx = mintTokensTo(umi, {
+                mint: mintSigner.publicKey,
+                token: findAssociatedTokenPda(umi, {
+                    mint: mintSigner.publicKey,
+                    owner: umi.identity.publicKey,
+                }),
+                amount: BigInt(removeSpaces(supply)) * BigInt(10 ** Number(decimals)),
+            });
+
+            // The last step is to send the ix's off in a transaction to the chain.
+            // Ix's here can be omitted and added as needed during the transaction chain.
+            // If for example you just want to create the Token without minting
+            // any tokens then you may only want to submit the `createToken` ix.
+
+            console.log("Sending transaction")
+            const tx = await createFungibleIx
+                .add(createTokenIx)
+                .add(mintTokensIx)
+                .sendAndConfirm(umi);
+
+            // finally we can deserialize the signature that we can check on chain.
+            const signature = base58.deserialize(tx.signature)[0];
+
+            // Log out the signature and the links to the transaction and the NFT.
+            // Explorer links are for the devnet chain, you can change the clusters to mainnet.
+            console.log('\nTransaction Complete')
+            console.log('View Transaction on Solana Explorer')
+            console.log(`https://explorer.solana.com/tx/${signature}?cluster=devnet`)
+            console.log('View Token on Solana Explorer')
+            console.log(`https://explorer.solana.com/address/${mintSigner.publicKey}?cluster=devnet`)
+            router.push(`/solana/congrats?tx=${signature}&token=${mintSigner.publicKey}`)
+        };
         const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             if (!agreeTerms) {
@@ -71,47 +140,11 @@ const CreateToken = React.forwardRef<HTMLFormElement, CreateTokenProps>(
             onOpen();
         }
         const createToken = async () => {
-            if (!publicKey || !signTransaction) return;
+            if (!publicKey) return;
 
             setLoading(true)
             try {
-                const mint = await generateKeyPairSigner();
-                const tokenProgram = TOKEN_2022_PROGRAM_ADDRESS;
-                const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
-
-                const tx = await buildCreateTokenTransaction({
-                    feePayer: address(publicKey?.toBase58()!),
-                    version: "legacy",
-                    decimals: Number(decimals),
-                    metadata: {
-                        isMutable: true,
-                        name,
-                        symbol,
-                        uri,
-                    },
-                    mint,
-                    latestBlockhash,
-                    // defaults to `TOKEN_PROGRAM_ADDRESS`
-                    tokenProgram,
-                });
-                // Sign with wallet
-                const signedTx = await signTransaction(tx);
-            
-                // Send via RPC
-                const signature = await rpc.sendTransaction(signedTx, { skipPreflight: false }).send();
-            
-                console.log("Sent:", signature);          
-                // const signedTransaction = await signTransactionMessageWithSigners(tx);
-
-                // console.log(
-                //     "Explorer:",
-                //     getExplorerLink({
-                //         cluster: network as SolanaClusterMoniker,
-                //         transaction: getSignatureFromTransaction(signedTransaction),
-                //     }),
-                // );
-
-                // await sendAndConfirmTransaction(signedTransaction);
+                await createAndMintTokens()
             } catch (err) {
                 console.log(err)
             } finally {
@@ -159,7 +192,10 @@ const CreateToken = React.forwardRef<HTMLFormElement, CreateTokenProps>(
                                 </dl>
                                 <Divider />
                                 <div className="mt-4">
-                                    <Button fullWidth color="primary" isLoading={loading} radius="sm" size="lg" onPress={createToken}>
+                                    <Button fullWidth color="primary" radius="sm" size="lg" onPress={() => {
+                                        createToken()
+                                        onClose()
+                                    }}>
                                         Let's Go!
                                     </Button>
                                 </div>
@@ -219,7 +255,7 @@ const CreateToken = React.forwardRef<HTMLFormElement, CreateTokenProps>(
                             onValueChange={(value) => setDecimals(value)}
                             variant={variant}
                         />
-                        {/* <Input
+                        <Input
                             isRequired
                             label="Supply"
                             labelPlacement="outside"
@@ -231,7 +267,7 @@ const CreateToken = React.forwardRef<HTMLFormElement, CreateTokenProps>(
                             onValueChange={(value) => onSupplyChange(value)}
                             variant={variant}
                             pattern="^[\d\s]+$"
-                        /> */}
+                        />
                     </div>
 
                     <Input
@@ -253,7 +289,7 @@ const CreateToken = React.forwardRef<HTMLFormElement, CreateTokenProps>(
                         <Link href="https://www.makecoin.cc/terms" target="_blank" rel="noopener noreferrer" className="ml-1 underline">terms and conditions</Link>
                     </div>
                     <div className="mt-4 space-y-4">
-                        <Button fullWidth color="primary" radius="sm" size="lg" type="submit">
+                        <Button fullWidth color="primary" isLoading={loading} radius="sm" size="lg" type="submit">
                             Create Token
                         </Button>
                     </div>
