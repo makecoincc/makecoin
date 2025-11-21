@@ -289,7 +289,7 @@ const CreateToken = React.forwardRef<HTMLFormElement, CreateTokenProps>(
                         <Checkbox isSelected={agreeTerms} onValueChange={setAgreeTerms}>
                             {t('agreeTerms')}
                         </Checkbox>
-                        <Link href={`https://docs.makecoin.cc/terms`} target="_blank" rel="noopener noreferrer" className="ml-1 underline">{t('termsAndConditions')}</Link>
+                        <Link href={`https://docs.makecoin.cc/${locale}/terms`} target="_blank" rel="noopener noreferrer" className="ml-1 underline">{t('termsAndConditions')}</Link>
                     </div>
                     <div className="mt-4 space-y-4">
                         <Button fullWidth color="primary" isLoading={loading} radius="sm" size="lg" type="submit">

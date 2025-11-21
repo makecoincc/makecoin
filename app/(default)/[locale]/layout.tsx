@@ -29,7 +29,7 @@ export default async function DefaultLayout(
     <NextIntlClientProvider messages={messages} locale={locale}>
       <MainProvider>
         <div className="flex w-full flex-col min-h-screen">
-          <Banner />
+          {/* <Banner /> */}
           <Header />
           <main className="relative flex grow flex-col flex-1">{children}</main>
           <Footer />

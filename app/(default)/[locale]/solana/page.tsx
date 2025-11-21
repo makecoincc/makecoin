@@ -142,7 +142,7 @@ export default function SolanaPage() {
             <div className="flex justify-between mb-4">
                 <div className="flex flex-col">
                     <h1 className="text-2xl font-medium">{activeNames[activeKey]}</h1>
-                    <Breadcrumbs>
+                    <Breadcrumbs className="hidden md:block">
                         <BreadcrumbItem onPress={() => router.push('/')}>{t("home")}</BreadcrumbItem>
                         <BreadcrumbItem onPress={() => setActiveKey('index')}>{t("solanaTools")}</BreadcrumbItem>
                         {activeKey !== 'index' && <BreadcrumbItem >{activeNames[activeKey]}</BreadcrumbItem>}
@@ -156,7 +156,7 @@ export default function SolanaPage() {
                     </Badge>
                 </div>
             </div>
-            <div>
+            <div className="">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={activeKey}

@@ -1,8 +1,9 @@
 "use client";
 
-import type {NavbarProps} from "@heroui/react";
-import {useTranslations} from 'next-intl';
+import type { NavbarProps } from "@heroui/react";
+import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from "next/navigation";
+import { usePathname, useRouter as i18nRouter } from '@/i18n/routing'
 
 import React from "react";
 import {
@@ -16,24 +17,32 @@ import {
   Link,
   Button,
   Divider,
+  Tabs,
+  Tab
 } from "@heroui/react";
 // import {Icon} from "@iconify/react";
-import {cn} from "@heroui/react";
+import { cn } from "@heroui/react";
 
 import { Logo } from "@/components/logo";
 import LangSwitch from "@/components/lang-switch";
 
-const menuItems = [
-  "Features",
-  "Docs",
-  "About Us",
-];
-
 export default function Header(props: NavbarProps) {
   const t = useTranslations('nav');
+  const locale = useLocale();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const router = useRouter();
+  const pathname = usePathname();
+  const i18router = i18nRouter();
 
+  const handleLanguageChange = (newLocale: string) => {
+    // Use next-intl's router which handles locale switching properly
+    i18router.replace(pathname, {locale: newLocale});
+  };
+  
+  const menuItems = [
+    { label: t('faqs'), href: "/#faqs"},
+    { label: t('docs'), href: `https://docs.makecoin.cc/${locale}`},
+  ];
   return (
     <Navbar
       {...props}
@@ -64,12 +73,12 @@ export default function Header(props: NavbarProps) {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link className="text-default-500" href="#faqs" size="sm">
+          <Link className="text-default-500" href="/#faqs" size="sm">
             {t('faqs')}
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
-          <Link aria-current="page" color="foreground" href="https://docs.makecoin.cc/" size="sm" target="_blank">
+          <Link aria-current="page" color="foreground" href={`https://docs.makecoin.cc/${locale}`} size="sm" target="_blank">
             {t('docs')}
           </Link>
         </NavbarItem>
@@ -104,20 +113,26 @@ export default function Header(props: NavbarProps) {
       <NavbarMenuToggle className="text-default-400 md:hidden" />
 
       <NavbarMenu className="bg-default-200/50 shadow-medium dark:bg-default-100/50 top-[calc(var(--navbar-height)-1px)] max-h-fit pt-6 pb-6 backdrop-blur-md backdrop-saturate-150">
-        {/* <NavbarMenuItem>
-          <Button fullWidth as={Link} href="/signin" variant="faded">
+        <NavbarMenuItem className="text-right">
+          {/* <Button fullWidth as={Link} href="/signin" variant="faded">
             Sign In
-          </Button>
+          </Button> */}
+          <Tabs aria-label="Language" selectedKey={locale} onSelectionChange={(key) => handleLanguageChange(key as string)}>
+            <Tab key="zh" title="Chinese">
+            </Tab>
+            <Tab key="en" title="English">
+            </Tab>
+          </Tabs>
         </NavbarMenuItem>
-        <NavbarMenuItem className="mb-4">
+        {/* <NavbarMenuItem className="mb-4">
           <Button fullWidth as={Link} className="bg-foreground text-background" href="/#">
             Get Started
           </Button>
         </NavbarMenuItem> */}
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
-            <Link className="text-default-500 mb-2 w-full" href="#" size="md">
-              {item}
+            <Link className="text-default-500 mb-2 w-full" href={item.href} size="md">
+              {item.label}
             </Link>
             {index < menuItems.length - 1 && <Divider className="opacity-50" />}
           </NavbarMenuItem>
