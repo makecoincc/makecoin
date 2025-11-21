@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations, useLocale } from 'next-intl';
 import type { InputProps } from "@heroui/react";
 import {
     Link,
@@ -46,6 +47,8 @@ const CreateToken = React.forwardRef<HTMLFormElement, CreateTokenProps>(
     ({ variant = "flat", className, network }, ref) => {
         const router = useRouter();
         const { publicKey, wallet } = useWallet();
+        const t = useTranslations('createToken');
+        const locale = useLocale();
         const [decimals, setDecimals] = React.useState<string>('9');
         const [supply, setSupply] = React.useState<string>('1 000 000 000');
         const [uri, setUri] = React.useState<string>('');
@@ -123,16 +126,16 @@ const CreateToken = React.forwardRef<HTMLFormElement, CreateTokenProps>(
             e.preventDefault();
             if (!agreeTerms) {
                 addToast({
-                    title: "Terms and Conditions not agreed",
-                    description: "Please agree to the terms and conditions.",
+                    title: t('termsNotAgreedTitle'),
+                    description: t('termsNotAgreedDescription'),
                     color: "danger"
                 });
                 return;
             }
             if (!publicKey) {
                 addToast({
-                    title: "Wallet not connected",
-                    description: "Please connect your wallet.",
+                    title: t('walletNotConnectedTitle'),
+                    description: t('walletNotConnectedDescription'),
                     color: "danger"
                 });
                 return;
@@ -167,26 +170,26 @@ const CreateToken = React.forwardRef<HTMLFormElement, CreateTokenProps>(
                         {(onClose) => (
                             <ModalBody>
                                 <ModalHeader className="flex-col items-center gap-1 px-0 text-center">
-                                    <h1 className="text-xl">Confirm Information</h1>
+                                    <h1 className="text-xl">{t('confirmInformation')}</h1>
                                     <p className="text-small text-default-500 font-normal">
-                                        Once you confirm, you cannot change the token information.
+                                        {t('confirmDescription')}
                                     </p>
                                 </ModalHeader>
                                 <dl className="flex flex-col gap-4 py-4">
                                     <div className="flex justify-between">
-                                        <dt className="text-default-500">Name</dt>
+                                        <dt className="text-default-500">{t('name')}</dt>
                                         <dd className="text-default-700 font-semibold">{name}</dd>
                                     </div>
                                     <div className="flex justify-between">
-                                        <dt className="text-default-500">Symbol</dt>
+                                        <dt className="text-default-500">{t('symbol')}</dt>
                                         <dd className="text-default-700 font-semibold">{symbol}</dd>
                                     </div>
                                     <div className="flex justify-between">
-                                        <dt className="text-default-500">Decimals</dt>
+                                        <dt className="text-default-500">{t('decimals')}</dt>
                                         <dd className="text-default-700 font-semibold">{decimals}</dd>
                                     </div>
                                     <div className="flex justify-between">
-                                        <dt className="text-default-500 font-semibold">Network</dt>
+                                        <dt className="text-default-500 font-semibold">{t('network')}</dt>
                                         <dd className="text-default-700 font-semibold">{network}</dd>
                                     </div>
                                 </dl>
@@ -196,7 +199,7 @@ const CreateToken = React.forwardRef<HTMLFormElement, CreateTokenProps>(
                                         createToken()
                                         onClose()
                                     }}>
-                                        Let's Go!
+                                        {t('letsGo')}
                                     </Button>
                                 </div>
                             </ModalBody>
@@ -204,38 +207,38 @@ const CreateToken = React.forwardRef<HTMLFormElement, CreateTokenProps>(
                     </ModalContent>
                 </Modal>
                 <form ref={ref} className={cn("flex flex-col gap-4", className)} onSubmit={onSubmit}>
-                    <span className="text-foreground-500 relative">Token Information</span>
+                    <span className="text-foreground-500 relative">{t('tokenInformation')}</span>
                     <div className="flex flex-wrap items-center gap-4 sm:flex-nowrap">
                         <Input
                             isRequired
-                            label="Token Name (Max 30)"
+                            label={t('tokenName')}
                             labelPlacement="outside"
-                            placeholder="Enter your token name"
-                            description="The name of the token."
+                            placeholder={t('tokenNamePlaceholder')}
+                            description={t('tokenNameDescription')}
                             maxLength={30}
                             value={name}
                             onValueChange={(value) => setName(value)}
                             variant={variant}
                             validate={(value) => {
                                 if (!value || value.length > 30) {
-                                    return "Name must be 30 characters or less";
+                                    return t('tokenNameError');
                                 }
                                 return null;
                             }}
                         />
                         <Input
                             isRequired
-                            label="Token Symbol (Max 10)"
+                            label={t('tokenSymbol')}
                             labelPlacement="outside"
-                            description="The symbol of the token."
-                            placeholder="SOL"
+                            description={t('tokenSymbolDescription')}
+                            placeholder={t('tokenSymbolPlaceholder')}
                             maxLength={10}
                             value={symbol}
                             onValueChange={(value) => setSymbol(value)}
                             variant={variant}
                             validate={(value) => {
                                 if (!value || value.length > 10) {
-                                    return "Symbol must be 10 characters or less";
+                                    return t('tokenSymbolError');
                                 }
                                 return null;
                             }}
@@ -244,11 +247,11 @@ const CreateToken = React.forwardRef<HTMLFormElement, CreateTokenProps>(
                     <div className="flex flex-wrap items-center gap-4 sm:flex-nowrap">
                         <Input
                             isRequired
-                            label="Decimals"
+                            label={t('decimals')}
                             labelPlacement="outside"
-                            errorMessage="Decimals must be a integer between one to nine"
-                            placeholder="9"
-                            description="The number of decimal places to use for the token."
+                            errorMessage={t('decimalsError')}
+                            placeholder={t('decimalsPlaceholder')}
+                            description={t('decimalsDescription')}
                             maxLength={1}
                             value={decimals}
                             pattern="^[1-9]"
@@ -257,12 +260,12 @@ const CreateToken = React.forwardRef<HTMLFormElement, CreateTokenProps>(
                         />
                         <Input
                             isRequired
-                            label="Supply"
+                            label={t('supply')}
                             labelPlacement="outside"
-                            errorMessage="Supply must be a integer"
-                            placeholder="1000000000"
+                            errorMessage={t('supplyError')}
+                            placeholder={t('supplyPlaceholder')}
                             maxLength={23 - Number(decimals)}
-                            description="The total supply of the token."
+                            description={t('supplyDescription')}
                             value={supply}
                             onValueChange={(value) => onSupplyChange(value)}
                             variant={variant}
@@ -274,23 +277,23 @@ const CreateToken = React.forwardRef<HTMLFormElement, CreateTokenProps>(
                         isRequired
                         type="url"
                         pattern="https://.*"
-                        label="URI"
+                        label={t('uri')}
                         labelPlacement="outside"
-                        placeholder="https://example.com/token.json"
+                        placeholder={t('uriPlaceholder')}
                         value={uri}
                         onValueChange={(value) => setUri(value)}
-                        description="The URI of the token metadata. https only."
+                        description={t('uriDescription')}
                         variant={variant}
                     />
                     <div className="flex">
                         <Checkbox isSelected={agreeTerms} onValueChange={setAgreeTerms}>
-                            I agree to the
+                            {t('agreeTerms')}
                         </Checkbox>
-                        <Link href="https://www.makecoin.cc/terms" target="_blank" rel="noopener noreferrer" className="ml-1 underline">terms and conditions</Link>
+                        <Link href={`https://docs.makecoin.cc/terms`} target="_blank" rel="noopener noreferrer" className="ml-1 underline">{t('termsAndConditions')}</Link>
                     </div>
                     <div className="mt-4 space-y-4">
                         <Button fullWidth color="primary" isLoading={loading} radius="sm" size="lg" type="submit">
-                            Create Token
+                            {t('createTokenButton')}
                         </Button>
                     </div>
                 </form>
