@@ -13,19 +13,9 @@ import FreezeThawAccount from "@/components/solana/freeze-thaw-account";
 import MintTokens from "@/components/solana/mint-tokens";
 import SetAuthority from "@/components/solana/set-authority";
 import TransferTokens from "@/components/solana/transfer-tokens";
-
-import { Breadcrumbs, BreadcrumbItem, Badge } from '@heroui/react';
-const solanaTools = [
-    { title: "Create Token", description: "Create an SPL token", key: "create-token" },
-    { title: "Add Metadata to a Token", description: "Add metadata to a token", key: "add-metadata" },
-    { title: "Mint Tokens", description: "Mint tokens to a token account", key: "mint-tokens" },
-    { title: "Transfer Tokens", description: "Transfer tokens between token accounts", key: "transfer-tokens" },
-    { title: "Approve/Revoke Delegate", description: "Approve/Revoke delegates for a token account", key: "approve-revoke-delegate" },
-    { title: "Set Authority", description: "Set authority for mints or token accounts", key: "set-authority" },
-    { title: "Burn Tokens", description: "Burn tokens", key: "burn-tokens" },
-    { title: "Close Token Account", description: "Close token accounts", key: "close-token-account" },
-    { title: "Freeze/Thaw Account", description: "Freeze/Thaw token accounts", key: "freeze-thaw-account" },
-]
+import { Breadcrumbs, BreadcrumbItem, Badge, addToast } from '@heroui/react';
+import { useTranslations } from 'next-intl';
+import { useWallet } from "@solana/wallet-adapter-react";
 
 const WalletMultiButton = dynamic(
     () =>
@@ -64,24 +54,38 @@ interface SolanaToolsProps {
     network: string;
 }
 
-const SolanaTools = ({ onToolSelect, network }: SolanaToolsProps) => (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {solanaTools.map((tool, index) => (
-            <ActionCard
-                key={index}
-                title={tool.title}
-                description={tool.description}
-                color="secondary"
-                icon="solar:document-medicine-linear"
-                onPress={() => {
-                    if (onToolSelect) {
-                        onToolSelect(tool.key);
-                    }
-                }}
-            />
-        ))}
-    </div>
-)
+const SolanaTools = ({ onToolSelect, network }: SolanaToolsProps) => {
+    const t = useTranslations("solana");
+    const solanaTools = [
+        { title: t("createToken"), description: t("createTokenDesc"), key: "create-token", color:"primary" },
+        { title: t("addMetadata"), description: t("addMetadataDesc"), key: "add-metadata", color:"warning" },
+        { title: t("mintTokens"), description: t("mintTokensDesc"), key: "mint-tokens", color:"warning" },
+        { title: t("transferTokens"), description: t("transferTokensDesc"), key: "transfer-tokens", color:"warning" },
+        { title: t("approveRevokeDelegate"), description: t("approveRevokeDelegateDesc"), key: "approve-revoke-delegate", color:"warning" },
+        { title: t("setAuthority"), description: t("setAuthorityDesc"), key: "set-authority", color:"warning" },
+        { title: t("burnTokens"), description: t("burnTokensDesc"), key: "burn-tokens", color:"warning" },
+        { title: t("closeTokenAccount"), description: t("closeTokenAccountDesc"), key: "close-token-account", color:"warning" },
+        { title: t("freezeThawAccount"), description: t("freezeThawAccountDesc"), key: "freeze-thaw-account", color:"warning" },
+    ]
+    return (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {solanaTools.map((tool, index) => (
+                <ActionCard
+                    key={index}
+                    title={tool.title}
+                    description={tool.description}
+                    color={tool.color as "secondary" | "warning" | "primary" | "danger" | undefined}
+                    icon="solar:document-medicine-linear"
+                    onPress={() => {
+                        if (onToolSelect) {
+                            onToolSelect(tool.key);
+                        }
+                    }}
+                />
+            ))}
+        </div>
+    )
+}
 
 const components = {
     "index": SolanaTools,
@@ -96,41 +100,59 @@ const components = {
     "transfer-tokens": TransferTokens,
 }
 
-const activeNames = {
-    "index": "Solana Tools",
-    "create-token": "Create Token",
-    "add-metadata": "Add Metadata",
-    "approve-revoke-delegate": "Approve/Revoke Delegate",
-    "burn-tokens": "Burn Tokens",
-    "close-token-account": "Close token Account",
-    "freeze-thaw-account": "Freeze/Thaw Account",
-    "mint-tokens": "Mint Tokens",
-    "set-authority": "Set Authority",
-    "transfer-tokens": "Transfer Tokens",
-}
+
 
 type ComponentKey = keyof typeof components;
 
 export default function SolanaPage() {
+    const t = useTranslations("solana");
+    const { publicKey, connected } = useWallet();
     const router = useRouter();
     const [activeKey, setActiveKey] = useState<ComponentKey>('index');
     const ActiveComponent = components[activeKey];
     const [network, setNetwork] = useState<string>("devnet");
+    const activeNames = {
+        "index": t("solanaTools"),
+        "create-token": t("createToken"),
+        "add-metadata": t("addMetadata"),
+        "approve-revoke-delegate": t("approveRevokeDelegate"),
+        "burn-tokens": t("burnTokens"),
+        "close-token-account": t("closeTokenAccount"),
+        "freeze-thaw-account": t("freezeThawAccount"),
+        "mint-tokens": t("mintTokens"),
+        "set-authority": t("setAuthority"),
+        "transfer-tokens": t("transferTokens"),
+    }
+    const onToolSelect = (key: ComponentKey) => {
+        if (key === 'index' || key === 'create-token') {
+            setActiveKey(key);
+            return;
+        }
+        addToast({
+            title: t("notSupported"),
+            description: t("notSupportedDesc"),
+            color: "warning",
+        })
+    }
 
+    const shorten = (address: string) =>
+    `${address.slice(0, 6)}...${address.slice(-4)}`;
     return (
         <section className="w-full mx-auto max-w-6xl py-10 md:px-6 lg:px-8 px-4 md:px-6 lg:px-8">
             <div className="flex justify-between mb-4">
                 <div className="flex flex-col">
-                    <h1 className="text-2xl font-medium">Solana Tools</h1>
+                    <h1 className="text-2xl font-medium">{activeNames[activeKey]}</h1>
                     <Breadcrumbs>
-                        <BreadcrumbItem onPress={() => router.push('/')}>Home</BreadcrumbItem>
-                        <BreadcrumbItem onPress={() => setActiveKey('index')}>Solana Tools</BreadcrumbItem>
+                        <BreadcrumbItem onPress={() => router.push('/')}>{t("home")}</BreadcrumbItem>
+                        <BreadcrumbItem onPress={() => setActiveKey('index')}>{t("solanaTools")}</BreadcrumbItem>
                         {activeKey !== 'index' && <BreadcrumbItem >{activeNames[activeKey]}</BreadcrumbItem>}
                     </Breadcrumbs>
                 </div>
                 <div className="flex items-center gap-2">
-                    <Badge color="warning" content="dev">
-                        <WalletMultiButton />
+                    <Badge color="warning" content={t(network)}>
+                        <WalletMultiButton>
+                            { connected ? shorten(publicKey?.toBase58() || "") : t("connectWallet")}
+                        </WalletMultiButton>
                     </Badge>
                 </div>
             </div>
@@ -143,7 +165,7 @@ export default function SolanaPage() {
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.3 }}
                     >
-                        <ActiveComponent network={network} onToolSelect={(key: string) => setActiveKey(key as ComponentKey)} />
+                        <ActiveComponent network={network} onToolSelect={(key: string) => onToolSelect(key as ComponentKey)} />
                     </motion.div>
                 </AnimatePresence>
 

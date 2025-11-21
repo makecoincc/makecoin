@@ -5,10 +5,12 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { Card, CardBody, Image, CardHeader, CardFooter, Button } from "@heroui/react";
 import { m, useMotionValue, domAnimation, LazyMotion, useMotionTemplate } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 type ChainType = {
   name: string;
   desc: string;
+  status: number;
 }
 
 interface CustomCardProps extends CardProps {
@@ -35,6 +37,7 @@ export default function ChainCard(props: CustomCardProps) {
     router.push(`/${chain.name.toLowerCase()}`);
   }
 
+  const t = useTranslations('home');
   return (
     <Card
       ref={cardRef}
@@ -64,15 +67,15 @@ export default function ChainCard(props: CustomCardProps) {
       </CardHeader>
       <CardBody className="px-3">
         <div className="flex flex-col gap-2 px-2">
-          <p className="text-large font-medium dark:text-white/80">{chain.name} Tools</p>
+          <p className="text-large font-medium dark:text-white/80">{chain.name} {t('tools')}</p>
           <p className="text-small dark:text-white/60">
             {chain.desc}
           </p>
         </div>
       </CardBody>
       <CardFooter className="justify-end gap-2">
-        <Button fullWidth className="z-99 border-small dark:border-white/20 bg-white/10 dark:text-white" onPress={onPress}>
-          Get Started
+        <Button fullWidth disabled={chain.status === 0} className="z-99 border-small dark:border-white/20 bg-white/10 dark:text-white" onPress={onPress}>
+          {chain.status === 0 ? t('comingSoon') : t('getStarted')}
         </Button>
       </CardFooter>
     </Card>

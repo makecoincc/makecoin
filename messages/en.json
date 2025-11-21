@@ -1,15 +1,61 @@
 {
     "nav": {
         "home": "Home",
-        "features": "Features",
-        "customers": "Customers",
+        "faqs": "FAQs",
         "aboutUs": "About Us",
-        "integrations": "Integrations"
+        "docs": "Docs",
+        "reachUs": "We are still building. Reach us at"
     },
     "signin": {
         "signin": "Sign In"
     },
     "home": {
-        "home": "Home"
+        "home": "Home",
+        "solanaDesc": "With MakeCoin's Solana token tools, you can easily create and manage your Solana tokens.",
+        "ethereumDesc": "Currently not supported. Development in progress.",
+        "unknownDesc": "Other chains are not supported yet. Development in progress.",
+        "tools": "Tools",
+        "comingSoon": "Coming Soon",
+        "getStarted": "Get Started",
+        "title": "Make Coin In One Click",
+        "subtitle": "Create and manage your Solana tokens with ease.",
+        "desc": "MAKE COIN makes launching your own digital currency radically simple. Zero fees. Fully open-source. No gatekeepers. Just pure crypto freedom—accessible to anyone, anywhere."
+    },
+    "faqs": {
+        "title": "FAQs",
+        "subtitle": "Frequently asked questions",
+        "contactUs": "Contact Us",
+        "whatIsMakeCoin": "What is MakeCoin?",
+        "isThereAnyFeeForUsingMakeCoin": "Is there any fee for using MakeCoin?",
+        "whatBlockchainsDoesMakeCoinSupport": "What blockchains does MakeCoin support?",
+        "whatIsMakeCoinDesc": "This is a Token Issuance Platform.",
+        "isThereAnyFeeForUsingMakeCoinDesc": "This platform is mainly for technical exchange and learning purposes and does not charge users.",
+        "whatBlockchainsDoesMakeCoinSupportDesc": "Currently only supports Solana."
+    },
+    "solana": {
+        "home": "Home",
+        "solanaTools": "Solana Tools",
+        "createToken": "Create Token",
+        "addMetadata": "Add Metadata to a Token",
+        "mintTokens": "Mint Tokens",
+        "transferTokens": "Transfer Tokens",
+        "approveRevokeDelegate": "Approve/Revoke Delegate",
+        "setAuthority": "Set Authority",
+        "burnTokens": "Burn Tokens",
+        "closeTokenAccount": "Close Token Account",
+        "freezeThawAccount": "Freeze/Thaw Account",
+        "createTokenDesc": "Create an SPL token",
+        "addMetadataDesc": "Add metadata to a token",
+        "mintTokensDesc": "Mint tokens to a token account",
+        "transferTokensDesc": "Transfer tokens to another account",
+        "approveRevokeDelegateDesc": "Approve or revoke a delegate for token transfers",
+        "setAuthorityDesc": "Set the authority for a token account",
+        "burnTokensDesc": "Burn tokens from a token account",
+        "closeTokenAccountDesc": "Close a token account",
+        "freezeThawAccountDesc": "Freeze or thaw a token account",
+        "notSupported": "Not Supported",
+        "notSupportedDesc": "This feature is not supported yet. Development in progress.",
+        "connectWallet": "Connect Wallet",
+        "devnet": "Devnet"
     }
 }

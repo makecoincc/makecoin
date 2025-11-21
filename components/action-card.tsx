@@ -26,13 +26,13 @@ const ActionCard = React.forwardRef<HTMLDivElement, ActionCardProps>(
           };
         case "secondary":
           return {
-            card: "border-secondary-100",
+            card: "border-secondary-500",
             iconWrapper: "bg-secondary-50 border-secondary-100",
             icon: "text-secondary",
           };
         case "warning":
           return {
-            card: "border-warning-500",
+            card: "border-warning-100",
             iconWrapper: "bg-warning-50 border-warning-100",
             icon: "text-warning-600",
           };

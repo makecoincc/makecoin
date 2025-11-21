@@ -2,6 +2,7 @@
 
 import type {NavbarProps} from "@heroui/react";
 import {useTranslations} from 'next-intl';
+import { useRouter } from "next/navigation";
 
 import React from "react";
 import {
@@ -23,19 +24,15 @@ import { Logo } from "@/components/logo";
 import LangSwitch from "@/components/lang-switch";
 
 const menuItems = [
-  "About",
-  "Blog",
-  "Customers",
-  "Pricing",
-  "Enterprise",
-  "Changelog",
-  "Documentation",
-  "Contact Us",
+  "Features",
+  "Docs",
+  "About Us",
 ];
 
 export default function Header(props: NavbarProps) {
   const t = useTranslations('nav');
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const router = useRouter();
 
   return (
     <Navbar
@@ -52,7 +49,7 @@ export default function Header(props: NavbarProps) {
       onMenuOpenChange={setIsMenuOpen}
     >
       {/* Left Content */}
-      <NavbarBrand>
+      <NavbarBrand onClick={() => router.push('/')} className="cursor-pointer">
         <div className="rounded-full">
           <Logo size={34} />
         </div>
@@ -62,30 +59,25 @@ export default function Header(props: NavbarProps) {
       {/* Center Content */}
       <NavbarContent justify="center">
         <NavbarItem>
-          <Link className="text-default-500" href="#" size="sm">
+          <Link className="text-default-500" href="/" size="sm">
             {t('home')}
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link className="text-default-500" href="#" size="sm">
-            {t('features')}
+          <Link className="text-default-500" href="#faqs" size="sm">
+            {t('faqs')}
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
-          <Link aria-current="page" color="foreground" href="#" size="sm">
-            {t('customers')}
+          <Link aria-current="page" color="foreground" href="https://docs.makecoin.cc/" size="sm" target="_blank">
+            {t('docs')}
           </Link>
         </NavbarItem>
-        <NavbarItem>
-          <Link className="text-default-500" href="#" size="sm">
+        {/* <NavbarItem>
+          <Link className="text-default-500" href="/about-us" size="sm">
             {t('aboutUs')}
           </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link className="text-default-500" href="#" size="sm">
-            {t('integrations')}
-          </Link>
-        </NavbarItem>
+        </NavbarItem> */}
         <NavbarItem>
           <LangSwitch />
         </NavbarItem>
@@ -93,11 +85,11 @@ export default function Header(props: NavbarProps) {
 
       {/* Right Content */}
       <NavbarContent className="hidden md:flex" justify="end">
-        <NavbarItem className="ml-2 flex! gap-2">
+        {/* <NavbarItem className="ml-2 flex! gap-2">
           <Button as={Link} href="/signin" className="text-default-500" radius="full" variant="light">
             Login
           </Button>
-          {/* <Button
+          <Button
             className="bg-foreground text-background font-medium"
             color="secondary"
             endContent={<Icon icon="solar:alt-arrow-right-linear" />}
@@ -105,14 +97,14 @@ export default function Header(props: NavbarProps) {
             variant="flat"
           >
             Get Started
-          </Button> */}
-        </NavbarItem>
+          </Button>
+        </NavbarItem> */}
       </NavbarContent>
 
       <NavbarMenuToggle className="text-default-400 md:hidden" />
 
       <NavbarMenu className="bg-default-200/50 shadow-medium dark:bg-default-100/50 top-[calc(var(--navbar-height)-1px)] max-h-fit pt-6 pb-6 backdrop-blur-md backdrop-saturate-150">
-        <NavbarMenuItem>
+        {/* <NavbarMenuItem>
           <Button fullWidth as={Link} href="/signin" variant="faded">
             Sign In
           </Button>
@@ -121,7 +113,7 @@ export default function Header(props: NavbarProps) {
           <Button fullWidth as={Link} className="bg-foreground text-background" href="/#">
             Get Started
           </Button>
-        </NavbarMenuItem>
+        </NavbarMenuItem> */}
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
             <Link className="text-default-500 mb-2 w-full" href="#" size="md">

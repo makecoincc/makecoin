@@ -1,15 +1,61 @@
 {
     "nav": {
         "home": "首页",
-        "features": "功能",
-        "customers": "客户",
+        "faqs": "常见问题",
         "aboutUs": "关于我们",
-        "integrations": "集成"
+        "docs": "文档",
+        "reachUs": "我们仍在建设中。请联系我们："
     },
     "signin": {
         "signin": "登录"
     },
     "home": {
-        "home": "首页"
+        "home": "首页",
+        "solanaDesc": "通过MakeCoin的 Solana代币工具，您可以轻松创建和管理您的 Solana代币。",
+        "ethereumDesc": "开发中，当前暂不支持",
+        "unknownDesc": "开发中，其他链暂不支持",
+        "tools": "工具",
+        "comingSoon": "即将推出",
+        "getStarted": "开始使用",
+        "title": "一键发币",
+        "subtitle": "轻松创建和管理您的 Solana 代币。",
+        "desc": "MAKE COIN 让发行你自己的数字货币变得极其简单。零费用、完全开源、没有门槛。这是真正的加密自由——任何人、在任何地方都能轻松实现。"
+    },
+    "faqs": {
+        "title": "常见问题",
+        "subtitle": "常见问题",
+        "contactUs": "联系我们",
+        "whatIsMakeCoin": "什么是 MakeCoin？",
+        "isThereAnyFeeForUsingMakeCoin": "使用 MakeCoin 是否有任何费用？",
+        "whatBlockchainsDoesMakeCoinSupport": "MakeCoin 支持哪些区块链？",
+        "whatIsMakeCoinDesc": "这是一个代币发行平台。",
+        "isThereAnyFeeForUsingMakeCoinDesc": "这个平台主要用于技术交换和学习目的，不收取用户费用。",
+        "whatBlockchainsDoesMakeCoinSupportDesc": "目前仅支持 Solana。"
+    },
+    "solana": {
+        "home": "首页",
+        "solanaTools": "Solana 工具",
+        "createToken": "创建代币",
+        "addMetadata": "添加代币元数据",
+        "mintTokens": "铸造代币",
+        "transferTokens": "转账代币",
+        "approveRevokeDelegate": "授权/撤销授权",
+        "setAuthority": "设置权限",
+        "burnTokens": "销毁代币",
+        "closeTokenAccount": "关闭代币账户",
+        "freezeThawAccount": "冻结/解冻账户",
+        "createTokenDesc": "创建一个 SPL 代币",
+        "addMetadataDesc": "为代币添加元数据",
+        "mintTokensDesc": "为代币账户铸造代币",
+        "transferTokensDesc": "将代币转账到另一个账户",
+        "approveRevokeDelegateDesc": "授权或撤销代币转账的委托",
+        "setAuthorityDesc": "设置代币账户的权限",
+        "burnTokensDesc": "从代币账户销毁代币",
+        "closeTokenAccountDesc": "关闭一个代币账户",
+        "freezeThawAccountDesc": "冻结或解冻一个代币账户",
+        "notSupported": "不支持",
+        "notSupportedDesc": "此功能暂不支持。开发中。",
+        "connectWallet": "连接钱包",
+        "devnet": "开发网络"
     }
 }
