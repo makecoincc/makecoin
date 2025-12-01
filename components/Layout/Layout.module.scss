@@ -1,0 +1,19 @@
+@use "@/styles/helpers" as *;
+
+.layout {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 100vh;
+    overflow: hidden;
+    &.noOverflow {
+        overflow: visible;
+        @include t {
+            overflow: hidden;
+        }
+    }
+}
+
+.inner {
+    flex-grow: 1;
+}
