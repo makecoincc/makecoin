@@ -1,5 +1,6 @@
 'use client';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
 // import { useHotkeys } from "react-hotkeys-hook";
 import Link from "next/link";
 import cn from "classnames";
@@ -16,54 +17,15 @@ import Menu from "./Menu";
 const resultSearch = [
     {
         title: "NFTs",
-        items: [
-            {
-                title: "Cute Planet",
-                buy: "12.29 ETH",
-                image: "/images/result-pic-1.jpg",
-                url: "/nft",
-            },
-            {
-                title: "Cute character",
-                reserve: "0.5 ETH",
-                image: "/images/result-pic-2.jpg",
-                url: "/nft",
-            },
-        ],
+        items: [],
     },
     {
         title: "collection",
-        items: [
-            {
-                title: "The Currency",
-                login: "tranmautritam",
-                image: "/images/result-pic-3.jpg",
-                url: "/collection",
-            },
-            {
-                title: "The Currency",
-                login: "randomdash",
-                image: "/images/result-pic-1.jpg",
-                url: "/collection",
-            },
-        ],
+        items: [],
     },
     {
         title: "artist",
-        items: [
-            {
-                title: "Dash",
-                login: "randomdash",
-                image: "/images/result-pic-2.jpg",
-                url: "/profile",
-            },
-            {
-                title: "Tran Mau Tri Tam",
-                login: "tranmautritam",
-                image: "/images/result-pic-3.jpg",
-                url: "/profile",
-            },
-        ],
+        items: [],
     },
 ];
 const menu = [
@@ -86,14 +48,20 @@ type HeaderProps = {
 
 const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
     const [visibleProfile, setVisibleProfile] = useState<boolean>(false);
-    const [connect, setConnect] = useState<boolean>(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [registration, setRegistration] = useState<boolean>(false);
     // useHotkeys("esc", () => setVisibleProfile(false));
+    const { connected, connect } = useWallet();
 
-    const handleClick = () => {
-        setConnect(false);
+    const handleWalletSelect = async (wallet: string) => {
+        await connect()
+        setIsModalOpen(false);
         setRegistration(true);
     };
+
+    useEffect(() => {
+        setRegistration(connected)
+    }, [connected])
 
     return (
         <>
@@ -151,27 +119,29 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                 ))}
                             </div>
                             <Link className={cn(
-                                        "button-stroke button-medium",
-                                        styles.button,
-                                        styles.create
-                                    )} href="/create">
-                                    <span>create</span>
-                                    <Icon name="plus" />
+                                "button-stroke button-medium",
+                                styles.button,
+                                styles.create
+                            )} href="/create">
+                                <span>create</span>
+                                <Icon name="plus" />
                             </Link>
+
+                            
                             <button
                                 className={cn(
                                     "button-stroke button-medium",
                                     styles.button,
                                     styles.connect
                                 )}
-                                onClick={() => setConnect(true)}
+                                onClick={() => setIsModalOpen(true)}
                             >
                                 connect wallet
                             </button>
                             <Link className={cn(
-                                        styles.notification,
-                                        styles.active
-                                    )} href="/notification">
+                                styles.notification,
+                                styles.active
+                            )} href="/notification">
                                 <Icon name="flash" />
                             </Link>
                             <Profile
@@ -198,12 +168,12 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
             <Modal
                 className={styles.modal}
                 closeClassName={styles.close}
-                visible={connect}
-                onClose={() => setConnect(false)}
+                visible={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
             >
                 <ConnectWallet
-                    onClickLogo={() => setConnect(false)}
-                    onContinue={handleClick}
+                    onClickLogo={() => setIsModalOpen(false)}
+                    onContinue={handleWalletSelect}
                 />
             </Modal>
         </>

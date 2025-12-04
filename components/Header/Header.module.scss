@@ -94,7 +94,7 @@
     &.noRegistration {
         .logo {
             @include m {
-                width: rem(168);
+                width: rem(32);
             }
         }
         .discover {
@@ -125,7 +125,9 @@
         .connect {
             display: inline-flex;
             @include t {
-                display: none;
+                // display: none;
+                padding: 0 rem(5);
+                height: rem(40);
             }
         }
         .burger {

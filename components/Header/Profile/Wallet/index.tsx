@@ -1,13 +1,30 @@
 import Link from "next/link";
 import cn from "classnames";
+import { useEffect, useState } from "react";
+import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import styles from "./Wallet.module.scss";
 import Icon from "@/components/Icon";
-
+import { useShortenAddress } from "@/hooks";
+import useTokenPriceStore from '@/store/useTokenPriceStore';
+import { formatBalance, formatUSD } from "@/utils/formater";
+// import { WalletBalance } from "@/components/WalletBalance";
 type WalletProps = {
     onDisconnect: () => void;
 };
 
 const Wallet = ({ onDisconnect }: WalletProps) => {
+    const { publicKey, disconnect } = useWallet();
+    const { connection } = useConnection();
+    const [balance, setBalance] = useState<number>();
+    const { getPrice, isLoading, getError } = useTokenPriceStore();
+
+    const [price, setPrice] = useState<number | null>(null);
+
+    const toDisconnect = async () => {
+        await disconnect();
+        onDisconnect()
+    }
+
     const actions = [
         {
             title: "Manage wallet",
@@ -17,10 +34,53 @@ const Wallet = ({ onDisconnect }: WalletProps) => {
         {
             title: "Disconnect",
             icon: "close-square",
-            onClick: onDisconnect,
+            onClick: toDisconnect,
         },
     ];
 
+    useEffect(() => {
+        const fetchBalance = async () => {
+            if (publicKey) {
+                try {
+                    const lamports = await connection.getBalance(publicKey)
+                    setBalance(lamports / 1e9)
+                } catch (err) {
+                    console.log(err)
+                }
+            } else {
+                console.log('no publickey')
+            }
+        }
+        fetchBalance();
+    }, [connection, publicKey])
+
+    useEffect(() => {
+        getPrice('solana', 'usd').then(setPrice);
+    }, []);
+    // useEffect(() => {
+    //     const tokenId = 'solana';
+    //     const vsCurrency = 'usd';
+    //     const fetchPrice = async () => {
+    //         try {
+    //             const response = await fetch(
+    //                 `/api/token-price?id=${tokenId}&vs_currency=${vsCurrency}`
+    //             );
+
+    //             if (!response.ok) {
+    //                 throw new Error('Failed to fetch token price');
+    //             }
+
+    //             const result = await response.json();
+    //             setPrice(result?.[tokenId]?.[vsCurrency])
+    //         } catch (err) {
+    //             console.log(err)
+    //         } finally {
+    //         }
+    //     }
+    //     fetchPrice();
+    // }, [])
+
+    const shorten = useShortenAddress();
     return (
         <div className={styles.wallet}>
             <div className={styles.head}>
@@ -46,10 +106,10 @@ const Wallet = ({ onDisconnect }: WalletProps) => {
                 </div>
             </div>
             <div className={styles.details}>
-                <div className={styles.code}>0x1e86...533B</div>
+                <div className={styles.code}>{publicKey ? shorten(publicKey?.toBase58()) : ''}</div>
                 <div className={cn("h3", styles.line)}>
-                    <div className={styles.crypto}>3.345 ETH</div>
-                    <div className={styles.price}>$5,448</div>
+                    <div className={styles.crypto}>{formatBalance(balance ?? 0)} SOL</div>
+                    <div className={styles.price}>{formatUSD((balance ?? 0) * (price ?? 0))}</div>
                 </div>
             </div>
         </div>

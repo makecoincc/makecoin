@@ -37,7 +37,7 @@ const Message = ({ onContinue }: MessageProps) => (
             </button>
         </div>
         <div className={styles.links}>
-            <button className={styles.question}>New to Ethereum?</button>
+            <button className={styles.question}>New to Solana?</button>
             <button className={styles.learn}>
                 Learn about wallet <Icon name="arrow-right" />
             </button>

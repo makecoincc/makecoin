@@ -10,14 +10,20 @@ import ScanToConnect from "./ScanToConnect";
 import Message from "./Message";
 
 type ConnectWalletProps = {
-    onClickLogo?: any;
-    onContinue?: any;
+    onClickLogo?: () => void;
+    onContinue?: (wallet: string) => void;
 };
 
 const ConnectWallet = ({ onClickLogo, onContinue }: ConnectWalletProps) => {
     const [cookies, setCookies] = useState<boolean>(false);
     const [scan, setScan] = useState<boolean>(false);
-    const [message, setMessage] = useState<boolean>(false);
+    const [isMessageVisible, setIsMessageVisible] = useState<boolean>(false);
+    const [walletName, setWalletName] = useState<string>("");
+
+    const onWalletSelect = (wallet: string) => {
+        setWalletName(wallet);
+        setIsMessageVisible(true);
+    }
 
     return (
         <div className={styles.row}>
@@ -26,7 +32,7 @@ const ConnectWallet = ({ onClickLogo, onContinue }: ConnectWalletProps) => {
                 style={{
                     backgroundColor:
                         (scan && "#B9A9FB") ||
-                        (message && "#DBFF73") ||
+                        (isMessageVisible && "#DBFF73") ||
                         "#BCE6EC",
                 }}
             >
@@ -36,21 +42,21 @@ const ConnectWallet = ({ onClickLogo, onContinue }: ConnectWalletProps) => {
                     <Arrow className={styles.arrow} color="#F7FBFA" />
                 </div>
                 <div className={styles.info}>
-                    {message
+                    {isMessageVisible
                         ? "Sign the message in your wallet to continue"
                         : "Choose how you want to connect. There are several wallet providers."}
                 </div>
             </div>
             <div className={styles.col}>
-                {message ? (
+                {isMessageVisible ? (
                     <>
                         <button
                             className={cn("button-circle", styles.back)}
-                            onClick={() => setMessage(false)}
+                            onClick={() => setIsMessageVisible(false)}
                         >
                             <Icon name="arrow-left" />
                         </button>
-                        <Message onContinue={onContinue} />
+                        <Message onContinue={() => onContinue && onContinue(walletName)} />
                     </>
                 ) : scan ? (
                     <>
@@ -65,10 +71,10 @@ const ConnectWallet = ({ onClickLogo, onContinue }: ConnectWalletProps) => {
                 ) : (
                     <ChooseWallet
                         onScan={() => setScan(true)}
-                        onClickWallet={() => setMessage(true)}
+                        onClickWallet={(wallet) => onWalletSelect(wallet)}
                     />
                 )}
-                {!message && (
+                {!isMessageVisible && (
                     <div
                         className={cn(styles.cookies, {
                             [styles.hide]: cookies,

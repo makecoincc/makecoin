@@ -1,7 +1,8 @@
 "use client";
 
 import {
-  WalletProvider
+  WalletProvider,
+  ConnectionProvider
 } from "@solana/wallet-adapter-react";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import React, { FC, useMemo } from "react";
@@ -15,6 +16,7 @@ type Props = {
 
 export const WalletAdapterProvider: FC<Props> = ({ children }) => {
 
+  const endpoint = `${process.env.NEXT_PUBLIC_DEV_RPC_URL}?api-key=${process.env.NEXT_PUBLIC_HELIUS_KEY}`;
   const wallets = useMemo(
     () => [
       /**
@@ -35,13 +37,13 @@ export const WalletAdapterProvider: FC<Props> = ({ children }) => {
   );
 
   return (
-
+    <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
         <WalletModalProvider>
           {/* Your app's components go here, nested within the context providers. */}
           {children}
         </WalletModalProvider>
       </WalletProvider>
-
+    </ConnectionProvider>
   );
 };

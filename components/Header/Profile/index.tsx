@@ -8,6 +8,8 @@ import Image from "@/components/Image";
 import NavLink from "@/components/NavLink";
 import Icon from "@/components/Icon";
 import Wallet from "./Wallet";
+import DynamicAvatar from "@/components/DynamicAvatar";
+import useUmiStore from "@/store/useUmiStore";
 
 const menu = [
     {
@@ -42,7 +44,7 @@ const Profile = ({
     visible,
 }: ProfileProps) => {
     const initialRender = useRef(true);
-
+    const { signer } = useUmiStore();
     // useEffect(() => {
     //     if (initialRender.current) {
     //         initialRender.current = false;
@@ -64,12 +66,13 @@ const Profile = ({
                     className={cn(styles.head, headClassName)}
                     onClick={onOpen}
                 >
-                    <Image
+                    {/* <Image
                         src="/images/avatar.jpg"
                         fill
                         style={{ objectFit: 'cover' }}
                         alt="Avatar"
-                    />
+                    /> */}
+                    <DynamicAvatar />
                 </button>
                 <div className={cn(styles.body, bodyClassName)}>
                     <button
@@ -83,16 +86,17 @@ const Profile = ({
                     </button>
                     <div className={styles.user}>
                         <div className={styles.avatar}>
-                            <Image
+                            {/* <Image
                                 src="/images/avatar.jpg"
                                 fill
                                 style={{ objectFit: 'cover' }}
                                 alt="Avatar"
-                            />
+                            /> */}
+                            <DynamicAvatar />
                         </div>
                         <div className={styles.details}>
-                            <div className={cn("h3", styles.man)}>Dash</div>
-                            <div className={styles.login}>@randomdash</div>
+                            <div className={cn("h3", styles.man)}>User#{signer?.publicKey?.slice(-4)}</div>
+                            <div className={styles.login}>@yourname</div>
                         </div>
                     </div>
                     <Wallet onDisconnect={onClose} />

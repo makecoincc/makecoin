@@ -126,8 +126,8 @@
 .avatar {
     position: relative;
     flex-shrink: 0;
-    width: rem(96);
-    height: rem(96);
+    width: rem(84);
+    height: rem(84);
     margin-right: rem(32);
     @include d {
         margin-right: rem(24);

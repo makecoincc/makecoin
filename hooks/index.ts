@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 export function use100vh(): number | null {
   const [height, setHeight] = useState<number | null>(null);
@@ -37,4 +37,14 @@ export function useMediaQuery(query: string): boolean {
   }, [query]);
 
   return matches;
+}
+
+
+export function useShortenAddress() {
+  const shorten = useCallback((address: string) => {
+    if (!address) return "";
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  }, []);
+
+  return shorten;
 }
