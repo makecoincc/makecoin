@@ -8,13 +8,26 @@ import Upload from "./Upload";
 import Information from "./Information";
 import Wallet from "./Wallet";
 import Notification from "./Notification";
-
+import AvatarBuilder from "@/components/AvatarBuilder";
+import AvatarPreview from "./AvatarPreview";
+import Tabs from "@/components/Tabs"
 const SettingsPage = () => {
     const scrollToRefProfile = useRef<any>(null);
     const scrollToRefWallet = useRef<any>(null);
     const scrollToRefNotification = useRef<any>(null);
     const [active, setActive] = useState<any>(scrollToRefProfile);
-
+    const [avatar, setAvatar] = useState<any>({});
+    const [avatarType, setAavtarType] = useState<string>('upload')
+    const tabs = [
+        {
+            title: 'Upload avatar',
+            value: 'upload'
+        },
+        {
+            title: 'Dynamic avatar',
+            value: 'dynamic'
+        }
+    ]
     const menu = [
         {
             title: "Profile",
@@ -36,6 +49,11 @@ const SettingsPage = () => {
         });
         setActive(anchor);
     };
+
+    const onChange = (e: any) => {
+        console.log(e);
+        setAvatar(e);
+    }
 
     return (
         <Layout layoutNoOverflow footerHide>
@@ -67,10 +85,24 @@ const SettingsPage = () => {
                                 </button>
                             ))}
                         </div>
-                        <Upload />
+                        <Tabs
+                            className={styles.tabs}
+                            items={tabs}
+                            value={avatarType}
+                            setValue={setAavtarType}
+                        />
+                        { avatarType === 'upload' ? (
+                            <Upload />
+                        ) : (
+                            <AvatarPreview avatar={avatar} />
+                        )}
                     </div>
                 </div>
                 <div className={styles.col}>
+                    <div className={styles.section}>
+                        <div className={styles.label}>Dynamic Avatar</div>
+                        <AvatarBuilder onChange={onChange}/>
+                    </div>
                     <div className={styles.section}>
                         <div
                             className={styles.anchor}

@@ -1,0 +1,38 @@
+@use "@/styles/helpers" as *;
+
+.tabs {
+    display: flex;
+    &.tabsDark {
+        .button {
+            &:hover {
+                color: $n1;
+            }
+            &.active {
+                background: $n1;
+                color: $n7;
+            }
+        }
+    }
+}
+
+.button {
+    padding: rem(8) rem(24);
+    border-radius: rem(20);
+    @include base;
+    color: $n5;
+    transition: all .2s;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    @include m {
+        @include baseS;
+    }
+    &:hover {
+        color: $n7;
+    }
+    &.active {
+        background: $n7;
+        color: $n1;
+    }
+    &:not(:last-child) {
+        margin-right: rem(12);
+    }
+}

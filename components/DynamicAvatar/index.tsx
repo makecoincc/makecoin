@@ -4,6 +4,7 @@ import Image from 'next/image'
 
 type DynamicAvatarProps = {
     className?: string;
+    bg?: number;
     cheek?: 'elips-pink' | 'elips-red' | 'rounded-pink' | 'rounded-red';
     eye?: 'close' | 'flat' | 'normal' | 'pretty' | 'sleepy';
     face?: 'oval-dark' | 'oval-fair' | 'oval-light' | 'oval-medium' | 'rounded-dark' | 'rounded-fair' | 'rounded-light' | 'rounded-medium' | 'square-dark' | 'square-fair' | 'square-light' | 'square-medium' | 'v-face-dark' | 'v-face-fair' | 'v-face-light' | 'v-face-medium';
@@ -13,6 +14,8 @@ type DynamicAvatarProps = {
     mouth?: 'cute' | 'eat' | 'open' | 'sad' | 'smile-teeth' | 'smile' ;
     outfit?: 'blue-blouse' | 'blue-jumpsuit' | 'blue-shirt' | 'blue-t-shirt' | 'green-hoodie' | 'green-sport-t-shirt' | 'green-strip-t-shirt' | 'red-cardigan' | 'red-t-shirt' | 'white-office-shirt' | 'yellow-off-shoulder-top' | 'yellow-sweater'
 };
+
+const backgrounds = ['#fffac9', '#d6ccff', '#ffe8d8', '#cfffd7', '#ffc9b3', '#d0fff7'];
 
 const cheeks = {
     "elips-pink": "Cheek=Elips, Color=Pink.svg",
@@ -98,67 +101,69 @@ const outfits = {
     "yellow-sweater": "Outfit=Yellow Sweater.svg",
 }
 
-const DynamicAvatar = ({ className, cheek, eye = 'normal', face = 'v-face-fair', glasses, hair = 'wavy', hat = 'floppy', mouth = 'smile', outfit = 'blue-t-shirt' }: DynamicAvatarProps) => {
+const DynamicAvatar = ({ className, bg = 0, cheek, eye = 'normal', face = 'v-face-fair', glasses, hair = 'wavy', hat, mouth = 'smile', outfit = 'blue-t-shirt' }: DynamicAvatarProps) => {
     return (
-        <div className={cn(styles.avatar, className)}>
-            <Image
-                className={styles.hat}
-                src={`/avatar/${hats[hat]}`}
-                width={85}
-                height={77}
-                alt="hat"
-            />
+        <div className={cn(styles.avatar, className)} style={{background: backgrounds[bg]}}>
+            {hat && (
+                <Image
+                    className={styles.hat}
+                    src={`/avatar/${hats[hat]}`}
+                    width={212.5}
+                    height={192.5}
+                    alt="hat"
+                />
+            )}
              <Image
                 className={styles.hair}
                 src={`/avatar/${hairs[hair]}`}
-                width={85}
-                height={85}
+                width={212.5}
+                height={212.5}
                 alt="hair"
             />
             { cheek && (
                 <Image
                     className={styles.cheek}
                     src={`/avatar/${cheeks[cheek]}`}
-                    width={85}
-                    height={85}
+                    width={212.5}
+                    height={212.5}
                     alt="cheek"
                 />
             )}
              <Image
                 className={styles.eye}
                 src={`/avatar/${eyes[eye]}`}
-                width={85}
-                height={55}
+                width={212.5}
+                height={137.5}
                 alt="eye"
             />
             {glasses && (
                 <Image
                     className={styles.glasses}
                     src={`/avatar/${glassesMap[glasses]}`}
-                    width={85}
-                    height={69}
+                    width={212.5}
+                    height={172.5}
                     alt="glasses"
                 />
             )}
              <Image
                 className={styles.mouth}
                 src={`/avatar/${mouths[mouth]}`}
-                width={85}
-                height={85}
+                width={212.5}
+                height={212.5}
                 alt="mouth"
             />
             <Image
                 className={styles.face}
                 src={`/avatar/${faces[face]}`}
-                width={85}
-                height={85}
+                width={212.5}
+                height={212.5}
                 alt="face"
             />
             <Image
                 className={styles.outfit}
                 src={`/avatar/${outfits[outfit]}`}
-                width={85}
-                height={45}
+                width={212.5}
+                height={112.5}
                 alt="outfit"
             />
             
