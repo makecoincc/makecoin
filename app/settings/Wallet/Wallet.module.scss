@@ -1,0 +1,94 @@
+@use "@/styles/helpers" as *;
+
+.wallet {
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    position: relative;
+    flex-shrink: 0;
+    width: rem(64);
+    height: rem(64);
+    img {
+        border-radius: 50%;
+    }
+}
+
+.details {
+    flex-grow: 1;
+    padding: 0 rem(24);
+    @include m {
+        padding: 0 rem(16);
+    }
+}
+
+.code {
+    display: flex;
+    align-items: center;
+    margin-bottom: rem(6);
+    @include body2Bold;
+}
+
+.desktop {
+    @include d {
+        display: none;
+    }
+}
+
+.tablet,
+.mobile {
+    display: none;
+}
+
+.tablet {
+    @include d {
+        display: inline;
+    }
+    @include m {
+        display: none;
+    }
+}
+
+.mobile {
+    @include m {
+        display: inline;
+    }
+}
+
+.copy {
+    margin-left: rem(12);
+    svg {
+        fill: $n5;
+        transition: fill .2s;
+    }
+    &:hover {
+        svg {
+            fill: $n7;
+        }
+    }
+}
+
+.note {
+    position: relative;
+    display: inline-block;
+    padding-right: rem(12);
+    @include captionBold;
+    color: $n4;
+    &:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 0;
+        width: rem(8);
+        height: rem(8);
+        transform: translateY(-50%);
+        background: #9DC628;
+        border-radius: 50%;
+    }
+}
+
+.button {
+    height: rem(56);
+    margin-top: rem(24);
+}

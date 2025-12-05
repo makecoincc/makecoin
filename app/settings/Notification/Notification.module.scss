@@ -1,0 +1,29 @@
+@use "@/styles/helpers" as *;
+
+.item {
+    display: flex;
+    padding-bottom: rem(32);
+    border-bottom: rem(1) solid $n3;
+    &:not(:last-child) {
+        margin-bottom: rem(24);
+    }
+}
+
+.details {
+    flex-grow: 1;
+    padding-right: rem(24);
+}
+
+.toggle {
+    flex-shrink: 0;
+}
+
+.title {
+    margin-bottom: rem(8);
+    @include body2Bold;
+}
+
+.content {
+    @include captionBold;
+    color: $n4;
+}
