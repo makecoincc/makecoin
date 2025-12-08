@@ -11,10 +11,19 @@ import { createSignerFromWalletAdapter } from "@metaplex-foundation/umi-signer-w
 import { WalletAdapter } from "@solana/wallet-adapter-base";
 import { create } from "zustand";
 
+interface walletInfo {
+  name: string;
+  icon: string;
+}
+
 interface UmiState {
   umi: Umi;
   signer: Signer | undefined;
   updateSigner: (signer: WalletAdapter) => void;
+  clearSinger: () => void;
+  wallet: walletInfo | undefined;
+  setWallet: (name: string, icon: string) => void;
+  clearWallet: () => void;
 }
 
 const useUmiStore = create<UmiState>()((set, get) => ({
@@ -36,6 +45,16 @@ const useUmiStore = create<UmiState>()((set, get) => ({
       set(() => ({ signer: newSigner }));
     }
   },
+  clearSinger: () => {
+    set(() => ({ signer: undefined }));
+  },
+  wallet: undefined,
+  setWallet: (name, icon) => {
+    set(() => ({ wallet: { name, icon}}))
+  },
+  clearWallet: () => {
+    set(() => ({ wallet: undefined}))
+  }
 }));
 
 export default useUmiStore;

@@ -5,7 +5,7 @@ import cn from "classnames";
 import styles from "./ChooseWallet.module.scss";
 import Icon from "@/components/Icon";
 import Image from "@/components/Image";
-
+import useUmiStore from "@/store/useUmiStore";
 const tabs = ["Wallets"];
 
 // const wallets = [
@@ -29,16 +29,17 @@ const tabs = ["Wallets"];
 
 type ChooseWalletProps = {
     onScan?: () => void;
-    onClickWallet?: (name: string) => void;
+    onClickWallet?: () => void;
 };
 
 const ChooseWallet = ({ onScan, onClickWallet }: ChooseWalletProps) => {
     const [activeIndex, setActiveIndex] = useState<number>(0);
-    const { wallets, wallet, select, connect, connecting } = useWallet();
-
-    const onWalletSelect = (walletName: string) => {
-        select(walletName as any); // 只改选中钱包，不连接
-        onClickWallet && onClickWallet(walletName)
+    const { wallets, select } = useWallet();
+    const { setWallet } = useUmiStore();
+    const onWalletSelect = async (walletName: string, icon: string) => {
+        await select(walletName as any); // 只改选中钱包，不连接
+        setWallet(walletName, icon);
+        onClickWallet && onClickWallet();
     };
 
     return (
@@ -64,7 +65,7 @@ const ChooseWallet = ({ onScan, onClickWallet }: ChooseWalletProps) => {
                     <button
                         className={styles.wallet}
                         key={index}
-                        onClick={() => onWalletSelect(wallet.adapter.name)}
+                        onClick={() => onWalletSelect(wallet.adapter.name, wallet.adapter.icon)}
                     >
                         <span className={styles.inner}>
                             <span className={styles.icon}>

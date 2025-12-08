@@ -3,10 +3,11 @@ import styles from "./AvatarPreview.module.scss";
 import DynamicAvatar from "@/components/DynamicAvatar";
 
 type AvatarPreviewProps = {
-    avatar: any
+    avatar: any;
+    onCustomAvatar?: () => void;
 };
 
-const AvatarPreview = ({ avatar }: AvatarPreviewProps) => {
+const AvatarPreview = ({ avatar, onCustomAvatar }: AvatarPreviewProps) => {
     return (
         <div className={styles.upload}>
             <div className={styles.preview}>
@@ -23,6 +24,7 @@ const AvatarPreview = ({ avatar }: AvatarPreviewProps) => {
                             "button-stroke-grey button-medium",
                             styles.button
                         )}
+                        onClick={onCustomAvatar}
                     >
                         custom
                     </button>

@@ -17,13 +17,13 @@ type DynamicAvatarProps = {
 
 const backgrounds = ['#fffac9', '#d6ccff', '#ffe8d8', '#cfffd7', '#ffc9b3', '#d0fff7'];
 
-const cheeks = {
+export const cheeks = {
     "elips-pink": "Cheek=Elips, Color=Pink.svg",
     "elips-red": "Cheek=Elips, Color=Red.svg",
     "rounded-pink": "Cheek=Rounded, Color=Pink.svg",
     "rounded-red": "Cheek=Rounded, Color=Red.svg",
 }
-const eyes = {
+export const eyes = {
     "close": "Eye=Close Eye.svg",
     "flat": "Eye=Flat Eye.svg",
     "normal": "Eye=Normal Eye.svg",
@@ -31,7 +31,7 @@ const eyes = {
     "sleepy": "Eye=Sleepy Eye.svg"
 }
 
-const faces = {
+export const faces = {
     "oval-dark": "Face=Oval, Skin=Dark.svg",
     "oval-fair": "Face=Oval, Skin=Fair.svg",
     "oval-light": "Face=Oval, Skin=Light.svg",
@@ -49,7 +49,7 @@ const faces = {
     "v-face-light": "Face=V Face, Skin=Light.svg",
     "v-face-medium": "Face=V Face, Skin=Medium.svg",
 }
-const glassesMap = {
+export const glassesMap = {
     "3d": "Glasses=3D Glasses.svg",
     "aviators": "Glasses=Aviators Glasses.svg",
     "cat-eye": "Glasses=Cat Eye Glasses.svg",
@@ -58,7 +58,7 @@ const glassesMap = {
     "rounded": "Glasses=Rounded Glasses.svg",
     "wide-cat-eye": "Glasses=Wide Cat Eye Glasses.svg",
 }
-const hairs = {
+export const hairs = {
     "bun": "Hair=Bun Hair.svg",
     "crew-cut": "Hair=Crew Cut Hair.svg",
     "curly": "Hair=Curly Hair.svg",
@@ -70,7 +70,7 @@ const hairs = {
     "wavy": "Hair=Wavy Hair.svg",
     "wavy-short": "Hair=Wavy Short Hair.svg",
 }
-const hats = {
+export const hats = {
     "beanie": "Hat=Beanie Hat.svg",
     "bucket": "Hat=Bucket Hat.svg",
     "cowboy": "Hat=Cowboy Hat.svg",
@@ -78,7 +78,7 @@ const hats = {
     "straw": "Hat=Straw Hat.svg",
     "visor": "Hat=Visor Hat.svg",
 }
-const mouths = {
+export const mouths = {
     "cute": "Mouth=Cute.svg",
     "eat": "Mouth=Eat.svg",
     "open": "Mouth=Open.svg",
@@ -86,7 +86,7 @@ const mouths = {
     "smile-teeth": "Mouth=Smile Teeth.svg",
     "smile": "Mouth=Smile.svg",
 }
-const outfits = {
+export const outfits = {
     "blue-blouse": "Outfit=Blue Blouse.svg",
     "blue-jumpsuit": "Outfit=Blue Jumpsuit.svg",
     "blue-shirt": "Outfit=Blue Shirt.svg",

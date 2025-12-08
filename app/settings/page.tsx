@@ -6,26 +6,26 @@ import Layout from "@/components/Layout";
 import Icon from "@/components/Icon";
 import Upload from "./Upload";
 import Information from "./Information";
-import Wallet from "./Wallet";
+// import Wallet from "./Wallet";
 import Notification from "./Notification";
 import AvatarBuilder from "@/components/AvatarBuilder";
 import AvatarPreview from "./AvatarPreview";
 import Tabs from "@/components/Tabs"
 const SettingsPage = () => {
     const scrollToRefProfile = useRef<any>(null);
-    const scrollToRefWallet = useRef<any>(null);
+    const scrollToRefAvatarBuilder = useRef<any>(null);
     const scrollToRefNotification = useRef<any>(null);
     const [active, setActive] = useState<any>(scrollToRefProfile);
     const [avatar, setAvatar] = useState<any>({});
-    const [avatarType, setAavtarType] = useState<string>('upload')
+    const [avatarType, setAavtarType] = useState<string>('dynamic')
     const tabs = [
-        {
-            title: 'Upload avatar',
-            value: 'upload'
-        },
         {
             title: 'Dynamic avatar',
             value: 'dynamic'
+        },
+        {
+            title: 'Upload avatar',
+            value: 'upload'
         }
     ]
     const menu = [
@@ -33,10 +33,10 @@ const SettingsPage = () => {
             title: "Profile",
             anchor: scrollToRefProfile,
         },
-        {
-            title: "Wallet",
-            anchor: scrollToRefWallet,
-        },
+        // {
+        //     title: "Wallet",
+        //     anchor: scrollToRefWallet,
+        // },
         {
             title: "Notification",
             anchor: scrollToRefNotification,
@@ -94,15 +94,11 @@ const SettingsPage = () => {
                         { avatarType === 'upload' ? (
                             <Upload />
                         ) : (
-                            <AvatarPreview avatar={avatar} />
+                            <AvatarPreview avatar={avatar} onCustomAvatar={() => handleClick(scrollToRefAvatarBuilder)}/>
                         )}
                     </div>
                 </div>
                 <div className={styles.col}>
-                    <div className={styles.section}>
-                        <div className={styles.label}>Dynamic Avatar</div>
-                        <AvatarBuilder onChange={onChange}/>
-                    </div>
                     <div className={styles.section}>
                         <div
                             className={styles.anchor}
@@ -111,14 +107,14 @@ const SettingsPage = () => {
                         <div className={styles.label}>information</div>
                         <Information />
                     </div>
-                    <div className={styles.section} id="wallet">
+                    {/* <div className={styles.section} id="wallet">
                         <div
                             className={styles.anchor}
                             ref={scrollToRefWallet}
                         ></div>
                         <div className={styles.label}>wallet</div>
                         <Wallet />
-                    </div>
+                    </div> */}
                     <div className={styles.section}>
                         <div
                             className={styles.anchor}
@@ -126,6 +122,14 @@ const SettingsPage = () => {
                         ></div>
                         <div className={styles.label}>notification</div>
                         <Notification />
+                    </div>
+                    <div className={styles.section}>
+                        <div
+                            className={styles.anchor}
+                            ref={scrollToRefAvatarBuilder}
+                        ></div>
+                        <div className={styles.label}>Dynamic Avatar</div>
+                        <AvatarBuilder onChange={onChange}/>
                     </div>
                 </div>
             </div>

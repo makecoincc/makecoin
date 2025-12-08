@@ -51,13 +51,7 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [registration, setRegistration] = useState<boolean>(false);
     // useHotkeys("esc", () => setVisibleProfile(false));
-    const { connected, connect } = useWallet();
-
-    const handleWalletSelect = async (wallet: string) => {
-        await connect()
-        setIsModalOpen(false);
-        setRegistration(true);
-    };
+    const { connected } = useWallet();
 
     useEffect(() => {
         setRegistration(connected)
@@ -173,7 +167,7 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
             >
                 <ConnectWallet
                     onClickLogo={() => setIsModalOpen(false)}
-                    onContinue={handleWalletSelect}
+                    onFinish={() => setIsModalOpen(false)}
                 />
             </Modal>
         </>

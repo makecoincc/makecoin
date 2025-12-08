@@ -1,7 +1,5 @@
-import cn from "classnames";
 import { useEffect, useState } from "react";
-import styles from "./RadioGroup.module.scss";
-import RadioGroup from "../RadioGroup";
+import ImageChoices from "../ImageChoices";
 
 type AvatarBuilderProps = {
     className?: string;
@@ -104,7 +102,7 @@ const AvatarBuilder = ({ className, onChange, dark }: AvatarBuilderProps) => {
         <div>
             {Object.entries(avatars).map(([part, options]) => {
                 return (
-                    <RadioGroup key={part} title={part} value={currentByPart[part]} items={options} onChange={(value) => handleChange(part, value)} />
+                    <ImageChoices key={part} title={part} value={currentByPart[part]} items={options} onChange={(value) => handleChange(part, value)} />
                 )
             })}
         </div>

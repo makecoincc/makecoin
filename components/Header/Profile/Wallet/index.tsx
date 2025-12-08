@@ -6,8 +6,10 @@ import styles from "./Wallet.module.scss";
 import Icon from "@/components/Icon";
 import { useShortenAddress } from "@/hooks";
 import useTokenPriceStore from '@/store/useTokenPriceStore';
+import useUmiStore from "@/store/useUmiStore";
+import useAuthStore from "@/store/useAuthStore";
 import { formatBalance, formatUSD } from "@/utils/formater";
-// import { WalletBalance } from "@/components/WalletBalance";
+import Image from "@/components/Image";
 type WalletProps = {
     onDisconnect: () => void;
 };
@@ -17,12 +19,20 @@ const Wallet = ({ onDisconnect }: WalletProps) => {
     const { connection } = useConnection();
     const [balance, setBalance] = useState<number>();
     const { getPrice, isLoading, getError } = useTokenPriceStore();
-
+    const { isLoggedIn, logout} = useAuthStore();
+    const { clearSinger, clearWallet, wallet } = useUmiStore();
     const [price, setPrice] = useState<number | null>(null);
 
     const toDisconnect = async () => {
         await disconnect();
-        onDisconnect()
+        // 如果用户已登录，也退出
+        if (isLoggedIn) {
+            await logout();
+        }
+        // umi的singer清空
+        await clearSinger();
+        await clearWallet();
+        onDisconnect && onDisconnect()
     }
 
     const actions = [
@@ -84,7 +94,7 @@ const Wallet = ({ onDisconnect }: WalletProps) => {
     return (
         <div className={styles.wallet}>
             <div className={styles.head}>
-                <div className={styles.title}>Connected wallet</div>
+                <div className={styles.title}>Connected {wallet?.name}</div>
                 <div className={styles.actions}>
                     {actions.map((action: any, index: number) =>
                         action.onClick ? (
@@ -106,7 +116,7 @@ const Wallet = ({ onDisconnect }: WalletProps) => {
                 </div>
             </div>
             <div className={styles.details}>
-                <div className={styles.code}>{publicKey ? shorten(publicKey?.toBase58()) : ''}</div>
+                <div className={styles.code}>{ wallet?.icon && (<Image src={wallet?.icon} width={32} height={32} alt="wallet" />)} {publicKey ? shorten(publicKey?.toBase58()) : ''}</div>
                 <div className={cn("h3", styles.line)}>
                     <div className={styles.crypto}>{formatBalance(balance ?? 0)} SOL</div>
                     <div className={styles.price}>{formatUSD((balance ?? 0) * (price ?? 0))}</div>

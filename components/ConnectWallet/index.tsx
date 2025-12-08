@@ -6,24 +6,32 @@ import Logo from "@/components/Logo";
 import Arrow from "@/components/Arrow";
 import Icon from "@/components/Icon";
 import ChooseWallet from "./ChooseWallet";
-import ScanToConnect from "./ScanToConnect";
+import SignIn from "./SignIn";
 import Message from "./Message";
 
 type ConnectWalletProps = {
     onClickLogo?: () => void;
-    onContinue?: (wallet: string) => void;
+    onFinish?: () => void;
 };
 
-const ConnectWallet = ({ onClickLogo, onContinue }: ConnectWalletProps) => {
+const ConnectWallet = ({ onClickLogo, onFinish }: ConnectWalletProps) => {
     const [cookies, setCookies] = useState<boolean>(false);
-    const [scan, setScan] = useState<boolean>(false);
+    const [isSignInVisible, setIsSignInVisible] = useState<boolean>(false);
     const [isMessageVisible, setIsMessageVisible] = useState<boolean>(false);
-    const [walletName, setWalletName] = useState<string>("");
 
-    const onWalletSelect = (wallet: string) => {
-        setWalletName(wallet);
+    // ChooseWallet 完成钱包选择
+    const onWalletChosen = () => {
         setIsMessageVisible(true);
     }
+
+    // Message 完成钱包连接
+    const onMessageSign = () => {
+        setIsMessageVisible(false);
+        setIsSignInVisible(true);
+    }
+
+    // SignIn 完成 supabase signin
+    
 
     return (
         <div className={styles.row}>
@@ -31,19 +39,22 @@ const ConnectWallet = ({ onClickLogo, onContinue }: ConnectWalletProps) => {
                 className={styles.col}
                 style={{
                     backgroundColor:
-                        (scan && "#B9A9FB") ||
+                        (isSignInVisible && "#B9A9FB") ||
                         (isMessageVisible && "#DBFF73") ||
                         "#BCE6EC",
                 }}
             >
                 <Logo className={styles.logo} onClick={onClickLogo} />
                 <div className={styles.line}>
-                    <h1 className={cn("h1", styles.title)}>Connect wallet.</h1>
+                    <h1 className={cn("h1", styles.title)}>
+                        {isMessageVisible ? 'Connect wallet.' : isSignInVisible ? 'Sign in with wallet.' : ''}
+                        </h1>
                     <Arrow className={styles.arrow} color="#F7FBFA" />
                 </div>
                 <div className={styles.info}>
                     {isMessageVisible
                         ? "Sign the message in your wallet to continue"
+                        : isSignInVisible ? 'Recommend signing in to showcase your digital assets and trade with others.' 
                         : "Choose how you want to connect. There are several wallet providers."}
                 </div>
             </div>
@@ -56,22 +67,22 @@ const ConnectWallet = ({ onClickLogo, onContinue }: ConnectWalletProps) => {
                         >
                             <Icon name="arrow-left" />
                         </button>
-                        <Message onContinue={() => onContinue && onContinue(walletName)} />
+                        <Message onContinue={onMessageSign} onBack={() => setIsMessageVisible(false)} />
                     </>
-                ) : scan ? (
+                ) : isSignInVisible ? (
                     <>
                         <button
                             className={cn("button-circle", styles.back)}
-                            onClick={() => setScan(false)}
+                            onClick={() => {setIsSignInVisible(false); setIsMessageVisible(true)}}
                         >
                             <Icon name="arrow-left" />
                         </button>
-                        <ScanToConnect />
+                        <SignIn onFinish={onFinish}/>
                     </>
                 ) : (
                     <ChooseWallet
-                        onScan={() => setScan(true)}
-                        onClickWallet={(wallet) => onWalletSelect(wallet)}
+                        onScan={() => setIsSignInVisible(true)}
+                        onClickWallet={onWalletChosen}
                     />
                 )}
                 {!isMessageVisible && (
