@@ -22,7 +22,7 @@ const SignIn = ({ onFinish }: SignInProps) => {
         try {
             setIsLoading(true)
             const { data, error } = await supabase.auth.signInWithWeb3({
-                chain: 'ethereum',
+                chain: 'solana',
                 statement: 'I accept the Terms of Service at https://example.com/tos',
             })
             if (error) {
@@ -30,7 +30,7 @@ const SignIn = ({ onFinish }: SignInProps) => {
                 setIsLoading(false)
             } else {
                 console.log(data)
-                setAuth(data.session, 'ethereum')
+                setAuth(data.session, 'solana')
                 setIsLoading(false)
                 onFinish && onFinish();
             }

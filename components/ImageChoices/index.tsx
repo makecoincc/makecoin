@@ -20,16 +20,27 @@ type ImageChoicesProps = {
 
 const ImageChoices = ({ className, items, onChange, dark, value, title }: ImageChoicesProps) => {
     const [current, setCurrent] = useState<string | undefined>(value);
-        const parts: Record<string, any> = {
-            cheeks,
-            eyes,
-            faces,
-            glasses: glassesMap,
-            hairs,
-            hats,
-            mouths,
-            outfits,
-        };
+    const parts: Record<string, any> = {
+        cheeks,
+        eyes,
+        faces,
+        glasses: glassesMap,
+        hairs,
+        hats,
+        mouths,
+        outfits,
+    };
+
+    const heights: Record<string, number> = {
+        cheeks: 60,
+        eyes: 55,
+        faces: 85,
+        glasses: 69,
+        hairs: 85,
+        hats: 77,
+        mouths: 85,
+        outfits: 85,
+    }
     const handleChange = (i: number) => {
         setCurrent(items[i].value);
         onChange && onChange(items[i].value)
@@ -47,10 +58,7 @@ const ImageChoices = ({ className, items, onChange, dark, value, title }: ImageC
                         )}
                         onClick={() => handleChange(index)}
                     >
-                        {/* <span className={styles.check}>
-                            <Icon name="check-fat" />
-                        </span> */}
-                        { status.value !== 'none' ? <Image src={ '/avatar/' + parts[title][status.value]}  width={85} height={85} alt={status.value}/> : "none"}
+                        {status.value !== 'none' ? <Image src={'/avatar/' + parts[title][status.value]} width={85} height={heights[title]} alt={status.value} /> : "none"}
                     </button>
                 ))}
             </div>

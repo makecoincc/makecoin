@@ -75,13 +75,17 @@
     }
     &:after {
         content: "";
-        display: block;
+        display: none;
         width: rem(16);
         height: rem(16);
         margin-left: rem(12);
         border-radius: 50%;
         background: $a4;
     }
+}
+
+.success::after {
+  display: block;
 }
 
 .line {

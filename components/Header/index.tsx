@@ -52,7 +52,6 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
     const [registration, setRegistration] = useState<boolean>(false);
     // useHotkeys("esc", () => setVisibleProfile(false));
     const { connected } = useWallet();
-
     useEffect(() => {
         setRegistration(connected)
     }, [connected])

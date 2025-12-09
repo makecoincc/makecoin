@@ -1,0 +1,63 @@
+@use "@/styles/helpers" as *;
+
+.socialLink {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: rem(16);
+}
+
+.main {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  width: rem(40);
+  height: rem(40);
+  position: relative;
+}
+
+.content {
+  margin-left: rem(14);
+  line-height: rem(14);
+}
+
+.title {
+  color: $n7;
+  @include base;
+}
+
+.value {
+  color: $n5;
+  @include captionBold;
+}
+
+.button {
+  color: $n1;
+  display: flex;
+  height: 40px;
+  padding: 18px 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 12px;
+  background: $n7;
+  text-transform: uppercase;
+  color: #FFF;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 24px;
+  letter-spacing: 2.04px;
+}
+
+.disconnect {
+  text-transform: uppercase;
+  color: $n5;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 24px;
+  letter-spacing: 2.04px;
+}

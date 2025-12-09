@@ -35,10 +35,8 @@ type ChooseWalletProps = {
 const ChooseWallet = ({ onScan, onClickWallet }: ChooseWalletProps) => {
     const [activeIndex, setActiveIndex] = useState<number>(0);
     const { wallets, select } = useWallet();
-    const { setWallet } = useUmiStore();
     const onWalletSelect = async (walletName: string, icon: string) => {
         await select(walletName as any); // 只改选中钱包，不连接
-        setWallet(walletName, icon);
         onClickWallet && onClickWallet();
     };
 

@@ -108,62 +108,62 @@ const DynamicAvatar = ({ className, bg = 0, cheek, eye = 'normal', face = 'v-fac
                 <Image
                     className={styles.hat}
                     src={`/avatar/${hats[hat]}`}
-                    width={212.5}
-                    height={192.5}
+                    width={255}
+                    height={231}
                     alt="hat"
                 />
             )}
              <Image
                 className={styles.hair}
                 src={`/avatar/${hairs[hair]}`}
-                width={212.5}
-                height={212.5}
+                width={255}
+                height={255}
                 alt="hair"
             />
             { cheek && (
                 <Image
                     className={styles.cheek}
                     src={`/avatar/${cheeks[cheek]}`}
-                    width={212.5}
-                    height={212.5}
+                    width={255}
+                    height={180}
                     alt="cheek"
                 />
             )}
              <Image
                 className={styles.eye}
                 src={`/avatar/${eyes[eye]}`}
-                width={212.5}
-                height={137.5}
+                width={255}
+                height={165}
                 alt="eye"
             />
             {glasses && (
                 <Image
                     className={styles.glasses}
                     src={`/avatar/${glassesMap[glasses]}`}
-                    width={212.5}
-                    height={172.5}
+                    width={255}
+                    height={207}
                     alt="glasses"
                 />
             )}
              <Image
                 className={styles.mouth}
                 src={`/avatar/${mouths[mouth]}`}
-                width={212.5}
-                height={212.5}
+                width={255}
+                height={255}
                 alt="mouth"
             />
             <Image
                 className={styles.face}
                 src={`/avatar/${faces[face]}`}
-                width={212.5}
-                height={212.5}
+                width={255}
+                height={255}
                 alt="face"
             />
             <Image
                 className={styles.outfit}
                 src={`/avatar/${outfits[outfit]}`}
-                width={212.5}
-                height={112.5}
+                width={255}
+                height={255}
                 alt="outfit"
             />
             

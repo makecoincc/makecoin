@@ -86,21 +86,3 @@
         }
     }
 }
-
-.check {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: rem(24);
-    height: rem(24);
-    margin-right: rem(8);
-    border: rem(2) solid $n3;
-    border-radius: 50%;
-    transition: background .2s, border-color .2s;
-    svg {
-        width: rem(16);
-        height: rem(16);
-        fill: transparent;
-        transition: fill .2s;
-    }
-}

@@ -1,7 +1,8 @@
+'use client';
 import Link from "next/link";
 import cn from "classnames";
 import { useEffect, useState } from "react";
-import { useWallet, useConnection } from "@solana/wallet-adapter-react";
+import { useWallet } from "@solana/wallet-adapter-react";
 import styles from "./Wallet.module.scss";
 import Icon from "@/components/Icon";
 import { useShortenAddress } from "@/hooks";
@@ -10,29 +11,46 @@ import useUmiStore from "@/store/useUmiStore";
 import useAuthStore from "@/store/useAuthStore";
 import { formatBalance, formatUSD } from "@/utils/formater";
 import Image from "@/components/Image";
+import { createClient } from '@/utils/supabase/client';
+import { useWalletBalance } from '@/hooks/useWalletBalance';
+import Spinner from "@/components/Spinner";
+
 type WalletProps = {
     onDisconnect: () => void;
 };
 
+type WalletInfo = {
+    name: string | undefined;
+    icon: string | undefined;
+}
+
 const Wallet = ({ onDisconnect }: WalletProps) => {
-    const { publicKey, disconnect } = useWallet();
-    const { connection } = useConnection();
-    const [balance, setBalance] = useState<number>();
+    const { publicKey, disconnect, wallet, connected } = useWallet();
     const { getPrice, isLoading, getError } = useTokenPriceStore();
+    const { balance, isLoading: isBalanceLoading, error  } = useWalletBalance(publicKey);
     const { isLoggedIn, logout} = useAuthStore();
-    const { clearSinger, clearWallet, wallet } = useUmiStore();
+    const { clearSinger } = useUmiStore();
     const [price, setPrice] = useState<number | null>(null);
+    const [walletInfo, setWalletInfo] = useState<WalletInfo | null>(null)
+    const supabase = createClient();
 
     const toDisconnect = async () => {
-        await disconnect();
-        // 如果用户已登录，也退出
-        if (isLoggedIn) {
-            await logout();
+        try {
+            await disconnect();
+            // 如果用户已登录，也退出
+            if (isLoggedIn) {
+                const { error } = await supabase.auth.signOut();
+                if (error) {
+                    console.log(error)
+                }
+                logout();
+            }
+            // umi的singer清空
+            await clearSinger();
+            onDisconnect && onDisconnect()
+        } catch(e) {
+            console.log(e)
         }
-        // umi的singer清空
-        await clearSinger();
-        await clearWallet();
-        onDisconnect && onDisconnect()
     }
 
     const actions = [
@@ -48,53 +66,29 @@ const Wallet = ({ onDisconnect }: WalletProps) => {
         },
     ];
 
+    
+
     useEffect(() => {
-        const fetchBalance = async () => {
-            if (publicKey) {
-                try {
-                    const lamports = await connection.getBalance(publicKey)
-                    setBalance(lamports / 1e9)
-                } catch (err) {
-                    console.log(err)
-                }
-            } else {
-                console.log('no publickey')
-            }
+        if (connected) {
+            setWalletInfo({
+                name: wallet?.adapter.name,
+                icon: wallet?.adapter.icon
+            })
         }
-        fetchBalance();
-    }, [connection, publicKey])
+    }, [connected, wallet])
 
     useEffect(() => {
         getPrice('solana', 'usd').then(setPrice);
     }, []);
-    // useEffect(() => {
-    //     const tokenId = 'solana';
-    //     const vsCurrency = 'usd';
-    //     const fetchPrice = async () => {
-    //         try {
-    //             const response = await fetch(
-    //                 `/api/token-price?id=${tokenId}&vs_currency=${vsCurrency}`
-    //             );
-
-    //             if (!response.ok) {
-    //                 throw new Error('Failed to fetch token price');
-    //             }
-
-    //             const result = await response.json();
-    //             setPrice(result?.[tokenId]?.[vsCurrency])
-    //         } catch (err) {
-    //             console.log(err)
-    //         } finally {
-    //         }
-    //     }
-    //     fetchPrice();
-    // }, [])
 
     const shorten = useShortenAddress();
+
+    if (!connected) return <Spinner />
+
     return (
         <div className={styles.wallet}>
             <div className={styles.head}>
-                <div className={styles.title}>Connected {wallet?.name}</div>
+                <div className={styles.title}>Connected {walletInfo?.name}</div>
                 <div className={styles.actions}>
                     {actions.map((action: any, index: number) =>
                         action.onClick ? (
@@ -116,10 +110,11 @@ const Wallet = ({ onDisconnect }: WalletProps) => {
                 </div>
             </div>
             <div className={styles.details}>
-                <div className={styles.code}>{ wallet?.icon && (<Image src={wallet?.icon} width={32} height={32} alt="wallet" />)} {publicKey ? shorten(publicKey?.toBase58()) : ''}</div>
+                <div className={`${styles.code} ${isLoggedIn ? styles.success : ''}`} >{ walletInfo?.icon && (<Image src={walletInfo.icon} width={32} height={32} alt="wallet" />)} {publicKey ? shorten(publicKey?.toBase58()) : ''}</div>
                 <div className={cn("h3", styles.line)}>
-                    <div className={styles.crypto}>{formatBalance(balance ?? 0)} SOL</div>
-                    <div className={styles.price}>{formatUSD((balance ?? 0) * (price ?? 0))}</div>
+                    { isBalanceLoading ? <Spinner /> : error ? <div>Error: {String(error)}</div> : <div className={styles.crypto}>{formatBalance(balance ?? 0)}SOL</div>}
+                    { (isLoading('solana', 'usd') || isBalanceLoading) ? <Spinner /> : getError('solana', 'usd') ? <div>{getError('solana', 'usd')}</div> : <div className={styles.price}>{formatUSD((balance ?? 0) * (price ?? 0))}</div>}
+                    
                 </div>
             </div>
         </div>
