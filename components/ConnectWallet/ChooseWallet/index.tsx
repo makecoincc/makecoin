@@ -5,7 +5,7 @@ import cn from "classnames";
 import styles from "./ChooseWallet.module.scss";
 import Icon from "@/components/Icon";
 import Image from "@/components/Image";
-import useUmiStore from "@/store/useUmiStore";
+// import useUmiStore from "@/store/useUmiStore";
 const tabs = ["Wallets"];
 
 // const wallets = [

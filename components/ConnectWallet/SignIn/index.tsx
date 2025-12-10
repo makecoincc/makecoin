@@ -15,7 +15,6 @@ type SignInProps = {
 const SignIn = ({ onFinish }: SignInProps) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const supabase = createClient();
-
     const { setAuth } = useAuthStore();
     const handleSignIn = async () => {
         if (isLoading) return;
@@ -23,7 +22,7 @@ const SignIn = ({ onFinish }: SignInProps) => {
             setIsLoading(true)
             const { data, error } = await supabase.auth.signInWithWeb3({
                 chain: 'solana',
-                statement: 'I accept the Terms of Service at https://example.com/tos',
+                statement: 'I accept the Terms of Service at https://docs.makecoin.cc/terms',
             })
             if (error) {
                 console.log(error)
@@ -65,7 +64,7 @@ const SignIn = ({ onFinish }: SignInProps) => {
                     onClick={handleSignIn}
                 >
                     {isLoading && (<Spinner className={styles.spinner} dark />)}
-                    SignIn with Solana
+                    Sign in with Solana
                 </button>
             </div>
             <div className={styles.links}>

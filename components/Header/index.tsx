@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { useRouter } from "next/navigation";
 // import { useHotkeys } from "react-hotkeys-hook";
 import Link from "next/link";
 import cn from "classnames";
@@ -47,11 +48,17 @@ type HeaderProps = {
 };
 
 const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
+    const router = useRouter();
     const [visibleProfile, setVisibleProfile] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [registration, setRegistration] = useState<boolean>(false);
     // useHotkeys("esc", () => setVisibleProfile(false));
     const { connected } = useWallet();
+
+    const toHome = () => {
+        setVisibleProfile(false)
+        router.replace('/')
+    }
     useEffect(() => {
         setRegistration(connected)
     }, [connected])
@@ -83,6 +90,7 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                             bodyClassName={styles.profileBody}
                             onOpen={() => setVisibleProfile(!visibleProfile)}
                             onClose={() => setVisibleProfile(false)}
+                            onDisconnect={toHome}
                             visible={visibleProfile}
                         />
                     </>
@@ -143,6 +151,7 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                     setVisibleProfile(!visibleProfile)
                                 }
                                 onClose={() => setVisibleProfile(false)}
+                                onDisconnect={toHome}
                                 visible={visibleProfile}
                             />
                             <Menu

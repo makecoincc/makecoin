@@ -16,7 +16,7 @@ const AvatarPreview = ({ avatar, onCustomAvatar }: AvatarPreviewProps) => {
             <div className={styles.details}>
                 <div className={cn("h4", styles.title)}>Dynamic Avatar</div>
                 <div className={styles.content}>
-                    We recommended an image of at least 800x800. Gifs work too.
+                    Customize your avatar by choosing eyes, face shape, and more
                 </div>
                 <div className={styles.file}>
                     <button

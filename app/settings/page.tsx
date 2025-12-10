@@ -56,7 +56,7 @@ const SettingsPage = () => {
     }
 
     return (
-        <Layout layoutNoOverflow footerHide>
+        <Layout layoutNoOverflow footerHide noRegistration>
             <div className={styles.row}>
                 <div className={styles.col}>
                     <div className={styles.wrap}>
@@ -123,14 +123,17 @@ const SettingsPage = () => {
                         <div className={styles.label}>notification</div>
                         <Notification />
                     </div>
-                    <div className={styles.section}>
-                        <div
-                            className={styles.anchor}
-                            ref={scrollToRefAvatarBuilder}
-                        ></div>
-                        <div className={styles.label}>Dynamic Avatar</div>
-                        <AvatarBuilder onChange={onChange}/>
-                    </div>
+                    { avatarType === 'dynamic' && (
+                        <div className={styles.section}>
+                            <div
+                                className={styles.anchor}
+                                ref={scrollToRefAvatarBuilder}
+                            ></div>
+                            <div className={styles.label}>Dynamic Avatar</div>
+                            <AvatarBuilder onChange={onChange}/>
+                        </div>
+                    )}
+                    
                 </div>
             </div>
         </Layout>

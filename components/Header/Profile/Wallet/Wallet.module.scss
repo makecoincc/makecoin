@@ -64,7 +64,7 @@
     display: inline-flex;
     gap: rem(4);
     align-items: center;
-    margin-bottom: rem(12);
+    // margin-bottom: rem(12);
     padding: rem(8);
     background: $o6;
     border-radius: rem(12);
@@ -111,4 +111,43 @@
 
 .price {
     color: $n5;
+}
+
+.walletInfo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: rem(12);
+}
+
+.signin {
+    @include base;
+    color: $n1;
+    display: inline-flex;
+    gap: rem(5);
+}
+
+.lines {
+    display: flex;
+    flex-direction: column;
+    &:before,
+    &:after {
+        content: "";
+        display: block;
+        height: rem(12);
+        border-radius: rem(4);
+        background: $n3;
+    }
+    &:before {
+        width: rem(200);
+        margin-bottom: rem(12);
+        @include m {
+            width: rem(160);
+        }
+    }
+    &:after {
+        width: rem(123);
+        @include m {
+            width: rem(100);
+        }
+    }
 }

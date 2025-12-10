@@ -33,6 +33,7 @@ type ProfileProps = {
     visible: any;
     onOpen: () => void;
     onClose: () => void;
+    onDisconnect: () => void;
 };
 
 const Profile = ({
@@ -41,6 +42,7 @@ const Profile = ({
     bodyClassName,
     onOpen,
     onClose,
+    onDisconnect,
     visible,
 }: ProfileProps) => {
     const initialRender = useRef(true);
@@ -99,7 +101,7 @@ const Profile = ({
                             <div className={styles.login}>@yourname</div>
                         </div>
                     </div>
-                    <Wallet onDisconnect={onClose} />
+                    <Wallet onDisconnect={onDisconnect} />
                     <div className={styles.menu}>
                         {menu.map((link, index) => (
                             <NavLink

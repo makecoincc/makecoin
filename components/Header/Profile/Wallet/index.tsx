@@ -26,12 +26,13 @@ type WalletInfo = {
 
 const Wallet = ({ onDisconnect }: WalletProps) => {
     const { publicKey, disconnect, wallet, connected } = useWallet();
-    const { getPrice, isLoading, getError } = useTokenPriceStore();
+    const { getPrice, isLoading: isPriceLoading, getError } = useTokenPriceStore();
     const { balance, isLoading: isBalanceLoading, error  } = useWalletBalance(publicKey);
-    const { isLoggedIn, logout} = useAuthStore();
+    const { isLoggedIn, logout, setAuth} = useAuthStore();
     const { clearSinger } = useUmiStore();
     const [price, setPrice] = useState<number | null>(null);
-    const [walletInfo, setWalletInfo] = useState<WalletInfo | null>(null)
+    const [walletInfo, setWalletInfo] = useState<WalletInfo | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const supabase = createClient();
 
     const toDisconnect = async () => {
@@ -53,20 +54,40 @@ const Wallet = ({ onDisconnect }: WalletProps) => {
         }
     }
 
+    const handleSignIn = async () => {
+        if (isLoading) return;
+        try {
+            setIsLoading(true)
+            const { data, error } = await supabase.auth.signInWithWeb3({
+                chain: 'solana',
+                statement: 'I accept the Terms of Service at https://docs.makecoin.cc/terms',
+            })
+            if (error) {
+                console.log(error)
+                setIsLoading(false)
+            } else {
+                console.log(data)
+                setAuth(data.session, 'solana')
+                setIsLoading(false)
+            }
+        } catch (e) {
+            console.log(e)
+            setIsLoading(false)
+        }
+    }
+
     const actions = [
-        {
-            title: "Manage wallet",
-            icon: "settings-alt",
-            url: "/settings#wallet",
-        },
         {
             title: "Disconnect",
             icon: "close-square",
             onClick: toDisconnect,
         },
+        // {
+        //     title: "Manage identities",
+        //     icon: "settings-alt",
+        //     url: "/settings#identities",
+        // },
     ];
-
-    
 
     useEffect(() => {
         if (connected) {
@@ -110,11 +131,18 @@ const Wallet = ({ onDisconnect }: WalletProps) => {
                 </div>
             </div>
             <div className={styles.details}>
-                <div className={`${styles.code} ${isLoggedIn ? styles.success : ''}`} >{ walletInfo?.icon && (<Image src={walletInfo.icon} width={32} height={32} alt="wallet" />)} {publicKey ? shorten(publicKey?.toBase58()) : ''}</div>
+                <div className={styles.walletInfo}>
+                    <div className={`${styles.code} ${isLoggedIn ? styles.success : ''}`} >
+                        { walletInfo?.icon && (<Image src={walletInfo.icon} width={32} height={32} alt="wallet" />)} 
+                        {publicKey ? shorten(publicKey?.toBase58()) : ''}
+                    </div>
+                    { !isLoggedIn && (<button className={styles.signin} onClick={handleSignIn}>{isLoading && (<Spinner className={styles.spinner} dark />)}Sign in with Solana</button>)}
+                    { isLoggedIn && (<Link className={styles.action} href="/settings#identities" >Manage identities</Link>)}
+                </div>
+                
                 <div className={cn("h3", styles.line)}>
-                    { isBalanceLoading ? <Spinner /> : error ? <div>Error: {String(error)}</div> : <div className={styles.crypto}>{formatBalance(balance ?? 0)}SOL</div>}
-                    { (isLoading('solana', 'usd') || isBalanceLoading) ? <Spinner /> : getError('solana', 'usd') ? <div>{getError('solana', 'usd')}</div> : <div className={styles.price}>{formatUSD((balance ?? 0) * (price ?? 0))}</div>}
-                    
+                    { isBalanceLoading ? <div className={styles.lines}></div> : error ? <div>Error: {String(error)}</div> : <div className={styles.crypto}>{formatBalance(balance ?? 0)}SOL</div>}
+                    { (isPriceLoading('solana', 'usd') || isBalanceLoading) ? <div className={styles.lines}></div> : getError('solana', 'usd') ? <div>Failed</div> : <div className={styles.price}>{formatUSD((balance ?? 0) * (price ?? 0))}</div>}
                 </div>
             </div>
         </div>
