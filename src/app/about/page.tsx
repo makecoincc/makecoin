@@ -4,35 +4,60 @@ export default function AboutPage() {
   return (
     <div style={{
       fontFamily: 'Arial, sans-serif',
-      backgroundColor: '#f0f0f0',
+      backgroundColor: '#121212',
+      color: '#ffffff',
+      minHeight: '100vh',
       padding: '20px',
-      minHeight: '100vh'
+      textAlign: 'center'
     }}>
       <div style={{
-        textAlign: 'center',
-        backgroundColor: 'white',
-        padding: '40px',
-        borderRadius: '10px',
-        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-        maxWidth: '600px',
-        margin: '0 auto'
+        maxWidth: '800px',
+        margin: '0 auto',
+        paddingTop: '100px'
       }}>
-        <h1 style={{color: '#333'}}>About MakeCoin</h1>
-        <p style={{fontSize: '16px', lineHeight: '1.6', marginBottom: '30px'}}>
+        <h1 style={{
+          fontSize: '2.5rem',
+          marginBottom: '30px',
+          color: '#bb86fc',
+          fontWeight: 'bold'
+        }}>
+          About MakeCoin
+        </h1>
+        
+        <p style={{
+          fontSize: '1.2rem',
+          lineHeight: '1.8',
+          marginBottom: '30px',
+          color: '#e0e0e0'
+        }}>
           MakeCoin is an innovative cryptocurrency platform currently under development. 
           We are building the next generation of digital financial solutions designed to be 
           accessible, secure, and user-friendly.
         </p>
-        <p style={{fontSize: '16px', lineHeight: '1.6', marginBottom: '30px'}}>
+        
+        <p style={{
+          fontSize: '1.2rem',
+          lineHeight: '1.8',
+          marginBottom: '50px',
+          color: '#e0e0e0'
+        }}>
           Our mission is to simplify cryptocurrency transactions and make digital finance 
           accessible to everyone around the world.
         </p>
-        <div>
+        
+        <div style={{
+          position: 'fixed',
+          bottom: '30px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          gap: '30px'
+        }}>
           <Link href="/" style={{
-            color: '#0088cc',
+            color: '#03dac6',
             textDecoration: 'none',
             fontWeight: 'bold',
-            fontSize: '16px'
+            fontSize: '1rem'
           }}>
             ← Back to Home
           </Link>

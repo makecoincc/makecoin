@@ -4,35 +4,48 @@ export default function ContactPage() {
   return (
     <div style={{
       fontFamily: 'Arial, sans-serif',
-      backgroundColor: '#f0f0f0',
+      backgroundColor: '#121212',
+      color: '#ffffff',
+      minHeight: '100vh',
       padding: '20px',
-      minHeight: '100vh'
+      textAlign: 'center'
     }}>
       <div style={{
-        textAlign: 'center',
-        backgroundColor: 'white',
-        padding: '40px',
-        borderRadius: '10px',
-        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-        maxWidth: '600px',
-        margin: '0 auto'
+        maxWidth: '800px',
+        margin: '0 auto',
+        paddingTop: '100px'
       }}>
-        <h1 style={{color: '#333'}}>Contact Us</h1>
-        <div style={{fontSize: '16px', lineHeight: '1.6', marginBottom: '30px'}}>
-          <p>For business inquiries, partnerships, or general questions:</p>
-          <p style={{margin: '20px 0'}}>
+        <h1 style={{
+          fontSize: '2.5rem',
+          marginBottom: '40px',
+          color: '#bb86fc',
+          fontWeight: 'bold'
+        }}>
+          Contact Us
+        </h1>
+        
+        <div style={{
+          fontSize: '1.2rem',
+          lineHeight: '1.8',
+          marginBottom: '40px',
+          color: '#e0e0e0'
+        }}>
+          <p style={{marginBottom: '30px'}}>For business inquiries, partnerships, or general questions:</p>
+          
+          <p>
             <a 
               href="https://t.me/rizzimped" 
               style={{
-                color: '#0088cc',
+                color: '#03dac6',
                 textDecoration: 'none',
                 fontWeight: 'bold',
-                fontSize: '18px',
+                fontSize: '1.5rem',
                 display: 'inline-block',
-                padding: '10px 20px',
-                border: '2px solid #0088cc',
-                borderRadius: '5px',
-                marginTop: '10px'
+                padding: '15px 30px',
+                border: '2px solid #03dac6',
+                borderRadius: '30px',
+                transition: 'all 0.3s ease',
+                marginTop: '20px'
               }}
               target="_blank"
               rel="noopener noreferrer"
@@ -40,14 +53,23 @@ export default function ContactPage() {
               Telegram: @rizzimped
             </a>
           </p>
-          <p>We aim to respond to all inquiries within 24 hours.</p>
+          
+          <p style={{marginTop: '30px'}}>We aim to respond to all inquiries within 24 hours.</p>
         </div>
-        <div>
+        
+        <div style={{
+          position: 'fixed',
+          bottom: '30px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          gap: '30px'
+        }}>
           <Link href="/" style={{
-            color: '#0088cc',
+            color: '#03dac6',
             textDecoration: 'none',
             fontWeight: 'bold',
-            fontSize: '16px'
+            fontSize: '1rem'
           }}>
             ← Back to Home
           </Link>
