@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Production
+.next/
+out/
+
+# Environment variables
+.env*.local
+
+# macOS
+.DS_Store
+
+# Logs
+logs/
+
+# Coverage
+coverage/
+
+# Next.js
+.nft.json
